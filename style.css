@@ -1,4 +1,35 @@
-body {
+#studyContainer {
+  transition: all 0.3s ease;
+  padding: 20px;
+  text-align: center;
+}
+
+.study-mode {
+  background-color: #e6f4ff;
+  color: #003366;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#quotePopup {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 9999;
+  display: none;
+}
+
+#quotePopup.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}body {
   font-family: Arial, sans-serif;
   background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* sky color */
   padding: 20px;
