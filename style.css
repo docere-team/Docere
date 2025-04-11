@@ -1,91 +1,65 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docere - Track. Learn. Heal.</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
-</head><body class="sky-theme">
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#mbbs-subjects">Subjects</a></li>
-        <li><a href="#reading">Personal Reading</a></li>
-        <li><a href="#tools">Tools</a></li>
-        <li><a href="#circle">Docere Circle</a></li>
-        <li><a href="#quotes">Quotes</a></li>
-        <li><a href="#reminders">Reminders</a></li>
-      </ul>
-    </nav>
-  </header>  <main>
-    <section id="dashboard">
-      <h1>Welcome, <span id="username">Aftab</span>!</h1>
-      <p class="tagline">Doctor in the making. Let’s track, learn, and heal.</p>
-      <div>
-        <label for="quote-style">Choose your vibe:</label>
-        <select id="quote-style">
-          <option value="motivational">Motivational</option>
-          <option value="funny">Funny</option>
-          <option value="calm">Calm</option>
-        </select>
-      </div>
-      <div id="motivational-quote-box" class="quote-box"></div>
-    </section><section id="mbbs-subjects">
-  <h2>MBBS Subjects</h2>
-  <p>Track progress, upload notes/images, voice memos, and more for all 19 subjects.</p>
-  <div class="subject-grid">
-    <!-- Auto-generated cards for each subject -->
-  </div>
-</section>
+/* Sky Theme & Basic Reset */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #cbefff, #f5fcff);
+  color: #333;
+  scroll-behavior: smooth;
+}
 
-<section id="reading">
-  <h2>Personal Reading</h2>
-  <p>Save your favorite books, quotes, reflections, and progress.</p>
-  <div class="reading-list">
-    <!-- Book cards and quote gallery -->
-  </div>
-</section>
+header {
+  background: #58c1f0;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-<section id="tools">
-  <h2>Study & Health Tools</h2>
-  <ul class="tool-list">
-    <li>Pomodoro Timer & Session Tracker</li>
-    <li>Attendance Alerts (75% Theory, 80% Practical)</li>
-    <li>Hydration & Meal Tracker</li>
-    <li>Flashcard Creator</li>
-    <li>Voice Notes</li>
-    <li>Study Timer + Alarm + DND Mode</li>
-    <li>Daily Mood & Focus Journal</li>
-    <li>Routine Tracker with Time Blocks</li>
-    <li>Google Drive Sync & Backup</li>
-    <li>Bookmark Important Notes & Images</li>
-  </ul>
-</section>
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-<section id="circle">
-  <h2>Docere Circle</h2>
-  <p>Chat with batchmates, share study goals, cases, and help each other grow.</p>
-  <div class="circle-chat"></div>
-  <div class="forum-discussion"></div>
-</section>
+nav h1 {
+  font-size: 24px;
+}
 
-<section id="quotes">
-  <h2>Quote Gallery</h2>
-  <p>View all motivational, funny, and calm quotes you’ve received.</p>
-  <div class="quote-gallery"></div>
-</section>
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+}
 
-<section id="reminders">
-  <h2>Smart Reminders</h2>
-  <ul>
-    <li>Study alerts (custom frequency)</li>
-    <li>Hydration reminders</li>
-    <li>Stretch/exercise popups</li>
-    <li>Medicine/Meal log notifications</li>
-  </ul>
-</section>
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
 
-  </main>  <footer>
-    <p>&copy; 2025 Docere. Built for the Healers of Tomorrow.</p>
-  </footer>
-</body></html>
+nav ul li a:hover {
+  color: #fff8d6;
+}
+
+#hero {
+  padding: 60px 20px;
+  text-align: center;
+  background: #d9f4ff;
+}
+
+.section {
+  padding: 60px 20px;
+  border-bottom: 1px solid #ccc;
+  background: white;
+  min-height: 300px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #58c1f0;
+  color: white;
+}
