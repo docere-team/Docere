@@ -75,13 +75,6 @@ function addWardDuty() {
   calculateWardAttendance();
 }
 
-  // Optionally: clear fields
-  document.getElementById("start-date").value = '';
-  document.getElementById("end-date").value = '';
-
-  // Simple toast or alert
-  alert(`Assigned ${dept} ward from ${from} to ${to}`);
-}
 function calculateWardAttendance() {
   const checks = document.querySelectorAll(".ward-check");
   const total = checks.length;
