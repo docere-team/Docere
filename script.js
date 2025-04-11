@@ -41,3 +41,29 @@ function showRandomLine() {
 }
 
 window.onload = showRandomLine;
+const popupQuotes = [
+  "Founder Aftab studied so hard, his books filed for bankruptcy!",
+  "Reminder: You’re already amazing. Now go finish that lecture.",
+  "Motivation delivered. Courtesy: your friendly neighborhood Aftab.",
+  "Don’t stop now, Aftab’s watching!",
+  "Coffee: activated. Focus: 99%. Power: Unlimited.",
+  "Study break? Only if you beat Aftab’s streak!",
+  "You're closer to your goal than you think. Keep going!"
+];
+
+function showPopupQuote() {
+  const popup = document.getElementById("quote-popup");
+  const quoteText = document.getElementById("quote-text");
+  const quote = popupQuotes[Math.floor(Math.random() * popupQuotes.length)];
+
+  quoteText.textContent = quote;
+  popup.classList.remove("hidden");
+
+  setTimeout(() => {
+    popup.classList.add("hidden");
+  }, 6000); // Auto-hide after 6 seconds
+}
+
+window.onload = () => {
+  showPopupQuote();
+};
