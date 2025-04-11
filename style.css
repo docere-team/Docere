@@ -1,281 +1,56 @@
-#studyContainer {
-  transition: all 0.3s ease;
-  padding: 20px;
-  text-align: center;
-}
-
-.study-mode {
-  background-color: #e6f4ff;
-  color: #003366;
+body {
+  margin: 0;
   font-family: 'Segoe UI', sans-serif;
+  background: #f0f8ff;
 }
 
-#quotePopup {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 9999;
-  display: none;
+.navbar {
+  background: #0099cc;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#quotePopup.visible {
-  display: block;
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
 }
 
-.hidden {
-  display: none;
-}body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* sky color */
-  padding: 20px;
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-content {
   text-align: center;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 50px;
 }
 
 button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  background: #007bff;
+  padding: 12px 24px;
+  background-color: #0099cc;
   color: white;
+  border: none;
+  font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #0056b3;
-}
-
-#popup-quote {
+.popup {
   display: none;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #fff;
-  color: #333;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-/* ======== Global Theme ======== */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #d4f1f9, #e6f7ff);
-  color: #003344;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ======== Welcome Message ======== */
-#welcomeBox {
-  padding: 20px;
-  background-color: #e0f7ff;
-  border-left: 5px solid #3399cc;
-  margin: 20px;
-  font-size: 1.4rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 100, 160, 0.1);
-}
-
-/* ======== Motivational Quote Popup ======== */
-#quotePopup {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ffffff;
-  border-left: 5px solid #4db8ff;
-  padding: 15px 20px;
-  font-style: italic;
-  font-size: 1.1rem;
-  max-width: 300px;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff5c2;
+  padding: 16px 24px;
+  border: 2px solid #0099cc;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  display: none;
-  z-index: 999;
-  animation: slideIn 0.5s ease-out;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
 }
-
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-/* ======== Pomodoro & Tracker ======== */
-.pomodoroBox {
-  margin: 20px;
-  background: #fff;
-  padding: 20px;
-  border-left: 4px solid #66ccff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 50, 0.05);
-}
-
-.timerDisplay {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #0077b6;
-}
-
-.timerControls button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  background: #0099cc;
-  color: white;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.timerControls button:hover {
-  background: #0077aa;
-}
-
-/* ======== Attendance Alert ======== */
-.attendanceAlert {
-  margin: 20px;
-  padding: 15px;
-  background: #fff8f8;
-  border-left: 5px solid #ff6666;
-  border-radius: 10px;
-  color: #cc0000;
-  font-weight: bold;
-  display: none;
-}
-
-/* ======== Do Not Disturb / Study Mode Toggle ======== */
-#studyModeToggle {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  background: #0099cc;
-  color: white;
-  border: none;
-  padding: 12px 16px;
-  border-radius: 50px;
-  font-size: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#studyModeToggle:hover {
-  background: #0077a3;
-}
-#calendarGrid table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-#calendarGrid th, #calendarGrid td {
-  padding: 8px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-#calendarControls {
-  margin: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-#calendarControls button {
-  padding: 6px 12px;
-  background: #007acc;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-#calendarControls button:hover {
-  background: #005b99;
-}
-.ward-scheduler {
-  margin: 20px 0;
-  padding: 15px;
-  background: #f0f8ff;
-  border-radius: 10px;
-  border: 1px solid #b3d4fc;
-}
-.ward-scheduler label {
-  display: block;
-  margin-top: 10px;
-}
-.ward-scheduler input, .ward-scheduler select {
-  width: 100%;
-  padding: 6px;
-  margin-top: 4px;
-}
-.ward-scheduler {
-  padding: 10px;
-  margin: 20px 0;
-  background: #f5faff;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-.ward-scheduler input {
-  margin: 5px;
-  padding: 5px;
-}
-#calendarDays {
-  display: flex;
-  flex-wrap: wrap;
-}
-.ward-scheduler {
-  padding: 10px;
-  margin: 20px 0;
-  background: #f5faff;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-.ward-scheduler input {
-  margin: 5px;
-  padding: 5px;
-}
-#calendarDays {
-  display: flex;
-  flex-wrap: wrap;
-}
-<style>
-  #studyPopup {
-    position: absolute;
-    top: 60px; /* a little lower than the button */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #f9f9f9;
-    color: #333;
-    border: 2px solid #007BFF;
-    padding: 12px 16px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    font-size: 14px;
-    max-width: 250px;
-    z-index: 1000;
-    display: none;
-  }
-
-  @media (max-width: 600px) {
-    #studyPopup {
-      font-size: 13px;
-      max-width: 85%;
-      padding: 10px;
-    }
-  }
-</style>
