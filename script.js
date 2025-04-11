@@ -36,43 +36,44 @@ function enterStudyMode() {
 }
 function addWardDuty() {
   const dept = document.getElementById("ward-dept").value;
-  const from = document.getElementById("start-date").value;
-  const to = document.getElementById("end-date").value;
+  const from = new Date(document.getElementById("start-date").value);
+  const to = new Date(document.getElementById("end-date").value);
 
-  if (!dept || !from || !to) {
+  if (!dept || isNaN(from) || isNaN(to)) {
     alert("Please fill all fields!");
     return;
   }
 
   const calendar = document.getElementById("ward-calendar");
-  const entry = document.createElement("div");
-  entry.innerHTML = `<strong>${dept}</strong>: ${from} to ${to}`;
-  entry.style.marginBottom = "8px";
-  calendar.appendChild(entry);
-
-  // Later: Save this in local storage / Firebase
-}
-function addWardDuty() {
-  const dept = document.getElementById("ward-dept").value;
-  const from = document.getElementById("start-date").value;
-  const to = document.getElementById("end-date").value;
-
-  if (!dept || !from || !to) {
-    alert("Please fill all fields!");
-    return;
-  }
-
-  const calendar = document.getElementById("ward-calendar");
-
   const dutyBlock = document.createElement("div");
   dutyBlock.className = "duty-entry";
   dutyBlock.innerHTML = `
     <strong>${dept}</strong><br>
-    From <span>${from}</span> to <span>${to}</span>
+    From <span>${from.toDateString()}</span> to <span>${to.toDateString()}</span>
     <hr>
   `;
-
   calendar.appendChild(dutyBlock);
+
+  // Attendance list
+  const attendanceList = document.getElementById("attendance-list");
+
+  let currentDate = new Date(from);
+  let totalDays = 0;
+  while (currentDate <= to) {
+    const dayDiv = document.createElement("div");
+    dayDiv.innerHTML = `
+      <label>
+        <input type="checkbox" class="ward-check" onchange="calculateWardAttendance()"> 
+        ${currentDate.toDateString()}
+      </label>
+    `;
+    attendanceList.appendChild(dayDiv);
+    totalDays++;
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  calculateWardAttendance();
+}
 
   // Optionally: clear fields
   document.getElementById("start-date").value = '';
