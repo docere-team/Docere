@@ -63,3 +63,27 @@ footer {
   background: #58c1f0;
   color: white;
 }
+.quote-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 183, 255, 0.9);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 0.95rem;
+  max-width: 280px;
+  z-index: 999;
+  animation: fadeIn 0.5s ease-in-out;
+  transition: all 0.5s;
+}
+
+.quote-popup.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
