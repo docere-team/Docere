@@ -1,212 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css" />
-<meta name="theme-color" content="#c2e9fb">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Docere</title>
-  <link rel="manifest" href="manifest.json">
+  <title>Docere - Track Your Study!</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* sky color */
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
       text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .section {
+      margin-bottom: 1.5rem;
     }
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      background: #007bff;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
+    label {
+      font-weight: bold;
     }
-    button:hover {
-      background: #0056b3;
+    select, button {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 100%;
     }
-    #popup-quote {
+    .summary {
+      background: #ffffffaa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px #00000020;
+    }
+    .quote {
+      font-style: italic;
+      color: #444;
+      margin-top: 1rem;
+    }
+    .popup-quote {
       display: none;
       position: fixed;
       bottom: 20px;
-      right: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       background: #fff;
-      color: #333;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      padding: 1rem;
+      border: 2px solid #aaa;
+      border-radius: 1rem;
+      box-shadow: 0 5px 15px #00000030;
+      font-size: 1rem;
+      z-index: 1000;
+    }
+    .btn-mode {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <h1>Docere - Track. Learn. Heal.</h1>
 
-  <div class="card" id="welcome-card">
-    <h1 id="welcome-message"></h1>
-  </div>
-
-  <div class="card" id="pomodoro-card">
-    <h2>Pomodoro Timer</h2>
-    <label>Work Duration (min): <input type="number" id="work-duration" value="25" /></label>
-    <br/><br/>
-    <button onclick="startPomodoro()">Start Pomodoro</button>
-    <h3 id="pomodoro-timer">00:00</h3>
-  </div>
-
-    <!-- ======== Attendance Tracker Section ======== -->
-<section class="card" id="attendanceTracker">
-  <h2>Attendance Tracker</h2>
-  <!-- ======== Ward Calendar Attendance ======== -->
-<section class="card" id="wardCalendarTracker">
-  <h2>Ward Attendance Calendar</h2>
-  <p>Select status for each ward day. Sundays are auto-skipped.</p>
-  <div id="calendarControls">
-    <button onclick="prevMonth()">Previous</button>
-    <span id="currentMonthYear"></span>
-    <button onclick="nextMonth()">Next</button>
-  </div>
-  <div id="calendarGrid"></div>
-  <div id="wardSummary"></div>
-</section>
-  <p>Mark your daily attendance for each session below.</p>
-
-  <div>
+  <div class="section">
     <label for="classSession">Class (8–9 AM):</label>
     <select id="classSession">
       <option value="present">Present</option>
       <option value="absent">Absent</option>
+      <option value="online">Online</option>
     </select>
   </div>
 
-  <div>
+  <div class="section">
     <label for="wardSession">Ward (9–12 PM):</label>
     <select id="wardSession">
       <option value="present">Present</option>
       <option value="absent">Absent</option>
+      <option value="posted">Posted (Clinic/Lab)</option>
     </select>
   </div>
 
-  <div>
+  <div class="section">
     <label for="eveningStudy">Evening Study (5–7 PM):</label>
     <select id="eveningStudy">
-      <option value="done">Done</option>
-      <option value="not_done">Not Done</option>
+      <option value="self_study">Self Study</option>
+      <option value="group_study">Group Study</option>
+      <option value="netflix">Netflix Break</option>
     </select>
   </div>
 
-  <button onclick="saveAttendance()">Save Attendance</button>
-  <div id="attendanceSummary"></div>
-</section>
-    <label>Theory Attendance (%): <input type="number" id="theory-att" /></label><br/>
-    <label>Practical Attendance (%): <input type="number" id="practical-att" /></label><br/>
-    <label>Ward Duty (%): <input type="number" id="ward-att" /></label><br/>
-    <button onclick="checkAttendance()">Check Status</button>
-    <p id="attendance-msg"></p>
+  <div class="section">
+    <button onclick="saveAttendance()">Save Attendance</button>
+    <button class="btn-mode" onclick="toggleStudyMode()" id="studyModeToggle">Study Mode</button>
   </div>
 
-  <div id="popup-quote"></div>
+  <div class="summary" id="attendanceSummary">
+    <!-- Attendance summary will appear here -->
+  </div>
+
+  <div class="popup-quote" id="popupQuote"></div>
 
   <script>
-    // ================== Humorous Quotes ===================
-    const userName = prompt("Enter your name:");
-    const humorousQuotes = [
-      `Welcome Dr. ${userName}! Ready to save some neurons today?`,
-      "Coffee: because med school isn't stressful enough on its own.",
-      "If procrastination were a subject, you'd be a topper!",
-      "Why study anatomy when your life's already falling apart?",
-      "Brains are overrated—unless you're in neurology.",
-      "Surviving on caffeine, chaos, and questionable MCQs.",
-      "When in doubt, blame the examiner.",
-      "Surgery? Nah, I operate on coffee and panic.",
-      "Finals are just a suggestion, not a destination.",
-      "Your sleep schedule is on life support.",
-      "Let’s diagnose your syllabus with a terminal condition: too long.",
-      "Docs don't cry. We just leak stress fluid.",
-      "A break? You mean sleep disguised as productivity?",
-      "Eat. Study. Panic. Repeat.",
-      "At this point, the cadaver understands more than me.",
-      "MCQs: The only place where all options seem wrong.",
-      "That moment when your notes look like ancient scripts.",
-      "Trust me, I'm almost a doctor (with 3 breakdowns per week)."
-    ];
+    let studyMode = false;
 
-    function showWelcomeMessage() {
-      const random = Math.floor(Math.random() * humorousQuotes.length);
-      document.getElementById("welcome-message").innerText = humorousQuotes[random];
+    function toggleStudyMode() {
+      studyMode = !studyMode;
+      document.body.style.background = studyMode
+        ? "linear-gradient(to right, #1f4037, #99f2c8)"
+        : "linear-gradient(to right, #a1c4fd, #c2e9fb)";
+      document.getElementById("studyModeToggle").innerText = studyMode ? "Exit Study Mode" : "Study Mode";
+      showPopupQuote();
+    }
+
+    function saveAttendance() {
+      const classSession = document.getElementById("classSession").value;
+      const wardSession = document.getElementById("wardSession").value;
+      const eveningStudy = document.getElementById("eveningStudy").value;
+
+      const data = {
+        class: classSession,
+        ward: wardSession,
+        study: eveningStudy
+      };
+
+      localStorage.setItem("attendanceData", JSON.stringify(data));
+
+      document.getElementById("attendanceSummary").innerHTML = `
+        <strong>Class (8–9 AM):</strong> ${data.class.toUpperCase()}<br>
+        <strong>Ward (9–12 PM):</strong> ${data.ward.toUpperCase()}<br>
+        <strong>Evening Study (5–7 PM):</strong> ${data.study.replace("_", " ").toUpperCase()}
+      `;
+
+      showPopupQuote();
     }
 
     function showPopupQuote() {
-      const random = Math.floor(Math.random() * humorousQuotes.length);
-      const popup = document.getElementById("popup-quote");
-      popup.innerText = humorousQuotes[random];
+      const quotes = [
+        "Keep going, future doc!",
+        "One page at a time, one step closer to the white coat.",
+        "You're not just studying, you're saving lives—future tense!",
+        "You vs. yesterday — you're winning.",
+        "Take a deep breath. You’ve got this.",
+        "Even Netflix would say, 'Go study!'"
+      ];
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      const popup = document.getElementById("popupQuote");
+      popup.innerText = quote;
       popup.style.display = "block";
-      setTimeout(() => popup.style.display = "none", 8000);
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 4000);
     }
 
-    window.onload = showWelcomeMessage;
-
-    // ============== Pomodoro ==============
-    let pomodoroTimer;
-    function startPomodoro() {
-      const minutes = parseInt(document.getElementById("work-duration").value);
-      let secondsLeft = minutes * 60;
-      const display = document.getElementById("pomodoro-timer");
-
-      clearInterval(pomodoroTimer);
-      pomodoroTimer = setInterval(() => {
-        const min = Math.floor(secondsLeft / 60);
-        const sec = secondsLeft % 60;
-        display.innerText = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-        if (--secondsLeft < 0) {
-          clearInterval(pomodoroTimer);
-          alert("Pomodoro Completed!");
-          showPopupQuote();
-          navigator.vibrate(1000);
-        }
-      }, 1000);
+    function showWelcomeMessage() {
+      const welcomeQuotes = [
+        "Welcome back, Doctor in the making!",
+        "Hi future lifesaver! Ready to slay some books?",
+        "Let’s make today count, one topic at a time.",
+        "More coffee. Less panic. You got this.",
+        "It’s a good day to master medicine!"
+      ];
+      const quote = welcomeQuotes[Math.floor(Math.random() * welcomeQuotes.length)];
+      alert(quote);
     }
 
-    // ============== Attendance Tracker ==============
-    function checkAttendance() {
-      const theory = parseFloat(document.getElementById("theory-att").value);
-      const practical = parseFloat(document.getElementById("practical-att").value);
-      const ward = parseFloat(document.getElementById("ward-att").value);
-
-      let msg = '';
-      if (theory < 75) msg += "Your theory attendance is low!\n";
-      if (practical < 80) msg += "Practical attendance needs improvement!\n";
-      if (ward < 80) msg += "Ward duty attendance is below standard!\n";
-
-      if (!msg) msg = "All attendance levels are good!";
-      document.getElementById("attendance-msg").innerText = msg;
-    }
+    window.onload = function () {
+      showWelcomeMessage();
+      const saved = JSON.parse(localStorage.getItem("attendanceData"));
+      if (saved) {
+        document.getElementById("classSession").value = saved.class;
+        document.getElementById("wardSession").value = saved.ward;
+        document.getElementById("eveningStudy").value = saved.study;
+        document.getElementById("attendanceSummary").innerHTML = `
+          <strong>Class (8–9 AM):</strong> ${saved.class.toUpperCase()}<br>
+          <strong>Ward (9–12 PM):</strong> ${saved.ward.toUpperCase()}<br>
+          <strong>Evening Study (5–7 PM):</strong> ${saved.study.replace("_", " ").toUpperCase()}
+        `;
+      }
+    };
   </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js').then(() => {
-      console.log("Service Worker Registered");
-    });
-  }
-</script>
-  <script src="script.js"></script>
-<!-- Motivational Quote Popup -->
-<div id="quotePopup"></div>
-
-<!-- Study Mode Toggle -->
-<button id="studyModeToggle" onclick="toggleStudyMode()">Study Mode</button>
-<!-- Footer -->
-<footer style="margin-top: 40px; padding: 20px; background: #e6f7ff; color: #333; text-align: center;">
-  <p>&copy; 2025 Docere App | Built for the Healers of Tomorrow</p>
-</footer>
 </body>
 </html>
