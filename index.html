@@ -203,5 +203,46 @@
     <p id="quoteText">You are doing great. Keep going!</p>
   </div>
 </div>
+  <script>
+  const quotes = [
+    "Studying: because Google doesn't have all the answers (yet).",
+    "Focus like a laser, not like a flashlight, Aftab!",
+    "Study mode activated... coffee deployed.",
+    "You're not procrastinating, you're just 'prioritizing humor.'",
+    "Who needs sleep when you have exams?",
+    "Study tip: replace 'ugh' with 'Aftab can do it!'",
+    "Study like you're gonna operate on your crush one day.",
+    "Every time you study, a neuron gets its wings.",
+    "Dear brain, please save today's session. Thanks.",
+    "Exams are like heartbreaks... painful but educational.",
+    "Don't stop until you're proud, or at least until you run out of snacks.",
+    "Aftab's law: If you can't convince them, confuse them with medical terms.",
+    "Studying anatomy: Because who doesn’t love bones and blood?",
+    "Study mode: Activated. Distraction mode: Terminated.",
+    "Treat your books like patients—give them full attention.",
+    "Study like it's a surgery—no room for mistakes!",
+    "One more topic... okay fine, ten more.",
+    "Every page turned is one step closer to a stethoscope.",
+    "Even your shadow studies in MBBS, Aftab!",
+    "When in doubt, draw a diagram!"
+  ];
+
+  document.getElementById("studyModeBtn").addEventListener("click", function () {
+    document.body.classList.toggle("study-mode");
+    showQuote();
+  });
+
+  function showQuote() {
+    const quotePopup = document.getElementById("quotePopup");
+    const quoteText = document.getElementById("quoteText");
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteText.innerText = randomQuote;
+    quotePopup.classList.add("visible");
+  }
+
+  function closeQuote() {
+    document.getElementById("quotePopup").classList.remove("visible");
+  }
+  </script>
 </body>
 </html>
