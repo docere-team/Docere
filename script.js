@@ -170,3 +170,107 @@ function assignWard(dept, startDate, endDate) {
         start.setDate(start.getDate() + 1);
     }
 }
+// Utility functions for local storage
+function saveToLocal(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function loadFromLocal(key) {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+}
+
+// Global data
+let wardAssignments = loadFromLocal('wardAssignments') || [];
+let attendanceMarked = loadFromLocal('wardAttendance') || [];
+
+// Add new ward duty
+function addWardDuty() {
+  const dept = document.getElementById('ward-dept').value;
+  const start = document.getElementById('start-date').value;
+  const end = document.getElementById('end-date').value;
+
+  if (!dept || !start || !end) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const newDuty = { dept, start, end };
+  wardAssignments.push(newDuty);
+  saveToLocal('wardAssignments', wardAssignments);
+  renderWardCalendar();
+}
+
+// Render assigned ward calendar
+function renderWardCalendar() {
+  const container = document.getElementById('ward-calendar');
+  container.innerHTML = '';
+  wardAssignments.forEach((duty, index) => {
+    container.innerHTML += `
+      <div class="duty-card">
+        ${index + 1}. ${duty.dept} | ${duty.start} to ${duty.end}
+      </div>
+    `;
+  });
+}
+
+// Mark attendance
+function markDate() {
+  const date = document.getElementById('mark-date').value;
+  if (!date) {
+    alert("Please select a date.");
+    return;
+  }
+
+  if (!attendanceMarked.includes(date)) {
+    attendanceMarked.push(date);
+    saveToLocal('wardAttendance', attendanceMarked);
+    renderAttendance();
+  }
+}
+
+// Render attendance
+function renderAttendance() {
+  const list = document.getElementById('attendance-list');
+  list.innerHTML = '';
+  attendanceMarked.forEach((date, i) => {
+    list.innerHTML += `<p>${i + 1}. ${date}</p>`;
+  });
+
+  const total = wardAssignments.reduce((sum, duty) => {
+    const start = new Date(duty.start);
+    const end = new Date(duty.end);
+    const days = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    return sum + days;
+  }, 0);
+
+  const percentage = total ? Math.round((attendanceMarked.length / total) * 100) : 0;
+  const bar = document.getElementById('progress-bar-inner');
+  bar.style.width = percentage + '%';
+  bar.innerText = percentage + '%';
+}
+
+// Optional: Enter study mode with a quote
+function enterStudyMode() {
+  const quotes = [
+    "Push yourself, because no one else is going to do it for you.",
+    "You don’t have to be great to start, but you have to start to be great.",
+    "Discipline is choosing between what you want now and what you want most.",
+    "Study like your future patients are depending on you — because they are."
+  ];
+
+  const popup = document.getElementById('studyPopup');
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('quoteText').innerText = quote;
+  popup.style.display = 'block';
+
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 4000);
+}
+
+// Initialize UI on load
+window.onload = () => {
+  renderWardCalendar();
+  renderAttendance();
+};
