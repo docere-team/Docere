@@ -3,53 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Docere – Track. Learn. Heal.</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script defer src="script.js"></script>
+  <title>Docere</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* sky color */
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #popup-quote {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
-  <div id="quote-popup" class="quote-popup hidden">
-  <span id="quote-text">Loading wisdom...</span>
-  </div>
 <body>
 
-  <!-- Sticky Navigation -->
-  <header>
-    <nav>
-      <h1>Docere</h1>
-      <ul>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#study">Study Tracker</a></li>
-        <li><a href="#routine">Routine</a></li>
-        <li><a href="#reading">Reading</a></li>
-        <li><a href="#tools">Tools</a></li>
-        <li><a href="#login">Login</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="card" id="welcome-card">
+    <h1 id="welcome-message"></h1>
+  </div>
 
-  <!-- Hero Section -->
-  <section id="hero">
-    <h2>Welcome Aftab!</h2>
-    <h2 id="welcome-message">Welcome, future legend!</h2>
-    <p class="motivation-line">“Loading your daily motivation...”</p>
-    </section>
- <section id="subject-tracker" class="tracker-section">
-  <h2 class="section-title">Subject Tracker</h2>
-  <div class="subject-container" id="subject-container"></div>
-  </section>
+  <div class="card" id="pomodoro-card">
+    <h2>Pomodoro Timer</h2>
+    <label>Work Duration (min): <input type="number" id="work-duration" value="25" /></label>
+    <br/><br/>
+    <button onclick="startPomodoro()">Start Pomodoro</button>
+    <h3 id="pomodoro-timer">00:00</h3>
+  </div>
 
-  <!-- Placeholder Sections -->
-  <section id="dashboard" class="section">Dashboard Section</section>
-  <section id="study" class="section">Study Tracker Section</section>
-  <section id="routine" class="section">Routine Tracker Section</section>
-  <section id="reading" class="section">Personal Reading Section</section>
-  <section id="tools" class="section">Pomodoro | Mood | Flashcards</section>
-  <section id="login" class="section">Login/Register Section</section>
+  <div class="card" id="attendance-tracker">
+    <h2>Attendance Tracker</h2>
+    <label>Theory Attendance (%): <input type="number" id="theory-att" /></label><br/>
+    <label>Practical Attendance (%): <input type="number" id="practical-att" /></label><br/>
+    <label>Ward Duty (%): <input type="number" id="ward-att" /></label><br/>
+    <button onclick="checkAttendance()">Check Status</button>
+    <p id="attendance-msg"></p>
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Docere. Built for the healers of tomorrow.</p>
-  </footer>
+  <div id="popup-quote"></div>
+
+  <script>
+    // ================== Humorous Quotes ===================
+    const userName = prompt("Enter your name:");
+    const humorousQuotes = [
+      `Welcome Dr. ${userName}! Ready to save some neurons today?`,
+      "Coffee: because med school isn't stressful enough on its own.",
+      "If procrastination were a subject, you'd be a topper!",
+      "Why study anatomy when your life's already falling apart?",
+      "Brains are overrated—unless you're in neurology.",
+      "Surviving on caffeine, chaos, and questionable MCQs.",
+      "When in doubt, blame the examiner.",
+      "Surgery? Nah, I operate on coffee and panic.",
+      "Finals are just a suggestion, not a destination.",
+      "Your sleep schedule is on life support.",
+      "Let’s diagnose your syllabus with a terminal condition: too long.",
+      "Docs don't cry. We just leak stress fluid.",
+      "A break? You mean sleep disguised as productivity?",
+      "Eat. Study. Panic. Repeat.",
+      "At this point, the cadaver understands more than me.",
+      "MCQs: The only place where all options seem wrong.",
+      "That moment when your notes look like ancient scripts.",
+      "Trust me, I'm almost a doctor (with 3 breakdowns per week)."
+    ];
+
+    function showWelcomeMessage() {
+      const random = Math.floor(Math.random() * humorousQuotes.length);
+      document.getElementById("welcome-message").innerText = humorousQuotes[random];
+    }
+
+    function showPopupQuote() {
+      const random = Math.floor(Math.random() * humorousQuotes.length);
+      const popup = document.getElementById("popup-quote");
+      popup.innerText = humorousQuotes[random];
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 8000);
+    }
+
+    window.onload = showWelcomeMessage;
+
+    // ============== Pomodoro ==============
+    let pomodoroTimer;
+    function startPomodoro() {
+      const minutes = parseInt(document.getElementById("work-duration").value);
+      let secondsLeft = minutes * 60;
+      const display = document.getElementById("pomodoro-timer");
+
+      clearInterval(pomodoroTimer);
+      pomodoroTimer = setInterval(() => {
+        const min = Math.floor(secondsLeft / 60);
+        const sec = secondsLeft % 60;
+        display.innerText = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        if (--secondsLeft < 0) {
+          clearInterval(pomodoroTimer);
+          alert("Pomodoro Completed!");
+          showPopupQuote();
+          navigator.vibrate(1000);
+        }
+      }, 1000);
+    }
+
+    // ============== Attendance Tracker ==============
+    function checkAttendance() {
+      const theory = parseFloat(document.getElementById("theory-att").value);
+      const practical = parseFloat(document.getElementById("practical-att").value);
+      const ward = parseFloat(document.getElementById("ward-att").value);
+
+      let msg = '';
+      if (theory < 75) msg += "Your theory attendance is low!\n";
+      if (practical < 80) msg += "Practical attendance needs improvement!\n";
+      if (ward < 80) msg += "Ward duty attendance is below standard!\n";
+
+      if (!msg) msg = "All attendance levels are good!";
+      document.getElementById("attendance-msg").innerText = msg;
+    }
+  </script>
 
 </body>
 </html>
