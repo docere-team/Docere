@@ -238,3 +238,18 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+.ward-scheduler {
+  padding: 10px;
+  margin: 20px 0;
+  background: #f5faff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+.ward-scheduler input {
+  margin: 5px;
+  padding: 5px;
+}
+#calendarDays {
+  display: flex;
+  flex-wrap: wrap;
+}
