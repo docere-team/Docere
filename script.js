@@ -67,3 +67,26 @@ function showPopupQuote() {
 window.onload = () => {
   showPopupQuote();
 };
+// Funny personalized greetings
+const funnyGreetings = [
+  name => `Welcome back, ${name}! Your stethoscope missed you.`,
+  name => `Dr. ${name}, ready to save the world or nap first?`,
+  name => `Paging Dr. ${name}... your books are judging you.`,
+  name => `Hey ${name}, even caffeine believes in you today!`,
+  name => `Dr. ${name}, your attendance called — it’s nervous.`,
+  name => `Another day, another chapter, ${name}!`,
+  name => `${name}, your brain called. It wants a snack and a nap.`,
+  name => `Hello ${name}, you beautiful overachiever.`,
+  name => `Warning: ${name} is too cool for anatomy today.`,
+  name => `Doc ${name}, don’t forget — you signed up for this (lol).`
+];
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    const name = user.displayName || "Doctor";
+    const randomGreeting = funnyGreetings[Math.floor(Math.random() * funnyGreetings.length)];
+    document.getElementById("welcome-message").textContent = randomGreeting(name);
+  } else {
+    document.getElementById("welcome-message").textContent = "Welcome, future legend!";
+  }
+});
