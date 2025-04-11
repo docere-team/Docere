@@ -82,3 +82,25 @@ function addWardDuty() {
   // Simple toast or alert
   alert(`Assigned ${dept} ward from ${from} to ${to}`);
 }
+function calculateWardAttendance() {
+  const checks = document.querySelectorAll(".ward-check");
+  const total = checks.length;
+  const present = Array.from(checks).filter(c => c.checked).length;
+  const percent = total > 0 ? (present / total) * 100 : 0;
+
+  if (percent < 80) {
+    showFunnyAlert(percent);
+  }
+}
+function showFunnyAlert(percent) {
+  const quotes = [
+    "Oops! Your attendance is as missing as your motivation on Mondays!",
+    "Ward? More like 'Wandered away', huh?",
+    "Your attendance is lower than my will to get up for 8 AM classes!",
+    "You’ve officially ghosted more than a toxic ex!",
+    "Below 80%! Time to fake a ward posting selfie?"
+  ];
+
+  const random = quotes[Math.floor(Math.random() * quotes.length)];
+  alert(`${random}\n(Current: ${percent.toFixed(1)}%)`);
+}
