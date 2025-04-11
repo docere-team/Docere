@@ -111,3 +111,6 @@ function addWardDuty() {
   // Simple toast or alert
   alert(`Assigned ${dept} ward from ${from} to ${to}`);
 }
+#attendance-list div {
+  margin: 5px 0;
+}
