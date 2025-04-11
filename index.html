@@ -100,6 +100,31 @@
   </section>
 
   <!-- ======== Ward Attendance Calendar ======== -->
+  <div class="ward-scheduler">
+  <h3>Ward Duty Scheduler</h3>
+  
+  <label for="department">Department:</label>
+  <select id="department">
+    <option value="Medicine">Medicine</option>
+    <option value="Surgery">Surgery</option>
+    <option value="Pediatrics">Pediatrics</option>
+    <option value="Obstetrics">Obstetrics</option>
+    <option value="Orthopedics">Orthopedics</option>
+    <option value="ENT">ENT</option>
+    <option value="Ophthalmology">Ophthalmology</option>
+    <option value="Psychiatry">Psychiatry</option>
+  </select>
+
+  <label for="wardStart">Start Date:</label>
+  <input type="date" id="wardStart" />
+
+  <label for="wardEnd">End Date:</label>
+  <input type="date" id="wardEnd" />
+
+  <button onclick="addWardDuty()">Assign Ward Duty</button>
+
+  <ul id="wardList"></ul>
+  </div>
   <section class="card" id="wardCalendarTracker">
     <h2>Ward Attendance Calendar (9–12 PM)</h2>
     <p>Select status for each ward day. Sundays are auto-skipped.</p>
