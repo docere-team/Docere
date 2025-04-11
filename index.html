@@ -1,105 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Docere - Track. Learn. Heal.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docere - Study Tracker</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
-<div id="authBox">
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="signUp()">Sign Up</button>
-  <button onclick="logIn()">Login</button>
-  <button onclick="logOut()">Logout</button>
-</div>
-  
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="logo">Docere</div>
-    <ul class="nav-links">
-      <li><a href="#dashboard">Dashboard</a></li>
-      <li><a href="#subjects">Subjects</a></li>
-      <li><a href="#reading">Reading</a></li>
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#routine">Routine</a></li>
-      <li><a href="#medico">Medico Kit</a></li>
-      <li><a href="#circle">Circle</a></li>
-      <li><a href="#settings">Settings</a></li>
-    </ul>
-  </nav>
+  <header>
+    <h1>Docere</h1>
+    <nav>
+      <button onclick="navigateTo('login-section')">Login</button>
+      <button onclick="navigateTo('dashboard')">Dashboard</button>
+    </nav>
+  </header>
 
-  <!-- Dashboard -->
-  <section id="dashboard" class="section">
-    <h1>Welcome to Docere</h1>
-    <p class="tagline">Track. Learn. Heal. Built for the Healers of Tomorrow.</p>
+  <!-- LOGIN SECTION -->
+  <section id="login-section">
+    <h2>Login / Register</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
   </section>
 
-  <!-- Subjects -->
-  <section id="subjects" class="section">
-    <h2>MBBS Subject Tracker</h2>
-    <div class="subject-container">
-  <div class="subject-header">
-    <label for="subjectSelect">Select Subject:</label>
-    <select id="subjectSelect">
-      <option disabled selected>Select one</option>
-    </select>
-    <button onclick="addCustomSubject()">+ Add Custom Subject</button>
-  </div>
+  <!-- DASHBOARD SECTION -->
+  <section id="dashboard" class="hidden">
+    <h2>Welcome, <span id="user-email"></span></h2>
+    <button onclick="logout()">Logout</button>
 
-  <div id="topicArea">
-    <h3 id="subjectTitle">No subject selected</h3>
-    <div>
-      <input type="text" id="topicInput" placeholder="Enter topic name" />
-      <button onclick="addTopic()">Add Topic</button>
+    <!-- Subject Tracker -->
+    <div id="subject-section">
+      <h3>Subjects</h3>
+      <input type="text" id="subject-input" placeholder="Enter Subject Name" />
+      <button onclick="addSubject()">Add Subject</button>
+      <ul id="subject-list"></ul>
     </div>
-    <ul id="topicList"></ul>
-  </div>
-</div>
+
+    <!-- Topic Tracker -->
+    <div id="topic-section" class="hidden">
+      <h3 id="current-subject"></h3>
+      <input type="text" id="topic-input" placeholder="Enter Topic Name" />
+      <button onclick="addTopic()">Add Topic</button>
+      <ul id="topic-list"></ul>
+    </div>
   </section>
 
-  <!-- Personal Reading -->
-  <section id="reading" class="section">
-    <h2>Personal Reading Space</h2>
-    <!-- Content will be added here -->
-  </section>
+  <!-- Firebase Config -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
+      authDomain: "docere-16a25.firebaseapp.com",
+      projectId: "docere-16a25",
+      storageBucket: "docere-16a25.appspot.com",
+      messagingSenderId: "25249080743",
+      appId: "1:25249080743:web:0a2fe30a5db74babcdf8c7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+  </script>
 
-  <!-- Study Tools -->
-  <section id="tools" class="section">
-    <h2>Study Tools</h2>
-    <!-- Content will be added here -->
-  </section>
-
-  <!-- Routine Tracker -->
-  <section id="routine" class="section">
-    <h2>Health & Routine</h2>
-    <!-- Content will be added here -->
-  </section>
-
-  <!-- Medico Toolkit -->
-  <section id="medico" class="section">
-    <h2>Medico Toolkit</h2>
-    <!-- Content will be added here -->
-  </section>
-
-  <!-- Docere Circle -->
-  <section id="circle" class="section">
-    <h2>Docere Circle</h2>
-    <!-- Content will be added here -->
-  </section>
-
-  <!-- Settings -->
-  <section id="settings" class="section">
-    <h2>Settings & Backup</h2>
-    <!-- Content will be added here -->
-  </section>
-
+  <!-- Link JS -->
   <script src="script.js"></script>
 </body>
 </html>
