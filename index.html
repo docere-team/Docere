@@ -126,6 +126,26 @@
 
   <ul id="wardList"></ul>
   </div>
+  <!-- WARD DUTY ENTRY SECTION -->
+<div class="ward-scheduler">
+  <h3>Assign Ward Duty</h3>
+  <label>Department:
+    <input type="text" id="department" placeholder="e.g. Medicine">
+  </label>
+  <label>Start Date:
+    <input type="date" id="wardStart">
+  </label>
+  <label>End Date:
+    <input type="date" id="wardEnd">
+  </label>
+  <button onclick="addWardDuty()">Add Duty</button>
+</div>
+
+<!-- CALENDAR SECTION -->
+<div id="wardCalendar">
+  <h3>Ward Attendance Calendar</h3>
+  <div id="calendarDays"></div>
+</div>
   <section class="card" id="wardCalendarTracker">
     <h2>Ward Attendance Calendar (9–12 PM)</h2>
     <p>Select status for each ward day. Sundays are auto-skipped.</p>
