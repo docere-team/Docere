@@ -147,3 +147,49 @@ function markDate() {
 window.onload = () => {
   loadAttendanceState();
 };
+let assignedDates = [];
+
+function assignWard(dept, startDate, endDate) {
+    let start = new Date(startDate);
+    let end = new Date(endDate);
+    assignedDates = [];
+
+    const calendarDiv = document.getElementById("ward-calendar");
+    calendarDiv.innerHTML = ""; // clear previous
+
+    while (start <= end) {
+        let dateStr = start.toDateString();
+        assignedDates.push(dateStr);
+
+        const label = document.createElement("label");
+        label.innerHTML = `
+            <input type="checkbox" class="ward-check" data-date="${dateStr}">
+            ${dateStr} (${dept})
+        `;
+        calendarDiv.appendChild(label);
+        calendarDiv.appendChild(document.createElement("br"));
+
+        start.setDate(start.getDate() + 1);
+    }
+}
+
+// This is what you call after filling department and date range
+// Example: assignWard('Medicine', '2025-04-10', '2025-04-15');
+
+function markDate() {
+    const inputDate = new Date(document.getElementById("mark-date").value);
+    const dateStr = inputDate.toDateString();
+
+    const checkboxes = document.querySelectorAll('.ward-check');
+    let found = false;
+    checkboxes.forEach((box) => {
+        if (box.getAttribute('data-date') === dateStr) {
+            box.checked = true;
+            found = true;
+        }
+    });
+
+    if (!found) {
+        alert("Date not in assigned ward range!");
+    }
+}
