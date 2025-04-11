@@ -254,3 +254,15 @@ window.onload = function () {
 
   return quotes[Math.floor(Math.random() * quotes.length)];
 }
+function enterStudyMode() {
+  document.body.classList.add("study-mode");
+
+  // Show popup
+  const popup = document.getElementById("studyPopup");
+  popup.style.display = "block";
+
+  // Hide popup after 3 seconds
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 3000);
+}
