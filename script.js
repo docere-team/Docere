@@ -97,3 +97,20 @@ function showFunnyAlert(percent) {
   const random = quotes[Math.floor(Math.random() * quotes.length)];
   alert(`${random}\n(Current: ${percent.toFixed(1)}%)`);
 }
+function saveAttendanceState() {
+  const checks = document.querySelectorAll(".ward-check");
+  const data = Array.from(checks).map(check => ({
+    date: check.dataset.date,
+    checked: check.checked
+  }));
+  localStorage.setItem("wardAttendance", JSON.stringify(data));
+}
+
+function loadAttendanceState() {
+  const saved = JSON.parse(localStorage.getItem("wardAttendance") || "[]");
+  saved.forEach(item => {
+    const checkbox = document.querySelector(`.ward-check[data-date="${item.date}"]`);
+    if (checkbox) checkbox.checked = item.checked;
+  });
+  calculateWardAttendance();
+}
