@@ -1,0 +1,20 @@
+{
+  "name": "Docere",
+  "short_name": "Docere",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#a1c4fd",
+  "theme_color": "#c2e9fb",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
