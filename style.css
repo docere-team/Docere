@@ -82,3 +82,32 @@ button {
   border-top: 2px solid #2196f3;
   font-family: 'Segoe UI', sans-serif;
 }
+function addWardDuty() {
+  const dept = document.getElementById("ward-dept").value;
+  const from = document.getElementById("start-date").value;
+  const to = document.getElementById("end-date").value;
+
+  if (!dept || !from || !to) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  const calendar = document.getElementById("ward-calendar");
+
+  const dutyBlock = document.createElement("div");
+  dutyBlock.className = "duty-entry";
+  dutyBlock.innerHTML = `
+    <strong>${dept}</strong><br>
+    From <span>${from}</span> to <span>${to}</span>
+    <hr>
+  `;
+
+  calendar.appendChild(dutyBlock);
+
+  // Optionally: clear fields
+  document.getElementById("start-date").value = '';
+  document.getElementById("end-date").value = '';
+
+  // Simple toast or alert
+  alert(`Assigned ${dept} ward from ${from} to ${to}`);
+}
