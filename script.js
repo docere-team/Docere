@@ -20,9 +20,49 @@ window.onload = function () {
   subjectSelect.addEventListener("change", (e) => {
     currentSubject = e.target.value;
     if (!subjectData[currentSubject]) subjectData[currentSubject] = [];
-    updateSubjectUI();
+    function updateSubjectUI() {
+  document.getElementById("subjectTitle").textContent = currentSubject;
+  const list = document.getElementById("topicList");
+  list.innerHTML = "";
+
+  subjectData[currentSubject].forEach((topic, i) => {
+    const li = document.createElement("li");
+    li.style.borderLeft = `8px solid ${topic.priority || 'gray'}`;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = topic.done;
+    checkbox.onchange = () => toggleTopic(i);
+
+    const text = document.createElement("span");
+    text.textContent = topic.name;
+    if (topic.done) text.style.textDecoration = "line-through";
+
+    // Priority Button
+    const priorityBtn = document.createElement("button");
+    priorityBtn.textContent = "Priority";
+    priorityBtn.onclick = () => setPriority(i);
+
+    // Upload File
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".pdf,image/*,audio/*";
+    fileInput.onchange = (e) => uploadFile(e, i);
+
+    // View File
+    const viewBtn = document.createElement("button");
+    viewBtn.textContent = "View Note";
+    viewBtn.onclick = () => viewFile(i);
+
+    li.appendChild(checkbox);
+    li.appendChild(text);
+    li.appendChild(priorityBtn);
+    li.appendChild(fileInput);
+    li.appendChild(viewBtn);
+
+    list.appendChild(li);
   });
-};
+}
 
 function addCustomSubject() {
   const newSub = prompt("Enter custom subject name:");
