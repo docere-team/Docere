@@ -114,3 +114,18 @@ function loadAttendanceState() {
   });
   calculateWardAttendance();
 }
+function calculateWardAttendance() {
+  const checks = document.querySelectorAll(".ward-check");
+  const total = checks.length;
+  const present = Array.from(checks).filter(c => c.checked).length;
+  const percent = total > 0 ? (present / total) * 100 : 0;
+
+  // Progress bar update
+  const bar = document.getElementById("progress-bar-inner");
+  bar.style.width = `${percent}%`;
+  bar.style.backgroundColor = percent >= 80 ? "#4caf50" : "#f44336";
+
+  if (percent < 80) showFunnyAlert(percent);
+
+  saveAttendanceState();
+}
