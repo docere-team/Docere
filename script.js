@@ -1,105 +1,20 @@
-// Smooth scroll navigation
-document.querySelectorAll('nav button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.getAttribute('data-target');
-    document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
-    document.getElementById(target).classList.remove('hidden');
-  });
-});
+// script.js
 
-// Simple login/register system (simulation only)
-let currentUser = null;
+// Welcome & motivational lines logic const motivationalLines = [ "Hey Aftab, you're not just learning—you're evolving!", "One more topic down, Aftab, one step closer to that white coat!", "Aftab, if you can survive pharmac, you can survive anything!", "Keep going, Doctor in the making!", "Hey Aftab, remember: even neurons need a break sometimes!", "You're doing great, Aftab. Like really, med-student legend level!", "Study. Smile. Repeat. Aftab mode activated!", "Pomodoro never looked this good—keep rocking it, Aftab!", "What’s red and round and reminds Aftab to stay hydrated? This alert!", "Aftab, you + Docere = unstoppable focus!" ];
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const name = document.getElementById('regName').value;
-  const email = document.getElementById('regEmail').value;
-  const password = document.getElementById('regPassword').value;
+function getRandomMotivationalLine() { const index = Math.floor(Math.random() * motivationalLines.length); return motivationalLines[index]; }
 
-  // Simulate registration
-  localStorage.setItem('user', JSON.stringify({ name, email }));
-  alert('Registered successfully!');
-  currentUser = { name, email };
-  showDashboard();
-});
+function showMotivationalLine() { const box = document.getElementById("motivational-quote"); if (box) box.textContent = getRandomMotivationalLine(); }
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
+document.addEventListener("DOMContentLoaded", () => { showMotivationalLine();
 
-  const saved = JSON.parse(localStorage.getItem('user'));
+// Smooth scroll for navigation document.querySelectorAll("nav a").forEach(anchor => { anchor.addEventListener("click", function (e) { e.preventDefault(); const targetId = this.getAttribute("href").substring(1); const targetSection = document.getElementById(targetId); if (targetSection) { targetSection.scrollIntoView({ behavior: "smooth" }); } }); });
 
-  if (saved && saved.email === email) {
-    currentUser = saved;
-    showDashboard();
-  } else {
-    alert('Invalid credentials.');
-  }
-});
+// Smart Reminders (basic hydration timer example) setInterval(() => { alert("Hydration Check! Time to drink some water, Aftab."); }, 1000 * 60 * 45); // every 45 minutes
 
-function showDashboard() {
-  document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
-  document.getElementById('dashboard').classList.remove('hidden');
-  document.getElementById('welcomeUser').innerText = `Welcome, ${currentUser.name}! Keep hustling.`;
-}
+// Pomodoro Timer basic logic (could be expanded) const startPomodoro = document.getElementById("startPomodoro"); if (startPomodoro) { startPomodoro.addEventListener("click", () => { let countdown = 25 * 60; const display = document.getElementById("pomodoroTimer");
 
-// Subject Tracker
-document.getElementById('addTopic').addEventListener('click', () => {
-  const subject = document.getElementById('subjectSelect').value;
-  const topic = document.getElementById('topicInput').value;
-  if (topic) {
-    const list = document.getElementById('topicList');
-    const item = document.createElement('li');
-    item.textContent = `${subject}: ${topic}`;
-    list.appendChild(item);
-    document.getElementById('topicInput').value = '';
-  }
-});
+const timer = setInterval(() => { const mins = Math.floor(countdown / 60); const secs = countdown % 60; display.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`; countdown--; if (countdown < 0) { clearInterval(timer); alert("Pomodoro session complete, take a short break Aftab!"); } }, 1000); }); 
 
-// Book Tracker
-document.getElementById('addBook').addEventListener('click', () => {
-  const book = document.getElementById('bookInput').value;
-  if (book) {
-    const list = document.getElementById('bookList');
-    const item = document.createElement('li');
-    item.textContent = book;
-    list.appendChild(item);
-    document.getElementById('bookInput').value = '';
-  }
-});
+} });
 
-// File Upload
-document.getElementById('fileUpload').addEventListener('change', (e) => {
-  const fileList = document.getElementById('fileList');
-  for (let file of e.target.files) {
-    const li = document.createElement('li');
-    li.textContent = file.name;
-    fileList.appendChild(li);
-  }
-});
-
-// Note adding
-document.getElementById('addNote').addEventListener('click', () => {
-  const note = document.getElementById('noteInput').value;
-  if (note) {
-    const noteList = document.getElementById('noteList');
-    const item = document.createElement('li');
-    item.textContent = note;
-    noteList.appendChild(item);
-    document.getElementById('noteInput').value = '';
-  }
-});
-
-// Motivation Line
-document.getElementById('motivate').addEventListener('click', () => {
-  const lines = [
-    "You're closer than you think!",
-    "One step at a time!",
-    "Your future patients are counting on you!",
-    "Small progress is still progress!",
-    "Consistency beats perfection."
-  ];
-  const random = lines[Math.floor(Math.random() * lines.length)];
-  document.getElementById('motivationLine').textContent = random;
-});
