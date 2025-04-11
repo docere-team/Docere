@@ -1,144 +1,104 @@
-const lines = [
-  // Founder/Funny References
-  "Founder Aftab spotted studying again — someone stop this overachiever!",
-  "Legend says Aftab finished anatomy before orientation day.",
-  "This app bows to its master — Dr. Aftab in the making!",
-  "Even caffeine asks Aftab how he stays so energetic.",
-  "If motivation was a person, it would probably take tips from Aftab.",
-  "Aftab’s to-do list just called in sick.",
-  "Warning: Productivity overload detected on Founder’s account.",
-  "Every 7th quote makes Aftab 70% cooler — it's science.",
-  "He studied so much the books asked *him* questions.",
-  "App designed by Aftab. Tested on Aftab. Be like Aftab... or just pretend.",
-  
-  // Humorous
-  "Motivation loading... buffering... ah screw it, go study.",
-  "Remember, breaks are good. Just not 8 hours long.",
-  "Studying is 10% reading and 90% staring at the same line.",
-  "You're not procrastinating... you're pre-loading your brain.",
-  "Medical school: where your dreams meet sleep deprivation.",
-  "Study tip: Turn off Wi-Fi... wait, don’t. You need this app!",
-  "They said 'trust the process' — the process forgot to include coffee.",
-  "You vs. syllabus: Mortal Kombat edition.",
-  
-  // Motivational
-  "Each ticked checkbox brings you closer to Dr. Aftab.",
-  "Push today, relax tomorrow — or in residency!",
-  "The pain of studying now is better than the pain of regret.",
-  "Small wins build unstoppable momentum.",
-  "A focused Aftab is scarier than examiners.",
-  "Remember why you started. Then go make it worth it.",
-  "Don’t study hard, study smart — but Aftab does both!",
-  "You’re one step ahead of yesterday. That’s enough.",
-  "Someone out there is dreaming of your seat. Own it.",
-  "This isn't just effort — it’s the making of a healer.",
+// ========== Section 1: Welcome Message & Humorous Quotes ==========
+const userName = "Aftab"; // You can make this dynamic later with login info
+
+const quotes = [
+  `Welcome back, ${userName}! Time to outsmart your textbooks.`,
+  `Dear ${userName}, even your stethoscope needs a break. Study wisely!`,
+  `${userName}, legends don't cram – they plan.`,
+  `Warning: ${userName} is in full doctor mode!`,
+  `${userName}, even caffeine salutes your dedication.`,
+  `Hello ${userName}, your books just asked for mercy.`,
+  `Welcome back, ${userName}. Humor is your second stethoscope today.`,
+  `Hey ${userName}, why so serious? Let’s cure some syllabus!`,
+  `Good luck ${userName}, but don’t forget to breathe between flashcards.`,
+  `Doctor in the making alert! Clear the wards, ${userName} is here.`,
+  `Only ${userName} can juggle 19 subjects and still make memes.`,
+  const quotes = [
+  `Welcome back, ${userName}! Time to outsmart your textbooks.`,
+  `Dear ${userName}, even your stethoscope needs a break. Study wisely!`,
+  `${userName}, legends don't cram – they plan.`,
+  `Warning: ${userName} is in full doctor mode!`,
+  `${userName}, even caffeine salutes your dedication.`,
+  `Hello ${userName}, your books just asked for mercy.`,
+  `${userName}, your neurons are now 80% medical knowledge.`,
+  `Books are scared when ${userName} opens them.`,
+  `Welcome back, ${userName}. Humor is your second stethoscope today.`,
+  `Hey ${userName}, why so serious? Let’s cure some syllabus!`,
+  `Good luck ${userName}, but don’t forget to breathe between flashcards.`,
+  `Doctor in the making alert! Clear the wards, ${userName} is here.`,
+  `Only ${userName} can juggle 19 subjects and still make memes.`,
+  `Stay hydrated, ${userName}. Knowledge doesn't come with saline.`,
+  `Even AI needs a break from ${userName}'s genius.`,
+  `${userName}, did you just diagnose a question paper?`,
+  `If books had feelings, they’d cry when ${userName} walks in.`,
+  `“Trust me, I’m almost a doctor.” – ${userName}`,
+  `${userName} = caffeine + books + sarcasm + vibes.`,
+  `When ${userName} studies, Google takes notes.`,
+];
+  `Stay hydrated, ${userName}. Knowledge doesn't come with saline.`,
 ];
 
-// Random quote function
-function showRandomLine() {
-  const line = lines[Math.floor(Math.random() * lines.length)];
-  document.querySelector(".motivation-line").textContent = `"${line}"`;
+function showWelcomeMessage() {
+  const welcomeEl = document.getElementById("welcome-message");
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  welcomeEl.innerHTML = `<h2>${randomQuote}</h2>`;
 }
 
-window.onload = showRandomLine;
-const popupQuotes = [
-  "Founder Aftab studied so hard, his books filed for bankruptcy!",
-  "Reminder: You’re already amazing. Now go finish that lecture.",
-  "Motivation delivered. Courtesy: your friendly neighborhood Aftab.",
-  "Don’t stop now, Aftab’s watching!",
-  "Coffee: activated. Focus: 99%. Power: Unlimited.",
-  "Study break? Only if you beat Aftab’s streak!",
-  "You're closer to your goal than you think. Keep going!"
-];
+window.onload = showWelcomeMessage;
 
-function showPopupQuote() {
-  const popup = document.getElementById("quote-popup");
-  const quoteText = document.getElementById("quote-text");
-  const quote = popupQuotes[Math.floor(Math.random() * popupQuotes.length)];
-
-  quoteText.textContent = quote;
-  popup.classList.remove("hidden");
-
-  setTimeout(() => {
-    popup.classList.add("hidden");
-  }, 6000); // Auto-hide after 6 seconds
-}
-
-window.onload = () => {
-  showPopupQuote();
-};
-// Funny personalized greetings
-const funnyGreetings = [
-  name => `Welcome back, ${name}! Your stethoscope missed you.`,
-  name => `Dr. ${name}, ready to save the world or nap first?`,
-  name => `Paging Dr. ${name}... your books are judging you.`,
-  name => `Hey ${name}, even caffeine believes in you today!`,
-  name => `Dr. ${name}, your attendance called — it’s nervous.`,
-  name => `Another day, another chapter, ${name}!`,
-  name => `${name}, your brain called. It wants a snack and a nap.`,
-  name => `Hello ${name}, you beautiful overachiever.`,
-  name => `Warning: ${name} is too cool for anatomy today.`,
-  name => `Doc ${name}, don’t forget — you signed up for this (lol).`
-];
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    const name = user.displayName || "Doctor";
-    const randomGreeting = funnyGreetings[Math.floor(Math.random() * funnyGreetings.length)];
-    document.getElementById("welcome-message").textContent = randomGreeting(name);
-  } else {
-    document.getElementById("welcome-message").textContent = "Welcome, future legend!";
-  }
-});
+// ========== Section 2: Subject Tracker Setup ==========
 const subjects = [
-  "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology",
-  "Microbiology", "Forensic Medicine", "Community Medicine", "Ophthalmology",
-  "ENT", "Medicine", "Surgery", "Obstetrics", "Gynaecology", "Pediatrics",
-  "Orthopedics", "Psychiatry", "Dermatology", "Radiology"
+  "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology", "Microbiology",
+  "Forensic Medicine", "Community Medicine", "ENT", "Ophthalmology", "Medicine", "Surgery",
+  "Obstetrics & Gynecology", "Pediatrics", "Psychiatry", "Dermatology", "Orthopedics",
+  "Radiology", "Anesthesiology"
 ];
 
-const subjectContainer = document.getElementById("subject-container");
+const container = document.getElementById("subject-tracker");
 
 subjects.forEach(subject => {
   const card = document.createElement("div");
   card.className = "subject-card";
-  card.innerHTML = `
-  <h3>${subject}</h3>
 
-  <label>Upload Note Image:
-    <input type="file" accept="image/*">
-  </label><br>
-
-  <label>Upload PDF:
-    <input type="file" accept=".pdf">
-  </label><br>
-
-  <label>Important Line:
-    <input type="text" placeholder="Write key quote or line here">
-  </label><br>
-
-  <label>Color Tag:
-    <input type="color" onchange="tagColor(this)">
-  </label><br>
-
-  <label>Progress:
-    <progress value="0" max="100"></progress>
-  </label><br>
-
-  <button onclick="markDone(this)">Mark Topic Done</button>
-`;
   card.innerHTML = `
     <h3>${subject}</h3>
-    <label>Upload Note Image: <input type="file" accept="image/*"></label><br>
-    <label>Important Line: <input type="text" placeholder="Key point or quote"></label><br>
-    <label>Progress: <progress value="0" max="100"></progress></label><br>
+
+    <label>Upload Note Image:
+      <input type="file" accept="image/*">
+    </label><br>
+
+    <label>Upload PDF:
+      <input type="file" accept=".pdf">
+    </label><br>
+
+    <label>Important Line:
+      <input type="text" placeholder="Write key quote or line here">
+    </label><br>
+
+    <label>Color Tag:
+      <input type="color" onchange="tagColor(this)">
+    </label><br>
+
+    <label>Progress:
+      <progress value="0" max="100"></progress>
+    </label><br>
+
     <button onclick="markDone(this)">Mark Topic Done</button>
   `;
-  subjectContainer.appendChild(card);
+
+  container.appendChild(card);
 });
 
-function markDone(btn) {
-  const progress = btn.parentElement.querySelector('progress');
-  let val = parseInt(progress.value);
-  if (val < 100) progress.value = val + 10;
+// ========== Section 3: Supporting Functions ==========
+function markDone(button) {
+  const progressBar = button.parentElement.querySelector("progress");
+  progressBar.value = 100;
+  button.innerText = "Completed!";
+  button.disabled = true;
+}
+
+function tagColor(input) {
+  const card = input.closest(".subject-card");
+  card.style.borderColor = input.value;
+  card.style.boxShadow = `0 0 10px ${input.value}`;
 }
