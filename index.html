@@ -1,223 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Docere - Study Tracker</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-</head>
-<body>
-  <header>
-    <h1>Docere</h1>
-    <nav>
-      <button onclick="navigateTo('login-section')">Login</button>
-      <button onclick="navigateTo('dashboard')">Dashboard</button>
-    </nav>
-  </header>
-
-  <!-- LOGIN SECTION -->
-  <section id="login-section">
-    <h2>Login / Register</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="register()">Register</button>
-    <button onclick="login()">Login</button>
-  </section>
-
-  <!-- DASHBOARD SECTION -->
-  <section id="dashboard" class="hidden">
-    <h2>Welcome, <span id="user-email"></span></h2>
-    <button onclick="logout()">Logout</button>
-
-    <!-- Subject Tracker -->
-    <div id="subject-section">
-      <h3>Subjects</h3>
-      <input type="text" id="subject-input" placeholder="Enter Subject Name" />
-      <button onclick="addSubject()">Add Subject</button>
-      <ul id="subject-list"></ul>
-    </div>
-
-    <!-- Topic Tracker -->
-    <div id="topic-section" class="hidden">
-      <h3 id="current-subject"></h3>
-      <input type="text" id="topic-input" placeholder="Enter Topic Name" />
-      <button onclick="addTopic()">Add Topic</button>
-      <ul id="topic-list"></ul>
-    </div>
-  </section>
-
-  <!-- Firebase Config -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
-      authDomain: "docere-16a25.firebaseapp.com",
-      projectId: "docere-16a25",
-      storageBucket: "docere-16a25.appspot.com",
-      messagingSenderId: "25249080743",
-      appId: "1:25249080743:web:0a2fe30a5db74babcdf8c7"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-  </script>
-
-  <!-- Link JS -->
-  <script src="script.js"></script>
-</body>
-</html>
-<!-- Upload Section -->
-    <div id="upload-section">
-      <h3>Upload Notes / Images</h3>
-      <input type="file" id="file-upload" />
-      <button onclick="uploadFile()">Upload</button>
-      <ul id="file-list"></ul>
-    </div>
-
-    <!-- Voice Note Upload -->
-    <div id="voice-section">
-      <h3>Upload Voice Note</h3>
-      <input type="file" id="voice-upload" accept="audio/*" />
-      <button onclick="uploadVoice()">Upload Voice</button>
-      <ul id="voice-list"></ul>
-    </div>
-
-    <!-- Study Progress -->
-    <div id="progress-section">
-      <h3>Study Progress</h3>
-      <progress id="study-progress" value="0" max="100"></progress>
-      <p id="progress-text">0% Completed</p>
-    </div>
-
-    <!-- Personal Reading Shelf -->
-    <div id="reading-section">
-      <h3>Reading Shelf</h3>
-      <input type="text" id="book-title" placeholder="Book Name" />
-      <textarea id="book-note" placeholder="Favorite Quote or Reflection"></textarea>
-      <button onclick="addBook()">Add Book</button>
-      <ul id="book-list"></ul>
-    </div>
-
-    <!-- Daily Motivation -->
-    <div id="motivation-section">
-      <h3>Daily Motivation</h3>
-      <p id="motivational-quote">"Push yourself, because no one else is going to do it for you."</p>
-      <button onclick="newQuote()">New Quote</button>
-    </div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Docere - Track. Learn. Heal.</title>
-  <link rel="stylesheet" href="style.css"/>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-</head>
-<body>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head><body class="sky-theme">
   <header>
-    <h1>Docere</h1>
     <nav>
-      <button onclick="navigateTo('login-section')">Login</button>
-      <button onclick="navigateTo('dashboard')">Dashboard</button>
+      <ul>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#mbbs-subjects">Subjects</a></li>
+        <li><a href="#reading">Personal Reading</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#circle">Docere Circle</a></li>
+        <li><a href="#quotes">Quotes</a></li>
+        <li><a href="#reminders">Reminders</a></li>
+      </ul>
     </nav>
-  </header>
+  </header>  <main>
+    <section id="dashboard">
+      <h1>Welcome, <span id="username">Aftab</span>!</h1>
+      <p class="tagline">Doctor in the making. Let’s track, learn, and heal.</p>
+      <div>
+        <label for="quote-style">Choose your vibe:</label>
+        <select id="quote-style">
+          <option value="motivational">Motivational</option>
+          <option value="funny">Funny</option>
+          <option value="calm">Calm</option>
+        </select>
+      </div>
+      <div id="motivational-quote-box" class="quote-box"></div>
+    </section><section id="mbbs-subjects">
+  <h2>MBBS Subjects</h2>
+  <p>Track progress, upload notes/images, voice memos, and more for all 19 subjects.</p>
+  <div class="subject-grid">
+    <!-- Auto-generated cards for each subject -->
+  </div>
+</section>
 
-  <!-- LOGIN SECTION -->
-  <section id="login-section">
-    <h2>Login / Register</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="register()">Register</button>
-    <button onclick="login()">Login</button>
-  </section>
+<section id="reading">
+  <h2>Personal Reading</h2>
+  <p>Save your favorite books, quotes, reflections, and progress.</p>
+  <div class="reading-list">
+    <!-- Book cards and quote gallery -->
+  </div>
+</section>
 
-  <!-- DASHBOARD SECTION -->
-  <section id="dashboard" class="hidden">
-    <h2>Welcome, <span id="user-email"></span></h2>
-    <button onclick="logout()">Logout</button>
+<section id="tools">
+  <h2>Study & Health Tools</h2>
+  <ul class="tool-list">
+    <li>Pomodoro Timer & Session Tracker</li>
+    <li>Attendance Alerts (75% Theory, 80% Practical)</li>
+    <li>Hydration & Meal Tracker</li>
+    <li>Flashcard Creator</li>
+    <li>Voice Notes</li>
+    <li>Study Timer + Alarm + DND Mode</li>
+    <li>Daily Mood & Focus Journal</li>
+    <li>Routine Tracker with Time Blocks</li>
+    <li>Google Drive Sync & Backup</li>
+    <li>Bookmark Important Notes & Images</li>
+  </ul>
+</section>
 
-    <!-- Subject Tracker -->
-    <div id="subject-section">
-      <h3>Subjects</h3>
-      <input type="text" id="subject-input" placeholder="Enter Subject Name" />
-      <button onclick="addSubject()">Add Subject</button>
-      <ul id="subject-list"></ul>
-    </div>
+<section id="circle">
+  <h2>Docere Circle</h2>
+  <p>Chat with batchmates, share study goals, cases, and help each other grow.</p>
+  <div class="circle-chat"></div>
+  <div class="forum-discussion"></div>
+</section>
 
-    <!-- Topic Tracker -->
-    <div id="topic-section" class="hidden">
-      <h3 id="current-subject"></h3>
-      <input type="text" id="topic-input" placeholder="Enter Topic Name" />
-      <button onclick="addTopic()">Add Topic</button>
-      <ul id="topic-list"></ul>
-    </div>
+<section id="quotes">
+  <h2>Quote Gallery</h2>
+  <p>View all motivational, funny, and calm quotes you’ve received.</p>
+  <div class="quote-gallery"></div>
+</section>
 
-    <!-- Upload Section -->
-    <div id="upload-section">
-      <h3>Upload Notes / Images</h3>
-      <input type="file" id="file-upload" />
-      <button onclick="uploadFile()">Upload</button>
-      <ul id="file-list"></ul>
-    </div>
+<section id="reminders">
+  <h2>Smart Reminders</h2>
+  <ul>
+    <li>Study alerts (custom frequency)</li>
+    <li>Hydration reminders</li>
+    <li>Stretch/exercise popups</li>
+    <li>Medicine/Meal log notifications</li>
+  </ul>
+</section>
 
-    <!-- Voice Note Upload -->
-    <div id="voice-section">
-      <h3>Upload Voice Note</h3>
-      <input type="file" id="voice-upload" accept="audio/*" />
-      <button onclick="uploadVoice()">Upload Voice</button>
-      <ul id="voice-list"></ul>
-    </div>
-
-    <!-- Study Progress -->
-    <div id="progress-section">
-      <h3>Study Progress</h3>
-      <progress id="study-progress" value="0" max="100"></progress>
-      <p id="progress-text">0% Completed</p>
-    </div>
-
-    <!-- Personal Reading Shelf -->
-    <div id="reading-section">
-      <h3>Reading Shelf</h3>
-      <input type="text" id="book-title" placeholder="Book Name" />
-      <textarea id="book-note" placeholder="Favorite Quote or Reflection"></textarea>
-      <button onclick="addBook()">Add Book</button>
-      <ul id="book-list"></ul>
-    </div>
-
-    <!-- Daily Motivation -->
-    <div id="motivation-section">
-      <h3>Daily Motivation</h3>
-      <p id="motivational-quote">"Push yourself, because no one else is going to do it for you."</p>
-      <button onclick="newQuote()">New Quote</button>
-    </div>
-  </section>
-
-  <!-- Firebase Config -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
-      authDomain: "docere-16a25.firebaseapp.com",
-      projectId: "docere-16a25",
-      storageBucket: "docere-16a25.appspot.com",
-      messagingSenderId: "25249080743",
-      appId: "1:25249080743:web:0a2fe30a5db74babcdf8c7"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-  </script>
-
-  <!-- Link JS -->
-  <script src="script.js"></script>
-</body>
-</html>
+  </main>  <footer>
+    <p>&copy; 2025 Docere. Built for the Healers of Tomorrow.</p>
+  </footer>
+</body></html>
