@@ -1,66 +1,43 @@
-// script.js
-
-// Welcome & motivational lines logic
-const motivationalLines = [
-  "Hey Aftab, you're not just learning—you're evolving!",
-  "One more topic down, Aftab, one step closer to that white coat!",
-  "Aftab, if you can survive pharmac, you can survive anything!",
-  "Keep going, Doctor in the making!",
-  "Hey Aftab, remember: even neurons need a break sometimes!",
-  "You're doing great, Aftab. Like really, med-student legend level!",
-  "Study. Smile. Repeat. Aftab mode activated!",
-  "Pomodoro never looked this good—keep rocking it, Aftab!",
-  "What’s red and round and reminds Aftab to stay hydrated? This alert!",
-  "Aftab, you + Docere = unstoppable focus!"
+const lines = [
+  // Founder/Funny References
+  "Founder Aftab spotted studying again — someone stop this overachiever!",
+  "Legend says Aftab finished anatomy before orientation day.",
+  "This app bows to its master — Dr. Aftab in the making!",
+  "Even caffeine asks Aftab how he stays so energetic.",
+  "If motivation was a person, it would probably take tips from Aftab.",
+  "Aftab’s to-do list just called in sick.",
+  "Warning: Productivity overload detected on Founder’s account.",
+  "Every 7th quote makes Aftab 70% cooler — it's science.",
+  "He studied so much the books asked *him* questions.",
+  "App designed by Aftab. Tested on Aftab. Be like Aftab... or just pretend.",
+  
+  // Humorous
+  "Motivation loading... buffering... ah screw it, go study.",
+  "Remember, breaks are good. Just not 8 hours long.",
+  "Studying is 10% reading and 90% staring at the same line.",
+  "You're not procrastinating... you're pre-loading your brain.",
+  "Medical school: where your dreams meet sleep deprivation.",
+  "Study tip: Turn off Wi-Fi... wait, don’t. You need this app!",
+  "They said 'trust the process' — the process forgot to include coffee.",
+  "You vs. syllabus: Mortal Kombat edition.",
+  
+  // Motivational
+  "Each ticked checkbox brings you closer to Dr. Aftab.",
+  "Push today, relax tomorrow — or in residency!",
+  "The pain of studying now is better than the pain of regret.",
+  "Small wins build unstoppable momentum.",
+  "A focused Aftab is scarier than examiners.",
+  "Remember why you started. Then go make it worth it.",
+  "Don’t study hard, study smart — but Aftab does both!",
+  "You’re one step ahead of yesterday. That’s enough.",
+  "Someone out there is dreaming of your seat. Own it.",
+  "This isn't just effort — it’s the making of a healer.",
 ];
 
-function getRandomMotivationalLine() {
-  const index = Math.floor(Math.random() * motivationalLines.length);
-  return motivationalLines[index];
+// Random quote function
+function showRandomLine() {
+  const line = lines[Math.floor(Math.random() * lines.length)];
+  document.querySelector(".motivation-line").textContent = `"${line}"`;
 }
 
-function showMotivationalLine() {
-  const box = document.getElementById("motivational-quote");
-  if (box) box.textContent = getRandomMotivationalLine();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  showMotivationalLine();
-
-  // Smooth scroll for navigation
-  document.querySelectorAll("nav a").forEach(anchor => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const targetId = this.getAttribute("href").substring(1);
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: "smooth" });
-      }
-    });
-  });
-
-  // Smart Reminders (basic hydration timer example)
-  setInterval(() => {
-    alert("Hydration Check! Time to drink some water, Aftab.");
-  }, 1000 * 60 * 45); // every 45 minutes
-
-  // Pomodoro Timer basic logic (could be expanded)
-  const startPomodoro = document.getElementById("startPomodoro");
-  if (startPomodoro) {
-    startPomodoro.addEventListener("click", () => {
-      let countdown = 25 * 60;
-      const display = document.getElementById("pomodoroTimer");
-
-      const timer = setInterval(() => {
-        const mins = Math.floor(countdown / 60);
-        const secs = countdown % 60;
-        display.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        countdown--;
-        if (countdown < 0) {
-          clearInterval(timer);
-          alert("Pomodoro session complete, take a short break Aftab!");
-        }
-      }, 1000);
-    });
-  }
-});
+window.onload = showRandomLine;
