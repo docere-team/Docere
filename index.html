@@ -41,5 +41,25 @@
     });
   }
 </script>
+  <section id="ward-scheduler" class="section">
+  <h2>Ward Duty Scheduler</h2>
+  <div class="calendar-controls">
+    <label for="ward-dept">Department:</label>
+    <select id="ward-dept">
+      <option value="Medicine">Medicine</option>
+      <option value="Surgery">Surgery</option>
+      <option value="Pediatrics">Pediatrics</option>
+      <option value="Ob-Gyn">Ob-Gyn</option>
+    </select>
+
+    <label for="start-date">From:</label>
+    <input type="date" id="start-date">
+
+    <label for="end-date">To:</label>
+    <input type="date" id="end-date">
+    <button onclick="addWardDuty()">Assign</button>
+  </div>
+  <div id="ward-calendar"></div>
+  </section>
 </body>
 </html>
