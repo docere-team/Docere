@@ -90,3 +90,30 @@ firebase.auth().onAuthStateChanged((user) => {
     document.getElementById("welcome-message").textContent = "Welcome, future legend!";
   }
 });
+const subjects = [
+  "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology",
+  "Microbiology", "Forensic Medicine", "Community Medicine", "Ophthalmology",
+  "ENT", "Medicine", "Surgery", "Obstetrics", "Gynaecology", "Pediatrics",
+  "Orthopedics", "Psychiatry", "Dermatology", "Radiology"
+];
+
+const subjectContainer = document.getElementById("subject-container");
+
+subjects.forEach(subject => {
+  const card = document.createElement("div");
+  card.className = "subject-card";
+  card.innerHTML = `
+    <h3>${subject}</h3>
+    <label>Upload Note Image: <input type="file" accept="image/*"></label><br>
+    <label>Important Line: <input type="text" placeholder="Key point or quote"></label><br>
+    <label>Progress: <progress value="0" max="100"></progress></label><br>
+    <button onclick="markDone(this)">Mark Topic Done</button>
+  `;
+  subjectContainer.appendChild(card);
+});
+
+function markDone(btn) {
+  const progress = btn.parentElement.querySelector('progress');
+  let val = parseInt(progress.value);
+  if (val < 100) progress.value = val + 10;
+}
