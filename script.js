@@ -92,6 +92,11 @@ function showFunnyAlert(percent) {
     "Your attendance is lower than my will to get up for 8 AM classes!",
     "You’ve officially ghosted more than a toxic ex!",
     "Below 80%! Time to fake a ward posting selfie?"
+    "Ward duty skipped? Even your stethoscope is judging you!",
+    "80% is the new 100%. You're innovating education!",
+    "Sir/Ma'am, your patient called. They said 'Where were you?'",
+    "Wards below 80% – a silent prayer for your intern year.",
+    "Skipping wards? Cool. Repeating year? Cooler."
   ];
 
   const random = quotes[Math.floor(Math.random() * quotes.length)];
@@ -139,3 +144,6 @@ function markDate() {
     alert("Date not in ward range!");
   }
 }
+window.onload = () => {
+  loadAttendanceState();
+};
