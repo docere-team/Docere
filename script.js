@@ -111,6 +111,24 @@ function nextMonth() {
   renderCalendar();
 }
 
+function addWardDuty() {
+  const dept = document.getElementById("department").value;
+  const start = document.getElementById("wardStart").value;
+  const end = document.getElementById("wardEnd").value;
+
+  if (!dept || !start || !end) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const list = document.getElementById("wardList");
+  const li = document.createElement("li");
+  li.innerText = `${dept} Ward Duty from ${start} to ${end}`;
+  list.appendChild(li);
+
+  // Optional: Save to localStorage or Firebase later
+}
+
 function showWardSummary() {
   const summary = document.getElementById("wardSummary");
   const data = JSON.parse(localStorage.getItem("wardCalendar") || "{}");
