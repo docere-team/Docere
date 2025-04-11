@@ -101,6 +101,26 @@
 
   <!-- ======== Ward Attendance Calendar ======== -->
   <div class="ward-scheduler">
+    <!-- WARD DUTY ENTRY SECTION -->
+<div class="ward-scheduler">
+  <h3>Assign Ward Duty</h3>
+  <label>Department:
+    <input type="text" id="department" placeholder="e.g. Medicine">
+  </label>
+  <label>Start Date:
+    <input type="date" id="wardStart">
+  </label>
+  <label>End Date:
+    <input type="date" id="wardEnd">
+  </label>
+  <button onclick="addWardDuty()">Add Duty</button>
+</div>
+
+<!-- CALENDAR SECTION -->
+<div id="wardCalendar">
+  <h3>Ward Attendance Calendar</h3>
+  <div id="calendarDays"></div>
+</div>
   <h3>Ward Duty Scheduler</h3>
   
   <label for="department">Department:</label>
@@ -115,8 +135,8 @@
     <option value="Ophthalmology">Ophthalmology</option>
     <option value="Psychiatry">Psychiatry</option>
   
-    </select>
-  <label for="wardStart">Start Date:</label>
+    
+      <label for="wardStart">Start Date:</label>
   <input type="date" id="wardStart" />
 
   <label for="wardEnd">End Date:</label>
@@ -281,6 +301,65 @@
   function closeQuote() {
     document.getElementById("quotePopup").classList.remove("visible");
   }
+  </script>
+  <script>
+let wardDuties = [];
+
+function addWardDuty() {
+  const dept = document.getElementById("department").value;
+  const start = document.getElementById("wardStart").value;
+  const end = document.getElementById("wardEnd").value;
+
+  if (!dept || !start || !end) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  wardDuties.push({ department: dept, start, end });
+  renderCalendar();
+}
+
+// Utility to format YYYY-MM-DD from Date
+function formatDate(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function isWardDay(dateStr) {
+  return wardDuties.find(duty => dateStr >= duty.start && dateStr <= duty.end);
+}
+
+function renderCalendar() {
+  const container = document.getElementById("calendarDays");
+  container.innerHTML = "";
+
+  const today = new Date();
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() + i);
+    const dateStr = formatDate(date);
+
+    const duty = isWardDay(dateStr);
+
+    const div = document.createElement("div");
+    div.style.padding = "10px";
+    div.style.margin = "5px";
+    div.style.border = "1px solid #ccc";
+    div.style.borderRadius = "8px";
+    div.style.display = "inline-block";
+    div.style.minWidth = "120px";
+
+    if (duty) {
+      div.innerHTML = `<strong>${dateStr}</strong><br><span style="color: #007bff">Ward Duty - ${duty.department}</span>`;
+      div.style.backgroundColor = "#e6f2ff";
+    } else {
+      div.innerHTML = `<strong>${dateStr}</strong><br>Available`;
+    }
+
+    container.appendChild(div);
+  }
+}
+
+renderCalendar(); // initial render
   </script>
 </body>
 </html>
