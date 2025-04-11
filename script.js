@@ -47,6 +47,16 @@ const popupQuotes = [
   "Motivation delivered. Courtesy: your friendly neighborhood Aftab.",
   "Don’t stop now, Aftab’s watching!",
   "Coffee: activated. Focus: 99%. Power: Unlimited.",
+   "Founder Aftab spotted studying again — someone stop this overachiever!",
+  "Legend says Aftab finished anatomy before orientation day.",
+  "This app bows to its master — Dr. Aftab in the making!",
+  "Even caffeine asks Aftab how he stays so energetic.",
+  "If motivation was a person, it would probably take tips from Aftab.",
+  "Aftab’s to-do list just called in sick.",
+  "Warning: Productivity overload detected on Founder’s account.",
+  "Every 7th quote makes Aftab 70% cooler — it's science.",
+  "He studied so much the books asked *him* questions.",
+  "App designed by Aftab. Tested on Aftab. Be like Aftab... or just pretend.",
   "Study break? Only if you beat Aftab’s streak!",
   "You're closer to your goal than you think. Keep going!"
 ];
