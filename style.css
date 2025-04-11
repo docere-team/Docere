@@ -1,0 +1,29 @@
+.subject-container {
+  background: #e6f5ff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.subject-header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#topicInput {
+  padding: 8px;
+  margin-top: 10px;
+  width: 60%;
+}
+
+#topicList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #fff;
+  border-radius: 10px;
+  margin: 5px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
