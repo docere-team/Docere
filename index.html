@@ -74,7 +74,8 @@
     <div id="ward-attendance-tracker" class="section">
       <h3>Assigned Ward Calendar</h3>
 <div id="ward-calendar"></div>
-
+ <input type="checkbox" class="ward-check" data-date="${currentDate.toDateString()}"
+   onchange="calculateWardAttendance()">
 <h4>Mark Attendance</h4>
 <input type="date" id="mark-date">
 <button onclick="markDate()">Mark Present</button>
