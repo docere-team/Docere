@@ -1,246 +1,122 @@
-// ===== Personalized Welcome Message =====
-document.addEventListener("DOMContentLoaded", () => {
-  const name = localStorage.getItem("userName") || "Doctor in the making";
-  document.getElementById("welcomeBox").innerHTML = `Welcome back, <strong>${name}</strong>! Stay focused and heal the world.`;
-});
+// Pomodoro Timer
+let timerInterval;
+function startPomodoro() {
+  clearInterval(timerInterval);
+  const duration = parseInt(document.getElementById("work-duration").value);
+  let time = duration * 60;
+  const timerDisplay = document.getElementById("pomodoro-timer");
 
-// ===== Motivational Quote Popup =====
-const quotes = [
-  "Keep pushing, you're almost there!",
-  "Small steps every day lead to big results.",
-  "You were born to heal. Don't forget that.",
-  "Stay hydrated. Stay focused. Stay kind.",
-  "Even superheroes need rest. Take a break wisely!"
-];
-
-function showQuotePopup() {
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  const popup = document.getElementById("quotePopup");
-  popup.innerText = quote;
-  popup.style.display = "block";
-  setTimeout(() => {
-    popup.style.display = "none";
-  }, 5000);
-}
-
-setInterval(showQuotePopup, 60000); // Show every 60 seconds
-
-// ===== Pomodoro Timer =====
-let timer;
-let timeLeft = 1500; // 25 minutes
-
-function updateDisplay() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  document.getElementById("timer").innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
-function startTimer() {
-  if (timer) return;
-  timer = setInterval(() => {
-    if (timeLeft > 0) {
-      timeLeft--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      timer = null;
-      alert("Pomodoro session complete!");
+  timerInterval = setInterval(() => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    if (time <= 0) {
+      clearInterval(timerInterval);
+      alert("Pomodoro Complete! Time for a break.");
     }
+    time--;
   }, 1000);
 }
 
-function stopTimer() {
-  clearInterval(timer);
-  timer = null;
+// Save Daily Attendance
+function saveAttendance() {
+  const classSession = document.getElementById("classSession").value;
+  const practicalSession = document.getElementById("practicalSession").value;
+  const date = new Date().toLocaleDateString();
+
+  let data = localStorage.getItem("dailyAttendance") || "{}";
+  data = JSON.parse(data);
+  data[date] = { classSession, practicalSession };
+  localStorage.setItem("dailyAttendance", JSON.stringify(data));
+  updateAttendanceSummary();
 }
 
-function resetTimer() {
-  clearInterval(timer);
-  timer = null;
-  timeLeft = 1500;
-  updateDisplay();
+// Show saved attendance
+function updateAttendanceSummary() {
+  const summary = document.getElementById("attendanceSummary");
+  const data = JSON.parse(localStorage.getItem("dailyAttendance") || "{}");
+  summary.innerHTML = `<h4>Saved Records:</h4><ul>` +
+    Object.entries(data).map(([date, record]) =>
+      `<li><strong>${date}</strong>: Class - ${record.classSession}, Practical - ${record.practicalSession}</li>`).join("") +
+    `</ul>`;
+}
+updateAttendanceSummary();
+
+// Study Mode Toggle
+let darkMode = false;
+function toggleStudyMode() {
+  document.body.style.background = darkMode ? "#fff" : "#c2e9fb";
+  document.body.style.color = darkMode ? "#000" : "#003344";
+  darkMode = !darkMode;
 }
 
-document.getElementById("startBtn").addEventListener("click", startTimer);
-document.getElementById("stopBtn").addEventListener("click", stopTimer);
-document.getElementById("resetBtn").addEventListener("click", resetTimer);
-
-updateDisplay(); // initial display
-
-// ===== Do Not Disturb / Study Mode =====
-let studyMode = false;
-const toggleBtn = document.getElementById("studyModeToggle");
-
-toggleBtn.addEventListener("click", () => {
-  studyMode = !studyMode;
-  document.body.style.filter = studyMode ? "grayscale(0.1)" : "none";
-  toggleBtn.innerText = studyMode ? "Exit Study Mode" : "Enter Study Mode";
-});
-
-// ===== Attendance Tracker =====
-function checkAttendance() {
-  const theory = parseInt(document.getElementById("theoryInput").value);
-  const practical = parseInt(document.getElementById("practicalInput").value);
-  const alertBox = document.getElementById("attendanceAlert");
-
-  if (theory < 75 || practical < 80) {
-    alertBox.style.display = "block";
-    alertBox.innerText = `Warning: Your attendance is below safe limit! (Theory: ${theory}%, Practical: ${practical}%)`;
-  } else {
-    alertBox.style.display = "none";
-  }
-}
-
-document.getElementById("checkAttendanceBtn").addEventListener("click", checkAttendance);
-const wardAttendance = JSON.parse(localStorage.getItem("wardAttendance") || "{}");
-let currentDate = new Date();
+// Ward Calendar
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+const grid = document.getElementById("calendarGrid");
+const monthYear = document.getElementById("currentMonthYear");
 
 function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const startDay = new Date(year, month, 1).getDay();
+  grid.innerHTML = "";
+  const date = new Date(currentYear, currentMonth, 1);
+  monthYear.textContent = date.toLocaleString("default", { month: "long", year: "numeric" });
 
-  const calendar = document.getElementById("calendarGrid");
-  const monthYear = document.getElementById("currentMonthYear");
-  calendar.innerHTML = "";
-  monthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+  const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const savedStatus = JSON.parse(localStorage.getItem("wardCalendar") || "{}");
 
-  let grid = "<table><tr>";
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  weekdays.forEach(d => grid += `<th>${d}</th>`);
-  grid += "</tr><tr>";
+  for (let day = 1; day <= totalDays; day++) {
+    const fullDate = `${currentYear}-${currentMonth + 1}-${day}`;
+    const thisDate = new Date(currentYear, currentMonth, day);
+    const weekday = thisDate.getDay(); // 0=Sunday
 
-  let dayCounter = 1;
-  for (let i = 0; i < 42; i++) {
-    if (i < startDay || dayCounter > daysInMonth) {
-      grid += "<td></td>";
+    const div = document.createElement("div");
+    div.className = "calendar-day";
+
+    if (weekday === 0) {
+      div.innerText = `${day} (Sun)`;
+      div.style.background = "#fdd";
     } else {
-      const dateKey = `${year}-${month + 1}-${dayCounter}`;
-      const weekday = new Date(year, month, dayCounter).getDay();
-      const isSunday = weekday === 0;
-      const savedStatus = wardAttendance[dateKey] || "";
-
-      grid += `<td style="text-align:center;">
-        <div>${dayCounter}</div>
-        ${isSunday ? "<small>Holiday</small>" : `
-        <select onchange="saveWardStatus('${dateKey}', this.value)">
-          <option value="">--</option>
-          <option value="present" ${savedStatus === "present" ? "selected" : ""}>P</option>
-          <option value="absent" ${savedStatus === "absent" ? "selected" : ""}>A</option>
-        </select>`}
-      </td>`;
-      dayCounter++;
+      div.innerText = day;
+      const select = document.createElement("select");
+      select.innerHTML = `<option value="">-</option>
+                          <option value="present">Present</option>
+                          <option value="absent">Absent</option>
+                          <option value="holiday">Holiday</option>`;
+      select.value = savedStatus[fullDate] || "";
+      select.onchange = () => {
+        savedStatus[fullDate] = select.value;
+        localStorage.setItem("wardCalendar", JSON.stringify(savedStatus));
+        showWardSummary();
+      };
+      div.appendChild(select);
     }
-    if (i % 7 === 6) grid += "</tr><tr>";
+    grid.appendChild(div);
   }
-  grid += "</tr></table>";
-  calendar.innerHTML = grid;
-  updateWardSummary();
-}
 
-function saveWardStatus(dateKey, status) {
-  wardAttendance[dateKey] = status;
-  localStorage.setItem("wardAttendance", JSON.stringify(wardAttendance));
-  updateWardSummary();
-}
-
-function updateWardSummary() {
-  const values = Object.values(wardAttendance).filter(v => v);
-  const total = values.length;
-  const present = values.filter(v => v === "present").length;
-  const absent = values.filter(v => v === "absent").length;
-  const percent = total ? ((present / total) * 100).toFixed(1) : 0;
-  document.getElementById("wardSummary").innerHTML = `
-    <p>Total Days: ${total} | Present: ${present} | Absent: ${absent}</p>
-    <p><strong>Attendance: ${percent}%</strong></p>
-  `;
+  showWardSummary();
 }
 
 function prevMonth() {
-  currentDate.setMonth(currentDate.getMonth() - 1);
+  if (currentMonth === 0) {
+    currentMonth = 11;
+    currentYear--;
+  } else currentMonth--;
   renderCalendar();
 }
-
 function nextMonth() {
-  currentDate.setMonth(currentDate.getMonth() + 1);
+  if (currentMonth === 11) {
+    currentMonth = 0;
+    currentYear++;
+  } else currentMonth++;
   renderCalendar();
 }
 
-document.addEventListener("DOMContentLoaded", renderCalendar);
-const wardAttendance = JSON.parse(localStorage.getItem("wardAttendance") || "{}");
-let currentDate = new Date();
-
-function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const startDay = new Date(year, month, 1).getDay();
-
-  const calendar = document.getElementById("calendarGrid");
-  const monthYear = document.getElementById("currentMonthYear");
-  calendar.innerHTML = "";
-  monthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
-
-  let grid = "<table><tr>";
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  weekdays.forEach(d => grid += `<th>${d}</th>`);
-  grid += "</tr><tr>";
-
-  let dayCounter = 1;
-  for (let i = 0; i < 42; i++) {
-    if (i < startDay || dayCounter > daysInMonth) {
-      grid += "<td></td>";
-    } else {
-      const dateKey = `${year}-${month + 1}-${dayCounter}`;
-      const weekday = new Date(year, month, dayCounter).getDay();
-      const isSunday = weekday === 0;
-      const savedStatus = wardAttendance[dateKey] || "";
-
-      grid += `<td>
-        <div>${dayCounter}</div>
-        ${isSunday ? "<small>Holiday</small>" : `
-        <select onchange="saveWardStatus('${dateKey}', this.value)">
-          <option value="">--</option>
-          <option value="present" ${savedStatus === "present" ? "selected" : ""}>P</option>
-          <option value="absent" ${savedStatus === "absent" ? "selected" : ""}>A</option>
-        </select>`}
-      </td>`;
-      dayCounter++;
-    }
-    if (i % 7 === 6) grid += "</tr><tr>";
-  }
-  grid += "</tr></table>";
-  calendar.innerHTML = grid;
-  updateWardSummary();
+function showWardSummary() {
+  const summary = document.getElementById("wardSummary");
+  const data = JSON.parse(localStorage.getItem("wardCalendar") || "{}");
+  const present = Object.values(data).filter(v => v === "present").length;
+  const absent = Object.values(data).filter(v => v === "absent").length;
+  const holiday = Object.values(data).filter(v => v === "holiday").length;
+  summary.innerHTML = `<p><strong>Ward Summary:</strong> Present: ${present}, Absent: ${absent}, Holidays: ${holiday}</p>`;
 }
-
-function saveWardStatus(dateKey, status) {
-  wardAttendance[dateKey] = status;
-  localStorage.setItem("wardAttendance", JSON.stringify(wardAttendance));
-  updateWardSummary();
-}
-
-function updateWardSummary() {
-  const values = Object.values(wardAttendance).filter(v => v);
-  const total = values.length;
-  const present = values.filter(v => v === "present").length;
-  const absent = values.filter(v => v === "absent").length;
-  const percent = total ? ((present / total) * 100).toFixed(1) : 0;
-  document.getElementById("wardSummary").innerHTML = `
-    <p>Total Days: ${total} | Present: ${present} | Absent: ${absent}</p>
-    <p><strong>Attendance: ${percent}%</strong></p>
-  `;
-}
-
-function prevMonth() {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
-}
-
-function nextMonth() {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
-}
-
-document.addEventListener("DOMContentLoaded", renderCalendar);
+renderCalendar();
