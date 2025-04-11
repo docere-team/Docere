@@ -103,7 +103,10 @@ function addWardDuty() {
   `;
 
   calendar.appendChild(dutyBlock);
-
+<div class="manual-mark">
+  <label>Mark Specific Date: <input type="date" id="mark-date"></label>
+  <button onclick="markDate()">Mark Present</button>
+</div>
   // Optionally: clear fields
   document.getElementById("start-date").value = '';
   document.getElementById("end-date").value = '';
