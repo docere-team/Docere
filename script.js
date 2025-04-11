@@ -129,3 +129,13 @@ function calculateWardAttendance() {
 
   saveAttendanceState();
 }
+function markDate() {
+  const dateStr = new Date(document.getElementById("mark-date").value).toDateString();
+  const check = document.querySelector(`.ward-check[data-date="${dateStr}"]`);
+  if (check) {
+    check.checked = true;
+    calculateWardAttendance();
+  } else {
+    alert("Date not in ward range!");
+  }
+}
