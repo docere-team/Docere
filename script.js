@@ -34,3 +34,21 @@ function enterStudyMode() {
     popup.style.display = "none";
   }, 4000);
 }
+function addWardDuty() {
+  const dept = document.getElementById("ward-dept").value;
+  const from = document.getElementById("start-date").value;
+  const to = document.getElementById("end-date").value;
+
+  if (!dept || !from || !to) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  const calendar = document.getElementById("ward-calendar");
+  const entry = document.createElement("div");
+  entry.innerHTML = `<strong>${dept}</strong>: ${from} to ${to}`;
+  entry.style.marginBottom = "8px";
+  calendar.appendChild(entry);
+
+  // Later: Save this in local storage / Firebase
+}
