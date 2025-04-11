@@ -65,6 +65,50 @@
 
   <div class="card" id="attendance-tracker">
     <h2>Attendance Tracker</h2>
+    <!-- ======== Attendance Tracker Section ======== -->
+<section class="card" id="attendanceTracker">
+  <h2>Attendance Tracker</h2>
+  <!-- ======== Ward Calendar Attendance ======== -->
+<section class="card" id="wardCalendarTracker">
+  <h2>Ward Attendance Calendar</h2>
+  <p>Select status for each ward day. Sundays are auto-skipped.</p>
+  <div id="calendarControls">
+    <button onclick="prevMonth()">Previous</button>
+    <span id="currentMonthYear"></span>
+    <button onclick="nextMonth()">Next</button>
+  </div>
+  <div id="calendarGrid"></div>
+  <div id="wardSummary"></div>
+</section>
+  <p>Mark your daily attendance for each session below.</p>
+
+  <div>
+    <label for="classSession">Class (8–9 AM):</label>
+    <select id="classSession">
+      <option value="present">Present</option>
+      <option value="absent">Absent</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="wardSession">Ward (9–12 PM):</label>
+    <select id="wardSession">
+      <option value="present">Present</option>
+      <option value="absent">Absent</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="eveningStudy">Evening Study (5–7 PM):</label>
+    <select id="eveningStudy">
+      <option value="done">Done</option>
+      <option value="not_done">Not Done</option>
+    </select>
+  </div>
+
+  <button onclick="saveAttendance()">Save Attendance</button>
+  <div id="attendanceSummary"></div>
+</section>
     <label>Theory Attendance (%): <input type="number" id="theory-att" /></label><br/>
     <label>Practical Attendance (%): <input type="number" id="practical-att" /></label><br/>
     <label>Ward Duty (%): <input type="number" id="ward-att" /></label><br/>
@@ -157,5 +201,14 @@
   }
 </script>
   <script src="script.js"></script>
+<!-- Motivational Quote Popup -->
+<div id="quotePopup"></div>
+
+<!-- Study Mode Toggle -->
+<button id="studyModeToggle" onclick="toggleStudyMode()">Study Mode</button>
+<!-- Footer -->
+<footer style="margin-top: 40px; padding: 20px; background: #e6f7ff; color: #333; text-align: center;">
+  <p>&copy; 2025 Docere App | Built for the Healers of Tomorrow</p>
+</footer>
 </body>
 </html>
