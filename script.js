@@ -18,7 +18,7 @@ const humorousQuotes = [
   "Life hack: If you can’t convince them, confuse them.",
   "I don’t rise and shine, I caffeinate and hope.",
   "You’re doing amazing. Even if you feel like a lost neuron."
-  // add more later!
+  // Add more later!
 ];
 
 function enterStudyMode() {
@@ -34,6 +34,7 @@ function enterStudyMode() {
     popup.style.display = "none";
   }, 4000);
 }
+
 function addWardDuty() {
   const dept = document.getElementById("ward-dept").value;
   const from = new Date(document.getElementById("start-date").value);
@@ -81,17 +82,25 @@ function calculateWardAttendance() {
   const present = Array.from(checks).filter(c => c.checked).length;
   const percent = total > 0 ? (present / total) * 100 : 0;
 
+  // Progress bar update
+  const bar = document.getElementById("progress-bar-inner");
+  bar.style.width = `${percent}%`;
+  bar.style.backgroundColor = percent >= 80 ? "#4caf50" : "#f44336";
+
   if (percent < 80) {
     showFunnyAlert(percent);
   }
+
+  saveAttendanceState();
 }
+
 function showFunnyAlert(percent) {
   const quotes = [
     "Oops! Your attendance is as missing as your motivation on Mondays!",
     "Ward? More like 'Wandered away', huh?",
     "Your attendance is lower than my will to get up for 8 AM classes!",
     "You’ve officially ghosted more than a toxic ex!",
-    "Below 80%! Time to fake a ward posting selfie?"
+    "Below 80%! Time to fake a ward posting selfie?",
     "Ward duty skipped? Even your stethoscope is judging you!",
     "80% is the new 100%. You're innovating education!",
     "Sir/Ma'am, your patient called. They said 'Where were you?'",
@@ -102,6 +111,7 @@ function showFunnyAlert(percent) {
   const random = quotes[Math.floor(Math.random() * quotes.length)];
   alert(`${random}\n(Current: ${percent.toFixed(1)}%)`);
 }
+
 function saveAttendanceState() {
   const checks = document.querySelectorAll(".ward-check");
   const data = Array.from(checks).map(check => ({
@@ -119,21 +129,7 @@ function loadAttendanceState() {
   });
   calculateWardAttendance();
 }
-function calculateWardAttendance() {
-  const checks = document.querySelectorAll(".ward-check");
-  const total = checks.length;
-  const present = Array.from(checks).filter(c => c.checked).length;
-  const percent = total > 0 ? (present / total) * 100 : 0;
 
-  // Progress bar update
-  const bar = document.getElementById("progress-bar-inner");
-  bar.style.width = `${percent}%`;
-  bar.style.backgroundColor = percent >= 80 ? "#4caf50" : "#f44336";
-
-  if (percent < 80) showFunnyAlert(percent);
-
-  saveAttendanceState();
-}
 function markDate() {
   const dateStr = new Date(document.getElementById("mark-date").value).toDateString();
   const check = document.querySelector(`.ward-check[data-date="${dateStr}"]`);
@@ -144,9 +140,11 @@ function markDate() {
     alert("Date not in ward range!");
   }
 }
+
 window.onload = () => {
   loadAttendanceState();
 };
+
 let assignedDates = [];
 
 function assignWard(dept, startDate, endDate) {
@@ -155,7 +153,7 @@ function assignWard(dept, startDate, endDate) {
     assignedDates = [];
 
     const calendarDiv = document.getElementById("ward-calendar");
-    calendarDiv.innerHTML = ""; // clear previous
+    calendarDiv.innerHTML = ""; // Clear previous assignments
 
     while (start <= end) {
         let dateStr = start.toDateString();
@@ -170,26 +168,5 @@ function assignWard(dept, startDate, endDate) {
         calendarDiv.appendChild(document.createElement("br"));
 
         start.setDate(start.getDate() + 1);
-    }
-}
-
-// This is what you call after filling department and date range
-// Example: assignWard('Medicine', '2025-04-10', '2025-04-15');
-
-function markDate() {
-    const inputDate = new Date(document.getElementById("mark-date").value);
-    const dateStr = inputDate.toDateString();
-
-    const checkboxes = document.querySelectorAll('.ward-check');
-    let found = false;
-    checkboxes.forEach((box) => {
-        if (box.getAttribute('data-date') === dateStr) {
-            box.checked = true;
-            found = true;
-        }
-    });
-
-    if (!found) {
-        alert("Date not in assigned ward range!");
     }
 }
