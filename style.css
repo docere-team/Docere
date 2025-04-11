@@ -148,3 +148,31 @@ body {
 #studyModeToggle:hover {
   background: #0077a3;
 }
+#calendarGrid table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+#calendarGrid th, #calendarGrid td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#calendarControls {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+#calendarControls button {
+  padding: 6px 12px;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#calendarControls button:hover {
+  background: #005b99;
+}
