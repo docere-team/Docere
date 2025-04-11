@@ -52,3 +52,32 @@ function addWardDuty() {
 
   // Later: Save this in local storage / Firebase
 }
+function addWardDuty() {
+  const dept = document.getElementById("ward-dept").value;
+  const from = document.getElementById("start-date").value;
+  const to = document.getElementById("end-date").value;
+
+  if (!dept || !from || !to) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  const calendar = document.getElementById("ward-calendar");
+
+  const dutyBlock = document.createElement("div");
+  dutyBlock.className = "duty-entry";
+  dutyBlock.innerHTML = `
+    <strong>${dept}</strong><br>
+    From <span>${from}</span> to <span>${to}</span>
+    <hr>
+  `;
+
+  calendar.appendChild(dutyBlock);
+
+  // Optionally: clear fields
+  document.getElementById("start-date").value = '';
+  document.getElementById("end-date").value = '';
+
+  // Simple toast or alert
+  alert(`Assigned ${dept} ward from ${from} to ${to}`);
+}
