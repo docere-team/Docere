@@ -40,6 +40,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #0077b3;
+}
+
 .popup {
   display: none;
   position: fixed;
@@ -51,9 +55,10 @@ button {
   border: 2px solid #0099cc;
   border-radius: 12px;
   font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
+
 .section {
   margin: 20px;
   padding: 20px;
@@ -82,38 +87,55 @@ button {
   border-top: 2px solid #2196f3;
   font-family: 'Segoe UI', sans-serif;
 }
-function addWardDuty() {
-  const dept = document.getElementById("ward-dept").value;
-  const from = document.getElementById("start-date").value;
-  const to = document.getElementById("end-date").value;
 
-  if (!dept || !from || !to) {
-    alert("Please fill all fields!");
-    return;
-  }
-
-  const calendar = document.getElementById("ward-calendar");
-
-  const dutyBlock = document.createElement("div");
-  dutyBlock.className = "duty-entry";
-  dutyBlock.innerHTML = `
-    <strong>${dept}</strong><br>
-    From <span>${from}</span> to <span>${to}</span>
-    <hr>
-  `;
-
-  calendar.appendChild(dutyBlock);
-<div class="manual-mark">
-  <label>Mark Specific Date: <input type="date" id="mark-date"></label>
-  <button onclick="markDate()">Mark Present</button>
-</div>
-  // Optionally: clear fields
-  document.getElementById("start-date").value = '';
-  document.getElementById("end-date").value = '';
-
-  // Simple toast or alert
-  alert(`Assigned ${dept} ward from ${from} to ${to}`);
+.duty-entry {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #0099cc;
+  border-radius: 8px;
+  background: #e6f7ff;
 }
+
+.duty-entry strong {
+  font-size: 1.2rem;
+}
+
 #attendance-list div {
   margin: 5px 0;
+}
+
+#ward-attendance-tracker .manual-mark {
+  margin-top: 20px;
+}
+
+#ward-progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#progress-bar-inner {
+  height: 30px;
+  width: 0;
+  background-color: #4caf50;
+  border-radius: 5px;
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:active {
+  background-color: #388e3c;
 }
