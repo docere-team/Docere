@@ -253,3 +253,29 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+<style>
+  #studyPopup {
+    position: absolute;
+    top: 60px; /* a little lower than the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f9f9f9;
+    color: #333;
+    border: 2px solid #007BFF;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-size: 14px;
+    max-width: 250px;
+    z-index: 1000;
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    #studyPopup {
+      font-size: 13px;
+      max-width: 85%;
+      padding: 10px;
+    }
+  }
+</style>
