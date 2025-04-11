@@ -1,112 +1,42 @@
-/* Sky Theme & Basic Reset */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #cbefff, #f5fcff);
-  color: #333;
-  scroll-behavior: smooth;
-}
-
-header {
-  background: #58c1f0;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  padding: 10px 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-nav h1 {
-  font-size: 24px;
-}
-
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 15px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-nav ul li a:hover {
-  color: #fff8d6;
-}
-
-#hero {
-  padding: 60px 20px;
-  text-align: center;
-  background: #d9f4ff;
-}
-
-.section {
-  padding: 60px 20px;
-  border-bottom: 1px solid #ccc;
-  background: white;
-  min-height: 300px;
-}
-
-footer {
-  text-align: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* sky color */
   padding: 20px;
-  background: #58c1f0;
-  color: white;
-}
-.quote-popup {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: rgba(0, 183, 255, 0.9);
-  color: white;
-  padding: 15px 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  font-size: 0.95rem;
-  max-width: 280px;
-  z-index: 999;
-  animation: fadeIn 0.5s ease-in-out;
-  transition: all 0.5s;
+  text-align: center;
 }
 
-.quote-popup.hidden {
-  display: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.tracker-section {
-  background-color: #e6f4ff;
-  padding: 40px;
-}
-
-.subject-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.subject-card {
+.card {
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.subject-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+#popup-quote {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #fff;
+  color: #333;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
