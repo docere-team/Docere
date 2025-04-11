@@ -54,3 +54,31 @@ button {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   z-index: 1000;
 }
+.section {
+  margin: 20px;
+  padding: 20px;
+  background: #f0f8ff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px #ccc;
+}
+
+.calendar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.calendar-controls label,
+.calendar-controls input,
+.calendar-controls select,
+.calendar-controls button {
+  font-size: 1rem;
+}
+
+#ward-calendar {
+  padding: 10px;
+  border-top: 2px solid #2196f3;
+  font-family: 'Segoe UI', sans-serif;
+}
