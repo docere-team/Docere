@@ -111,3 +111,40 @@ function updateSubjectUI() {
     list.appendChild(li);
   });
 }
+function setPriority(index) {
+  const choice = prompt("Enter priority (high / medium / low):").toLowerCase();
+  let color;
+  if (choice === "high") color = "red";
+  else if (choice === "medium") color = "orange";
+  else if (choice === "low") color = "green";
+  else color = "gray";
+
+  subjectData[currentSubject][index].priority = color;
+  updateSubjectUI();
+}
+
+function uploadFile(e, index) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    subjectData[currentSubject][index].fileData = {
+      name: file.name,
+      content: reader.result
+    };
+    alert("File uploaded!");
+  };
+  reader.readAsDataURL(file);
+}
+
+function viewFile(index) {
+  const file = subjectData[currentSubject][index].fileData;
+  if (!file) {
+    alert("No file uploaded for this topic.");
+    return;
+  }
+
+  const newWindow = window.open();
+  newWindow.document.write(`<h2>${file.name}</h2><iframe src="${file.content}" style="width:100%; height:80vh;"></iframe>`);
+}
