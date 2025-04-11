@@ -148,3 +148,18 @@ function viewFile(index) {
   const newWindow = window.open();
   newWindow.document.write(`<h2>${file.name}</h2><iframe src="${file.content}" style="width:100%; height:80vh;"></iframe>`);
 }
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
+    authDomain: "docere-16a25.firebaseapp.com",
+    projectId: "docere-16a25",
+    storageBucket: "docere-16a25.appspot.com",
+    messagingSenderId: "25249080743",
+    appId: "1:25249080743:web:xxxx"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+</script>
