@@ -69,11 +69,15 @@
 
     <button onclick="addWardDuty()">Assign</button>
   </div>
-    <input type="checkbox" class="ward-check" data-date="${currentDate.toDateString()}" onchange="calculateWardAttendance()">
 
   <div id="ward-calendar"></div>
     <div id="ward-attendance-tracker" class="section">
-  <h3>Ward Attendance</h3>
+      <h3>Assigned Ward Calendar</h3>
+<div id="ward-calendar"></div>
+
+<h4>Mark Attendance</h4>
+<input type="date" id="mark-date">
+<button onclick="markDate()">Mark Present</button>
   <div id="attendance-list"></div>
       <div id="ward-progress-bar">
   <div id="progress-bar-inner"></div>
