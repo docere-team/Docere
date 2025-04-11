@@ -92,3 +92,79 @@ function checkAttendance() {
 }
 
 document.getElementById("checkAttendanceBtn").addEventListener("click", checkAttendance);
+const wardAttendance = JSON.parse(localStorage.getItem("wardAttendance") || "{}");
+let currentDate = new Date();
+
+function renderCalendar() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const startDay = new Date(year, month, 1).getDay();
+
+  const calendar = document.getElementById("calendarGrid");
+  const monthYear = document.getElementById("currentMonthYear");
+  calendar.innerHTML = "";
+  monthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+
+  let grid = "<table><tr>";
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  weekdays.forEach(d => grid += `<th>${d}</th>`);
+  grid += "</tr><tr>";
+
+  let dayCounter = 1;
+  for (let i = 0; i < 42; i++) {
+    if (i < startDay || dayCounter > daysInMonth) {
+      grid += "<td></td>";
+    } else {
+      const dateKey = `${year}-${month + 1}-${dayCounter}`;
+      const weekday = new Date(year, month, dayCounter).getDay();
+      const isSunday = weekday === 0;
+      const savedStatus = wardAttendance[dateKey] || "";
+
+      grid += `<td style="text-align:center;">
+        <div>${dayCounter}</div>
+        ${isSunday ? "<small>Holiday</small>" : `
+        <select onchange="saveWardStatus('${dateKey}', this.value)">
+          <option value="">--</option>
+          <option value="present" ${savedStatus === "present" ? "selected" : ""}>P</option>
+          <option value="absent" ${savedStatus === "absent" ? "selected" : ""}>A</option>
+        </select>`}
+      </td>`;
+      dayCounter++;
+    }
+    if (i % 7 === 6) grid += "</tr><tr>";
+  }
+  grid += "</tr></table>";
+  calendar.innerHTML = grid;
+  updateWardSummary();
+}
+
+function saveWardStatus(dateKey, status) {
+  wardAttendance[dateKey] = status;
+  localStorage.setItem("wardAttendance", JSON.stringify(wardAttendance));
+  updateWardSummary();
+}
+
+function updateWardSummary() {
+  const values = Object.values(wardAttendance).filter(v => v);
+  const total = values.length;
+  const present = values.filter(v => v === "present").length;
+  const absent = values.filter(v => v === "absent").length;
+  const percent = total ? ((present / total) * 100).toFixed(1) : 0;
+  document.getElementById("wardSummary").innerHTML = `
+    <p>Total Days: ${total} | Present: ${present} | Absent: ${absent}</p>
+    <p><strong>Attendance: ${percent}%</strong></p>
+  `;
+}
+
+function prevMonth() {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+}
+
+function nextMonth() {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+}
+
+document.addEventListener("DOMContentLoaded", renderCalendar);
