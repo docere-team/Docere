@@ -82,6 +82,24 @@ window.onload = function () {
     fileInput.type = "file";
     fileInput.accept = ".pdf,image/*,audio/*";
     fileInput.onchange = (e) => uploadFile(e, i);
+    function uploadFile(e, index) {
+  const file = e.target.files[0];
+  if (!file || !userID) return;
+
+  const path = `users/${userID}/${currentSubject}/${file.name}`;
+  const ref = storage.ref(path);
+
+  ref.put(file).then(() => {
+    ref.getDownloadURL().then(url => {
+      subjectData[currentSubject][index].fileData = {
+        name: file.name,
+        url: url
+      };
+      saveData(); // Save updated topic data
+      alert("File uploaded!");
+    });
+  });
+    }
 
     // View File
     const viewBtn = document.createElement("button");
@@ -109,6 +127,21 @@ function addCustomSubject() {
   }
 }
 
+    function saveData() {
+  if (!userID) return;
+  db.collection("users").doc(userID).set({
+    subjects: subjectData
+  });
+}
+
+function loadData() {
+  db.collection("users").doc(userID).get().then(doc => {
+    if (doc.exists) {
+      subjectData = doc.data().subjects || {};
+      updateSubjectList();
+    }
+  });
+}
 function addTopic() {
   const input = document.getElementById("topicInput");
   const topicName = input.value.trim();
@@ -124,6 +157,21 @@ function toggleTopic(index) {
   updateSubjectUI();
 }
 
+   function saveData() {
+  if (!userID) return;
+  db.collection("users").doc(userID).set({
+    subjects: subjectData
+  });
+}
+
+function loadData() {
+  db.collection("users").doc(userID).get().then(doc => {
+    if (doc.exists) {
+      subjectData = doc.data().subjects || {};
+      updateSubjectList();
+    }
+  });
+} 
 function updateSubjectUI() {
   document.getElementById("subjectTitle").textContent = currentSubject;
   const list = document.getElementById("topicList");
