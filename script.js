@@ -103,6 +103,31 @@ subjects.forEach(subject => {
   const card = document.createElement("div");
   card.className = "subject-card";
   card.innerHTML = `
+  <h3>${subject}</h3>
+
+  <label>Upload Note Image:
+    <input type="file" accept="image/*">
+  </label><br>
+
+  <label>Upload PDF:
+    <input type="file" accept=".pdf">
+  </label><br>
+
+  <label>Important Line:
+    <input type="text" placeholder="Write key quote or line here">
+  </label><br>
+
+  <label>Color Tag:
+    <input type="color" onchange="tagColor(this)">
+  </label><br>
+
+  <label>Progress:
+    <progress value="0" max="100"></progress>
+  </label><br>
+
+  <button onclick="markDone(this)">Mark Topic Done</button>
+`;
+  card.innerHTML = `
     <h3>${subject}</h3>
     <label>Upload Note Image: <input type="file" accept="image/*"></label><br>
     <label>Important Line: <input type="text" placeholder="Key point or quote"></label><br>
