@@ -1,3 +1,37 @@
+let userID = null;
+
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    userID = user.uid;
+    loadData();
+  } else {
+    userID = null;
+    alert("Please log in to access your subjects.");
+  }
+});
+
+function signUp() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  auth.createUserWithEmailAndPassword(email, pass)
+    .then(() => alert("Signed Up!"))
+    .catch(err => alert(err.message));
+}
+
+function logIn() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => alert("Logged In!"))
+    .catch(err => alert(err.message));
+}
+
+function logOut() {
+  auth.signOut().then(() => {
+    alert("Logged out");
+    location.reload();
+  });
+}
 const subjects = [
   "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology", "Microbiology",
   "Forensic Medicine", "Community Medicine", "ENT", "Ophthalmology", "Medicine",
