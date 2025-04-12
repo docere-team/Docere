@@ -291,3 +291,76 @@ function addWardDuty() {
   for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
     const dayDiv = document.createElement("div");
     const
+// Function to enter study mode and show a motivational quote in the popup
+function enterStudyMode() {
+  const quotes = [
+    "Keep going, you're doing great!",
+    "One step at a time.",
+    "Believe in yourself!",
+    "The future belongs to those who study hard."
+  ];
+  
+  // Randomly choose a quote
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('quoteText').textContent = randomQuote;
+
+  // Show the popup
+  document.getElementById('studyPopup').style.display = 'block';
+
+  // Hide the popup after 5 seconds
+  setTimeout(() => {
+    document.getElementById('studyPopup').style.display = 'none';
+  }, 5000);
+}
+
+// Function to add ward duty to the calendar
+function addWardDuty() {
+  const dept = document.getElementById('ward-dept').value;
+  const startDate = document.getElementById('start-date').value;
+  const endDate = document.getElementById('end-date').value;
+  
+  // Check if dates are valid
+  if (startDate && endDate) {
+    const dutyDiv = document.createElement('div');
+    dutyDiv.classList.add('duty-entry');
+    dutyDiv.textContent = `${dept} duty from ${startDate} to ${endDate}`;
+    
+    // Append the duty to the calendar
+    document.getElementById('ward-calendar').appendChild(dutyDiv);
+  } else {
+    alert('Please select valid dates.');
+  }
+}
+
+// Function to mark attendance
+function markDate() {
+  const markDate = document.getElementById('mark-date').value;
+  
+  // Ensure a date is selected
+  if (markDate) {
+    // Create an attendance entry
+    const attendanceEntry = document.createElement('div');
+    attendanceEntry.classList.add('attendance-entry');
+    attendanceEntry.textContent = `Present on: ${markDate}`;
+    
+    // Append the attendance entry to the list
+    document.getElementById('attendance-list').appendChild(attendanceEntry);
+    
+    // Update progress bar
+    updateProgressBar();
+  } else {
+    alert('Please select a date to mark attendance.');
+  }
+}
+
+// Function to update the progress bar
+function updateProgressBar() {
+  const totalDays = 30; // example total days of the month (adjust as necessary)
+  const presentDays = document.querySelectorAll('.attendance-entry').length;
+  
+  const progress = (presentDays / totalDays) * 100;
+  const progressBarInner = document.getElementById('progress-bar-inner');
+  
+  progressBarInner.style.width = progress + '%';
+}
+    
