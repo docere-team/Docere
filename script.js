@@ -1,3 +1,10 @@
+const motivationalQuotes = [
+  "Push yourself, because no one else is going to do it for you.",
+  "You don’t have to be great to start, but you have to start to be great.",
+  "Discipline is choosing between what you want now and what you want most.",
+  "Study like your future patients are depending on you — because they are."
+];
+
 const humorousQuotes = [
   "Study mode activated. Brain cells, assemble!",
   "Don't worry, coffee understands you.",
@@ -34,7 +41,6 @@ function enterStudyMode() {
     popup.style.display = "none";
   }, 4000);
 }
-
 function addWardDuty() {
   const dept = document.getElementById("ward-dept").value;
   const from = new Date(document.getElementById("start-date").value);
@@ -129,7 +135,6 @@ function loadAttendanceState() {
   });
   calculateWardAttendance();
 }
-
 function markDate() {
   const dateStr = new Date(document.getElementById("mark-date").value).toDateString();
   const check = document.querySelector(`.ward-check[data-date="${dateStr}"]`);
@@ -170,6 +175,7 @@ function assignWard(dept, startDate, endDate) {
         start.setDate(start.getDate() + 1);
     }
 }
+
 // Utility functions for local storage
 function saveToLocal(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
@@ -249,28 +255,3 @@ function renderAttendance() {
   bar.style.width = percentage + '%';
   bar.innerText = percentage + '%';
 }
-
-// Optional: Enter study mode with a quote
-function enterStudyMode() {
-  const quotes = [
-    "Push yourself, because no one else is going to do it for you.",
-    "You don’t have to be great to start, but you have to start to be great.",
-    "Discipline is choosing between what you want now and what you want most.",
-    "Study like your future patients are depending on you — because they are."
-  ];
-
-  const popup = document.getElementById('studyPopup');
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  document.getElementById('quoteText').innerText = quote;
-  popup.style.display = 'block';
-
-  setTimeout(() => {
-    popup.style.display = 'none';
-  }, 4000);
-}
-
-// Initialize UI on load
-window.onload = () => {
-  renderWardCalendar();
-  renderAttendance();
-};
