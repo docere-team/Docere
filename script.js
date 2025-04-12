@@ -150,217 +150,336 @@ function markDate() {
 window.onload = () => {
   loadAttendanceState();
 };
+function startPomodoro() {
+  let pomodoroTime = 25 * 60; // 25 minutes
+  let breakTime = 5 * 60; // 5 minutes
+  let timerType = "study"; // Either "study" or "break"
 
-let assignedDates = [];
+  const timerDisplay = document.getElementById("pomodoro-timer");
+  const pomodoroBtn = document.getElementById("pomodoro-btn");
+  const startBtn = document.getElementById("start-pomodoro");
 
-function assignWard(dept, startDate, endDate) {
-  let start = new Date(startDate);
-  let end = new Date(endDate);
-  assignedDates = [];
-
-  const calendarDiv = document.getElementById("ward-calendar");
-  calendarDiv.innerHTML = ""; // Clear previous assignments
-
-  while (start <= end) {
-    let dateStr = start.toDateString();
-    assignedDates.push(dateStr);
-
-    const label = document.createElement("label");
-    label.innerHTML = `
-      <input type="checkbox" class="ward-check" data-date="${dateStr}">
-      ${dateStr} (${dept})
-    `;
-    calendarDiv.appendChild(label);
-    calendarDiv.appendChild(document.createElement("br"));
-
-    start.setDate(start.getDate() + 1);
-  }
-}
-
-// Utility functions for local storage
-function saveToLocal(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-
-function loadFromLocal(key) {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
-}
-
-// Global data
-let wardAssignments = loadFromLocal('wardAssignments') || [];
-let attendanceMarked = loadFromLocal('wardAttendance') || [];
-
-// Add new ward duty
-function addWardDuty() {
-  const dept = document.getElementById('ward-dept').value;
-  const start = document.getElementById('start-date').value;
-  const end = document.getElementById('end-date').value;
-
-  if (!dept || !start || !end) {
-    alert("Please fill all fields.");
-    return;
+  function updateTimer() {
+    let minutes = Math.floor(pomodoroTime / 60);
+    let seconds = pomodoroTime % 60;
+    timerDisplay.innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  const newDuty = { dept, start, end };
-  wardAssignments.push(newDuty);
-  saveToLocal('wardAssignments', wardAssignments);
-  renderWardCalendar();
-}
+  function switchMode() {
+    if (timerType === "study") {
+      pomodoroTime = breakTime;
+      timerType = "break";
+      pomodoroBtn.innerHTML = "Start Study Session";
+      alert("Take a break!");
+    } else {
+      pomodoroTime = 25 * 60;
+      timerType = "study";
+      pomodoroBtn.innerHTML = "Start Break";
+      alert("Start studying!");
+    }
+  }
 
-// Render assigned ward calendar
-function renderWardCalendar() {
-  const container = document.getElementById('ward-calendar');
-  container.innerHTML = '';
-  wardAssignments.forEach((duty, index) => {
-    container.innerHTML += `
-      <div class="duty-card">
-        ${index + 1}. ${duty.dept} | ${duty.start} to ${duty.end}
-      </div>
-    `;
+  startBtn.addEventListener("click", () => {
+    const interval = setInterval(() => {
+      pomodoroTime--;
+      updateTimer();
+      if (pomodoroTime <= 0) {
+        switchMode();
+        clearInterval(interval);
+        startPomodoro(); // Restart for the next session
+      }
+    }, 1000);
   });
 }
 
-// Mark attendance
-function markDate() {
-  const date = document.getElementById('mark-date').value;
-  if (!date) {
-    alert("Please select a date.");
-    return;
-  }
+function initStudyTracker() {
+  const studyTracker = {
+    subjects: [
+      { name: "Anatomy", progress: 0 },
+      { name: "Physiology", progress: 0 },
+      { name: "Biochemistry", progress: 0 },
+      { name: "Pathology", progress: 0 },
+      { name: "Pharmacology", progress: 0 },
+      { name: "Microbiology", progress: 0 },
+      { name: "Forensic Medicine", progress: 0 }
+    ],
 
-  if (!attendanceMarked.includes(date)) {
-    attendanceMarked.push(date);
-    saveToLocal('wardAttendance', attendanceMarked);
-    renderAttendance();
-  }
-}
+    updateProgress(subject, progress) {
+      const subjectObj = this.subjects.find(s => s.name === subject);
+      if (subjectObj) {
+        subjectObj.progress = progress;
+      }
+      this.displayProgress();
+    },
 
-// Render attendance
-function renderAttendance() {
-  const list = document.getElementById('attendance-list');
-  list.innerHTML = '';
-  attendanceMarked.forEach((date, i) => {
-    list.innerHTML += `<p>${i + 1}. ${date}</p>`;
+    displayProgress() {
+      const progressBarContainer = document.getElementById("study-progress");
+      progressBarContainer.innerHTML = "";
+
+      this.subjects.forEach(subject => {
+        const subjectDiv = document.createElement("div");
+        subjectDiv.classList.add("progress-bar");
+        subjectDiv.innerHTML = `
+          <div class="subject-name">${subject.name}</div>
+          <div class="progress" style="width: ${subject.progress}%"></div>
+          <span class="progress-text">${subject.progress}%</span>
+        `;
+        progressBarContainer.appendChild(subjectDiv);
+      });
+    }
+  };
+
+  studyTracker.displayProgress();
+
+  document.getElementById("update-progress-btn").addEventListener("click", () => {
+    const subject = document.getElementById("subject-name").value;
+    const progress = parseInt(document.getElementById("progress-input").value, 10);
+    if (subject && !isNaN(progress)) {
+      studyTracker.updateProgress(subject, progress);
+    } else {
+      alert("Please fill both fields!");
+    }
   });
-
-  const total = wardAssignments.reduce((sum, duty) => {
-    const start = new Date(duty.start);
-    const end = new Date(duty.end);
-    const days = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
-    return sum + days;
-  }, 0);
-
-  const percentage = total ? Math.round((attendanceMarked.length / total) * 100) : 0;
-  const bar = document.getElementById('progress-bar-inner');
-  bar.style.width = percentage + '%';
-  bar.innerText = percentage + '%';
 }
 
-function addWardDuty() {
-  const dept = document.getElementById("ward-dept").value;
-  const from = new Date(document.getElementById("ward-from").value);
-  const to = new Date(document.getElementById("ward-to").value);
-  const wardRecords = document.getElementById("ward-records");
+function setupStudyReminder() {
+  const reminderTime = document.getElementById("study-reminder-time");
 
-  if (!dept || isNaN(from) || isNaN(to) || from > to) {
-    alert("Please enter valid department and date range.");
-    return;
+  reminderTime.addEventListener("change", () => {
+    const time = new Date(reminderTime.value);
+    const now = new Date();
+    const diff = time - now;
+
+    if (diff <= 0) {
+      alert("Please choose a future time!");
+      return;
+    }
+
+    setTimeout(() => {
+      alert("Reminder: Time to study!");
+    }, diff);
+  });
+}
+
+function setupHydrationReminder() {
+  const hydrationTime = document.getElementById("hydration-reminder-time");
+
+  hydrationTime.addEventListener("change", () => {
+    const time = new Date(hydrationTime.value);
+    const now = new Date();
+    const diff = time - now;
+
+    if (diff <= 0) {
+      alert("Please choose a future time!");
+      return;
+    }
+
+    setTimeout(() => {
+      alert("Reminder: Stay hydrated!");
+    }, diff);
+  });
+}
+
+function toggleFocusMode() {
+  const focusModeBtn = document.getElementById("focus-mode-btn");
+  const focusOverlay = document.getElementById("focus-overlay");
+
+  focusModeBtn.addEventListener("click", () => {
+    const isActive = focusOverlay.style.display === "block";
+    focusOverlay.style.display = isActive ? "none" : "block";
+    focusModeBtn.innerHTML = isActive ? "Activate Focus Mode" : "Deactivate Focus Mode";
+  });
+}
+
+function init() {
+  enterStudyMode();
+  startPomodoro();
+  initStudyTracker();
+  setupStudyReminder();
+  setupHydrationReminder();
+  toggleFocusMode();
+}
+
+window.onload = init;
+function createFlashcard() {
+  const flashcardFront = document.getElementById("flashcard-front").value;
+  const flashcardBack = document.getElementById("flashcard-back").value;
+
+  if (flashcardFront && flashcardBack) {
+    const flashcard = {
+      front: flashcardFront,
+      back: flashcardBack,
+      createdAt: new Date().toISOString()
+    };
+
+    // Store flashcard in local storage or Firestore
+    localStorage.setItem(`flashcard-${flashcard.createdAt}`, JSON.stringify(flashcard));
+    alert("Flashcard Created!");
+    clearFlashcardInputs();
+  } else {
+    alert("Please fill in both fields!");
   }
+}
 
-  const dutyId = `duty-${Date.now()}`; // unique ID for this duty block
-  const dutyBlock = document.createElement("div");
-  dutyBlock.style.border = "1px solid #ccc";
-  dutyBlock.style.padding = "10px";
-  dutyBlock.style.marginBottom = "10px";
-  dutyBlock.style.borderRadius = "8px";
-  dutyBlock.style.background = "#f9f9ff";
+function clearFlashcardInputs() {
+  document.getElementById("flashcard-front").value = "";
+  document.getElementById("flashcard-back").value = "";
+}
 
-  dutyBlock.innerHTML = `
-    <strong>${dept}</strong><br>
-    From <span>${from.toDateString()}</span> to <span>${to.toDateString()}</span>
-    <button onclick="deleteWardDuty('${dutyId}')"
-      style="margin-left:10px;padding:2px 6px;background-color:red;color:white;border:none;border-radius:4px;">Delete</button>
-    <div class="attendance-group" id="${dutyId}-attendance">
-      <hr>
-    </div>
-  `;
+function studyFlashcards() {
+  const flashcardsContainer = document.getElementById("flashcards-container");
+  flashcardsContainer.innerHTML = "";
 
-  const attendanceGroup = dutyBlock.querySelector(`#${dutyId}-attendance`);
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith("flashcard-")) {
+      const flashcard = JSON.parse(localStorage.getItem(key));
+      const flashcardDiv = document.createElement("div");
+      flashcardDiv.classList.add("flashcard");
+      flashcardDiv.innerHTML = `
+        <div class="flashcard-front">${flashcard.front}</div>
+        <div class="flashcard-back">${flashcard.back}</div>
+      `;
+      flashcardsContainer.appendChild(flashcardDiv);
+    }
+  });
+}
 
-  for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
-    const dayDiv = document.createElement("div");
-    const
-// Function to enter study mode and show a motivational quote in the popup
-function enterStudyMode() {
+function toggleFlashcardVisibility(flashcardDiv) {
+  const front = flashcardDiv.querySelector(".flashcard-front");
+  const back = flashcardDiv.querySelector(".flashcard-back");
+
+  front.style.display = front.style.display === "none" ? "block" : "none";
+  back.style.display = back.style.display === "none" ? "block" : "none";
+}
+
+function trackMood() {
+  const moodSelect = document.getElementById("mood-select");
+  const moodLogContainer = document.getElementById("mood-log");
+
+  moodSelect.addEventListener("change", () => {
+    const selectedMood = moodSelect.value;
+    const moodLogItem = document.createElement("div");
+    moodLogItem.classList.add("mood-log-item");
+    moodLogItem.innerHTML = `<span>${new Date().toLocaleString()} - ${selectedMood}</span>`;
+    moodLogContainer.appendChild(moodLogItem);
+  });
+}
+
+function trackFocus() {
+  const focusSelect = document.getElementById("focus-select");
+  const focusLogContainer = document.getElementById("focus-log");
+
+  focusSelect.addEventListener("change", () => {
+    const selectedFocusLevel = focusSelect.value;
+    const focusLogItem = document.createElement("div");
+    focusLogItem.classList.add("focus-log-item");
+    focusLogItem.innerHTML = `<span>${new Date().toLocaleString()} - Focus: ${selectedFocusLevel}</span>`;
+    focusLogContainer.appendChild(focusLogItem);
+  });
+}
+
+function setupDailyMotivation() {
+  const motivationContainer = document.getElementById("motivation-container");
+
+  // List of motivational quotes
   const quotes = [
-    "Keep going, you're doing great!",
-    "One step at a time.",
-    "Believe in yourself!",
-    "The future belongs to those who study hard."
+    "The journey of a thousand miles begins with one step.",
+    "Success is the sum of small efforts, repeated day in and day out.",
+    "Believe you can and you're halfway there.",
+    "Your limitation—it’s only your imagination.",
+    "Push yourself, because no one else is going to do it for you."
   ];
-  
-  // Randomly choose a quote
+
+  // Display a random quote each day
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  document.getElementById('quoteText').textContent = randomQuote;
-
-  // Show the popup
-  document.getElementById('studyPopup').style.display = 'block';
-
-  // Hide the popup after 5 seconds
-  setTimeout(() => {
-    document.getElementById('studyPopup').style.display = 'none';
-  }, 5000);
+  motivationContainer.innerHTML = `<p>${randomQuote}</p>`;
 }
 
-// Function to add ward duty to the calendar
-function addWardDuty() {
-  const dept = document.getElementById('ward-dept').value;
-  const startDate = document.getElementById('start-date').value;
-  const endDate = document.getElementById('end-date').value;
-  
-  // Check if dates are valid
-  if (startDate && endDate) {
-    const dutyDiv = document.createElement('div');
-    dutyDiv.classList.add('duty-entry');
-    dutyDiv.textContent = `${dept} duty from ${startDate} to ${endDate}`;
-    
-    // Append the duty to the calendar
-    document.getElementById('ward-calendar').appendChild(dutyDiv);
-  } else {
-    alert('Please select valid dates.');
+function setupPomodoroTimer() {
+  const pomodoroStartBtn = document.getElementById("pomodoro-start-btn");
+  const pomodoroTimer = document.getElementById("pomodoro-timer");
+
+  let timeRemaining = 25 * 60; // Start with 25 minutes
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    pomodoroTimer.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   }
+
+  pomodoroStartBtn.addEventListener("click", () => {
+    const interval = setInterval(() => {
+      timeRemaining--;
+      updateTimerDisplay();
+
+      if (timeRemaining <= 0) {
+        clearInterval(interval);
+        alert("Pomodoro session finished! Take a break.");
+      }
+    }, 1000);
+  });
 }
 
-// Function to mark attendance
-function markDate() {
-  const markDate = document.getElementById('mark-date').value;
-  
-  // Ensure a date is selected
-  if (markDate) {
-    // Create an attendance entry
-    const attendanceEntry = document.createElement('div');
-    attendanceEntry.classList.add('attendance-entry');
-    attendanceEntry.textContent = `Present on: ${markDate}`;
-    
-    // Append the attendance entry to the list
-    document.getElementById('attendance-list').appendChild(attendanceEntry);
-    
-    // Update progress bar
-    updateProgressBar();
-  } else {
-    alert('Please select a date to mark attendance.');
-  }
+function setupBookTracker() {
+  const bookInput = document.getElementById("book-input");
+  const bookContainer = document.getElementById("book-container");
+
+  document.getElementById("add-book-btn").addEventListener("click", () => {
+    const bookTitle = bookInput.value;
+
+    if (bookTitle) {
+      const bookDiv = document.createElement("div");
+      bookDiv.classList.add("book-item");
+      bookDiv.innerHTML = `
+        <span>${bookTitle}</span>
+        <button class="remove-book-btn">Remove</button>
+      `;
+
+      const removeBookBtn = bookDiv.querySelector(".remove-book-btn");
+      removeBookBtn.addEventListener("click", () => {
+        bookDiv.remove();
+      });
+
+      bookContainer.appendChild(bookDiv);
+      bookInput.value = "";
+    } else {
+      alert("Please enter a book title.");
+    }
+  });
 }
 
-// Function to update the progress bar
-function updateProgressBar() {
-  const totalDays = 30; // example total days of the month (adjust as necessary)
-  const presentDays = document.querySelectorAll('.attendance-entry').length;
-  
-  const progress = (presentDays / totalDays) * 100;
-  const progressBarInner = document.getElementById('progress-bar-inner');
-  
-  progressBarInner.style.width = progress + '%';
+function setupRoutineTracker() {
+  const routineInput = document.getElementById("routine-input");
+  const routineContainer = document.getElementById("routine-container");
+
+  document.getElementById("add-routine-btn").addEventListener("click", () => {
+    const routineTask = routineInput.value;
+
+    if (routineTask) {
+      const routineDiv = document.createElement("div");
+      routineDiv.classList.add("routine-item");
+      routineDiv.innerHTML = `
+        <span>${routineTask}</span>
+        <input type="checkbox" class="routine-checkbox">
+      `;
+
+      routineContainer.appendChild(routineDiv);
+      routineInput.value = "";
+    } else {
+      alert("Please enter a routine task.");
+    }
+  });
 }
-    
+
+function init() {
+  createFlashcard();
+  studyFlashcards();
+  trackMood();
+  trackFocus();
+  setupDailyMotivation();
+  setupPomodoroTimer();
+  setupBookTracker();
+  setupRoutineTracker();
+}
+
+window.onload = init;
