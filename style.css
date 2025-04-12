@@ -139,3 +139,31 @@ button:hover {
 button:active {
   background-color: #388e3c;
 }
+/* Pop-up styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: none; /* Initially hidden */
+  z-index: 1000;
+}
+
+/* Progress bar styles */
+#ward-progress-bar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#progress-bar-inner {
+  height: 20px;
+  width: 0; /* Start with 0% */
+  background-color: #4caf50;
+  border-radius: 5px;
+}
