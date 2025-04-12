@@ -255,3 +255,76 @@ function renderAttendance() {
   bar.style.width = percentage + '%';
   bar.innerText = percentage + '%';
 }
+function addWardDuty() {
+  const dept = document.getElementById("ward-dept").value;
+  const from = new Date(document.getElementById("ward-from").value);
+  const to = new Date(document.getElementById("ward-to").value);
+  const wardRecords = document.getElementById("ward-records");
+
+  if (!dept || isNaN(from) || isNaN(to) || from > to) {
+    alert("Please enter valid department and date range.");
+    return;
+  }
+
+  const dutyId = `duty-${Date.now()}`; // unique ID for this duty block
+  const dutyBlock = document.createElement("div");
+  dutyBlock.style.border = "1px solid #ccc";
+  dutyBlock.style.padding = "10px";
+  dutyBlock.style.marginBottom = "10px";
+  dutyBlock.style.borderRadius = "8px";
+  dutyBlock.style.background = "#f9f9ff";
+
+  dutyBlock.innerHTML = `
+    <strong>${dept}</strong><br>
+    From <span>${from.toDateString()}</span> to <span>${to.toDateString()}</span>
+    <button onclick="deleteWardDuty('${dutyId}')"
+      style="margin-left:10px;padding:2px 6px;background-color:red;color:white;border:none;border-radius:4px;">Delete</button>
+    <div class="attendance-group" id="${dutyId}-attendance">
+      <hr>
+    </div>
+  `;
+
+  const attendanceGroup = dutyBlock.querySelector(`#${dutyId}-attendance`);
+
+  for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+    const dayDiv = document.createElement("div");
+    const dateStr = d.toISOString().split('T')[0];
+
+    dayDiv.innerHTML = `
+      ${new Date(d).toDateString()}:
+      <select onchange="calculateWardAttendance()" data-date="${dateStr}" data-dept="${dept}">
+        <option value="">-- Select --</option>
+        <option value="present">Present</option>
+        <option value="absent">Absent</option>
+        <option value="holiday">Holiday</option>
+      </select>
+    `;
+
+    attendanceGroup.appendChild(dayDiv);
+  }
+
+  wardRecords.appendChild(dutyBlock);
+  calculateWardAttendance();
+  saveAttendanceState();
+}
+function deleteWardDuty(dutyId) {
+  const attendanceGroup = document.getElementById(`${dutyId}-attendance`);
+  if (attendanceGroup) {
+    const parentBlock = attendanceGroup.parentElement;
+    parentBlock.remove();
+    calculateWardAttendance();
+    saveAttendanceState();
+  }
+}
+function deleteWardDuty(dutyId) {
+  const confirmed = confirm("Are you sure you want to delete this duty assignment?");
+  if (!confirmed) return;
+
+  const attendanceGroup = document.getElementById(`${dutyId}-attendance`);
+  if (attendanceGroup) {
+    const parentBlock = attendanceGroup.parentElement;
+    parentBlock.remove();
+    calculateWardAttendance();
+    saveAttendanceState();
+  }
+}
