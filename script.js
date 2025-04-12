@@ -25,7 +25,6 @@ const humorousQuotes = [
   "Life hack: If you can’t convince them, confuse them.",
   "I don’t rise and shine, I caffeinate and hope.",
   "You’re doing amazing. Even if you feel like a lost neuron."
-  // Add more later!
 ];
 
 function enterStudyMode() {
@@ -41,6 +40,7 @@ function enterStudyMode() {
     popup.style.display = "none";
   }, 4000);
 }
+
 function addWardDuty() {
   const dept = document.getElementById("ward-dept").value;
   const from = new Date(document.getElementById("start-date").value);
@@ -135,6 +135,7 @@ function loadAttendanceState() {
   });
   calculateWardAttendance();
 }
+
 function markDate() {
   const dateStr = new Date(document.getElementById("mark-date").value).toDateString();
   const check = document.querySelector(`.ward-check[data-date="${dateStr}"]`);
@@ -153,27 +154,27 @@ window.onload = () => {
 let assignedDates = [];
 
 function assignWard(dept, startDate, endDate) {
-    let start = new Date(startDate);
-    let end = new Date(endDate);
-    assignedDates = [];
+  let start = new Date(startDate);
+  let end = new Date(endDate);
+  assignedDates = [];
 
-    const calendarDiv = document.getElementById("ward-calendar");
-    calendarDiv.innerHTML = ""; // Clear previous assignments
+  const calendarDiv = document.getElementById("ward-calendar");
+  calendarDiv.innerHTML = ""; // Clear previous assignments
 
-    while (start <= end) {
-        let dateStr = start.toDateString();
-        assignedDates.push(dateStr);
+  while (start <= end) {
+    let dateStr = start.toDateString();
+    assignedDates.push(dateStr);
 
-        const label = document.createElement("label");
-        label.innerHTML = `
-            <input type="checkbox" class="ward-check" data-date="${dateStr}">
-            ${dateStr} (${dept})
-        `;
-        calendarDiv.appendChild(label);
-        calendarDiv.appendChild(document.createElement("br"));
+    const label = document.createElement("label");
+    label.innerHTML = `
+      <input type="checkbox" class="ward-check" data-date="${dateStr}">
+      ${dateStr} (${dept})
+    `;
+    calendarDiv.appendChild(label);
+    calendarDiv.appendChild(document.createElement("br"));
 
-        start.setDate(start.getDate() + 1);
-    }
+    start.setDate(start.getDate() + 1);
+  }
 }
 
 // Utility functions for local storage
@@ -255,6 +256,7 @@ function renderAttendance() {
   bar.style.width = percentage + '%';
   bar.innerText = percentage + '%';
 }
+
 function addWardDuty() {
   const dept = document.getElementById("ward-dept").value;
   const from = new Date(document.getElementById("ward-from").value);
@@ -288,43 +290,4 @@ function addWardDuty() {
 
   for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
     const dayDiv = document.createElement("div");
-    const dateStr = d.toISOString().split('T')[0];
-
-    dayDiv.innerHTML = `
-      ${new Date(d).toDateString()}:
-      <select onchange="calculateWardAttendance()" data-date="${dateStr}" data-dept="${dept}">
-        <option value="">-- Select --</option>
-        <option value="present">Present</option>
-        <option value="absent">Absent</option>
-        <option value="holiday">Holiday</option>
-      </select>
-    `;
-
-    attendanceGroup.appendChild(dayDiv);
-  }
-
-  wardRecords.appendChild(dutyBlock);
-  calculateWardAttendance();
-  saveAttendanceState();
-}
-function deleteWardDuty(dutyId) {
-  const attendanceGroup = document.getElementById(`${dutyId}-attendance`);
-  if (attendanceGroup) {
-    const parentBlock = attendanceGroup.parentElement;
-    parentBlock.remove();
-    calculateWardAttendance();
-    saveAttendanceState();
-  }
-}
-function deleteWardDuty(dutyId) {
-  const confirmed = confirm("Are you sure you want to delete this duty assignment?");
-  if (!confirmed) return;
-
-  const attendanceGroup = document.getElementById(`${dutyId}-attendance`);
-  if (attendanceGroup) {
-    const parentBlock = attendanceGroup.parentElement;
-    parentBlock.remove();
-    calculateWardAttendance();
-    saveAttendanceState();
-  }
-}
+    const
