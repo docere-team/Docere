@@ -14,23 +14,7 @@
     <section class="dashboard">
     <h2>Welcome, Healer-in-Training!</h2>
     <p id="motivation">"Even your mitochondria believe in you. Keep going!"</p>
-         <div class="pomodoro">
-    <h3>Pomodoro Timer</h3>
-
-    <div class="custom-time">
-        <label>Focus (min): <input type="number" id="focusInput" value="25" min="1"></label>
-        <label>Break (min): <input type="number" id="breakInput" value="5" min="1"></label>
-    </div>
-
-    <div id="timer">25:00</div>
-
-    <div class="pomo-controls">
-        <button onclick="startTimer()">Start</button>
-        <button onclick="resetTimer()">Reset</button>
-    </div>
-
-    <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
-         </div>
+         
 
     <div class="feature-boxes">
         <div class="feature-card">Study Tracker (Coming soon)</div>
@@ -52,7 +36,23 @@
             <button onclick="startStudySession()">Start Study Timer</button>
         </div>
     </main>
+<div class="pomodoro">
+    <h3>Pomodoro Timer</h3>
 
+    <div class="custom-time">
+        <label>Focus (min): <input type="number" id="focusInput" value="25" min="1"></label>
+        <label>Break (min): <input type="number" id="breakInput" value="5" min="1"></label>
+    </div>
+
+    <div id="timer">25:00</div>
+
+    <div class="pomo-controls">
+        <button onclick="startTimer()">Start</button>
+        <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
+</div>
     <footer>
         <p>&copy; 2025 Docere. All rights reserved. Build your future, one lesson at a time.</p>
     </footer>
