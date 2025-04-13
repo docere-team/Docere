@@ -1,63 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Docere - Track. Learn. Heal.</title>
-    <link rel="icon" href="assets/icon.png" type="image/png">
-    <!-- Link to PWA manifest -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-    <section class="dashboard">
-    <h2>Welcome, Healer-in-Training!</h2>
-    <p id="motivation">"Even your mitochondria believe in you. Keep going!"</p>
-         
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Docere - Track. Learn. Heal.</title>
+  <link rel="icon" href="assets/icon.png" type="image/png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+</head>
 
-    <div class="feature-boxes">
+<body>
+  <header>
+    <h1>Welcome to Docere</h1>
+    <p class="tagline">Track. Learn. Heal. Welcome, Doctor in the making!</p>
+  </header>
+
+  <main>
+    <section class="dashboard">
+      <h2>Welcome, Healer-in-Training!</h2>
+      <p id="motivation">"Even your mitochondria believe in you. Keep going!"</p>
+
+      <div class="feature-boxes">
         <div class="feature-card">Study Tracker (Coming soon)</div>
         <div class="feature-card">Mood Journal (Coming soon)</div>
-        <div class="feature-card">Pomodoro Timer (Coming soon)</div>
-    </div>
+        <div class="feature-card">Pomodoro Timer (Scroll down)</div>
+      </div>
     </section>
-</head>
-<body>
-    <header>
-        <h1>Welcome to Docere</h1>
-        <p class="tagline">Track. Learn. Heal. Welcome, Doctor in the making!</p>
-    </header>
-    
-    <main>
-        <div class="dashboard">
-            <h2>Your Progress</h2>
-            <p><strong>Attendance:</strong> <span id="attendance">Checking...</span></p>
-            <button onclick="startStudySession()">Start Study Timer</button>
+
+    <section class="dashboard">
+      <h2>Your Progress</h2>
+      <p><strong>Attendance:</strong> <span id="attendance">Checking...</span></p>
+      <button onclick="startStudySession()">Start Study Timer</button>
+    </section>
+
+    <section class="dashboard">
+      <div class="pomodoro">
+        <h3>Pomodoro Timer</h3>
+
+        <div class="custom-time">
+          <label>Focus (min): <input type="number" id="focusInput" value="25" min="1" /></label>
+          <label>Break (min): <input type="number" id="breakInput" value="5" min="1" /></label>
         </div>
-    </main>
-<div class="pomodoro">
-    <h3>Pomodoro Timer</h3>
 
-    <div class="custom-time">
-        <label>Focus (min): <input type="number" id="focusInput" value="25" min="1"></label>
-        <label>Break (min): <input type="number" id="breakInput" value="5" min="1"></label>
-    </div>
+        <div id="timer">25:00</div>
 
-    <div id="timer">25:00</div>
+        <div class="pomo-controls">
+          <button onclick="startTimer()">Start</button>
+          <button onclick="resetTimer()">Reset</button>
+        </div>
 
-    <div class="pomo-controls">
-        <button onclick="startTimer()">Start</button>
-        <button onclick="resetTimer()">Reset</button>
-    </div>
+        <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
+      </div>
+    </section>
+  </main>
 
-    <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
-</div>
-    <footer>
-        <p>&copy; 2025 Docere. All rights reserved. Build your future, one lesson at a time.</p>
-    </footer>
+  <footer>
+    <p>&copy; 2025 Docere. All rights reserved. Build your future, one lesson at a time.</p>
+  </footer>
 
-    <!-- Firebase script for auth -->
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
