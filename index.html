@@ -1,117 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ward Duty Tracker - Docere</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f8ff;
-      margin: 20px;
-    }
-    h2 {
-      color: #0077cc;
-    }
-    input, select, button {
-      margin: 5px;
-      padding: 8px;
-      font-size: 14px;
-    }
-    .duty-card {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .progress-bar {
-      width: 100%;
-      background: #ccc;
-      height: 25px;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 15px 0;
-    }
-    #progress-bar-inner {
-      height: 100%;
-      width: 0%;
-      text-align: center;
-      line-height: 25px;
-      color: white;
-      font-weight: bold;
-    }
-    #studyPopup {
-      display: none;
-      position: fixed;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0077cc;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 1000;
-    }
-    .section {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Docere - Track. Learn. Heal.</title>
+    <link rel="icon" href="assets/icon.png" type="image/png">
+    <!-- Link to PWA manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
 </head>
 <body>
+    <header>
+        <h1>Welcome to Docere</h1>
+        <p class="tagline">Track. Learn. Heal. Welcome, Doctor in the making!</p>
+    </header>
+    
+    <main>
+        <div class="dashboard">
+            <h2>Your Progress</h2>
+            <p><strong>Attendance:</strong> <span id="attendance">Checking...</span></p>
+            <button onclick="startStudySession()">Start Study Timer</button>
+        </div>
+    </main>
 
-  <!-- Motivational Pop-up -->
-  <div id="studyPopup">
-    <p id="quoteText" style="margin:0;"></p>
-  </div>
+    <footer>
+        <p>&copy; 2025 Docere. All rights reserved. Build your future, one lesson at a time.</p>
+    </footer>
 
-  <!-- Ward Duty Assignment Section -->
-  <div class="section">
-    <h2>Assign New Ward Duty</h2>
-    <select id="ward-dept">
-      <option value="">--Select Department--</option>
-      <option value="Medicine">Medicine</option>
-      <option value="Surgery">Surgery</option>
-      <option value="Ob-Gyn">Ob-Gyn</option>
-      <option value="Pediatrics">Pediatrics</option>
-      <option value="Psychiatry">Psychiatry</option>
-      <option value="Orthopedics">Orthopedics</option>
-      <!-- Add more departments if needed -->
-    </select>
-    <input type="date" id="ward-from">
-    <input type="date" id="ward-to">
-    <button onclick="addWardDuty()">Add Duty</button>
-    <button onclick="enterStudyMode()">Show Quote</button>
-  </div>
-
-  <!-- Ward Calendar Display -->
-  <div class="section">
-    <h2>Ward Calendar</h2>
-    <div id="ward-calendar"></div>
-  </div>
-
-  <!-- Attendance Summary -->
-  <div class="section">
-    <h2>Ward Attendance Progress</h2>
-    <div class="progress-bar">
-      <div id="progress-bar-inner">0%</div>
-    </div>
-    <input type="date" id="mark-date">
-    <button onclick="markDate()">Mark Date Present</button>
-  </div>
-
-  <!-- Attendance Dates List -->
-  <div class="section">
-    <h2>Attendance Dates</h2>
-    <div id="attendance-list"></div>
-  </div>
-
-  <!-- Script Inclusion -->
-  <script src="ward-duty.js"></script> <!-- or paste JS directly here -->
+    <!-- Firebase script for auth -->
+    <script src="app.js"></script>
 </body>
 </html>
