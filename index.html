@@ -1,54 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Docere - Track. Learn. Heal.</title>
-  <link rel="icon" href="assets/icon.png" type="image/png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Docere - Track. Learn. Heal.</title>
+    <link rel="icon" href="assets/icon.png" type="image/png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2);
+            color: #333;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-size: 1.1em;
+            color: #00796b;
+        }
+
+        /* Main dashboard */
+        main {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffffaa;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+        #motivation {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #00796b;
+        }
+
+        /* Feature cards */
+        .feature-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .feature-card {
+            flex: 1 1 45%;
+            background: #80deea;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #004d40;
+        }
+
+        /* Timer section */
+        .pomodoro {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pomodoro input {
+            width: 60px;
+            padding: 5px;
+            margin: 0 5px;
+        }
+        #timer {
+            font-size: 2em;
+            margin: 15px 0;
+            color: #006064;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #0097a7;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00796b;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            .feature-card {
+                flex: 1 1 100%;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>Welcome to Docere</h1>
+        <p class="tagline">Track. Learn. Heal. Welcome, Doctor in the making!</p>
+    </header>
 
-  <header>
-    <h1>Docere</h1>
-    <p class="tagline">Track. Learn. Heal. Built for the Healers of Tomorrow.</p>
-    <p id="attendance">Checking login...</p>
-  </header>
+    <main>
+        <div class="dashboard">
+            <h2>Your Progress</h2>
+            <p><strong>Attendance:</strong> <span id="attendance">Checking...</span></p>
+            <button onclick="startStudySession()">Start Study Timer</button>
+        </div>
 
-  <main>
-    <section class="dashboard">
-      <h2>Welcome, Healer-in-Training!</h2>
-      <p id="motivation">Loading motivation...</p>
-      <div class="feature-boxes">
-        <div class="feature-card">Study Tracker (Coming soon)</div>
-        <div class="feature-card">Mood Journal (Coming soon)</div>
-        <div class="feature-card">Pomodoro Timer (Working!)</div>
-      </div>
-    </section>
+        <div class="feature-boxes">
+            <div class="feature-card">Study Tracker (Coming soon)</div>
+            <div class="feature-card">Mood Journal (Coming soon)</div>
+            <div class="feature-card">Pomodoro Timer (Coming soon)</div>
+        </div>
 
-    <div class="pomodoro">
-      <h3>Pomodoro Timer</h3>
-      <div class="custom-time">
-        <label>Focus (min): <input type="number" id="focusInput" value="25" min="1"></label>
-        <label>Break (min): <input type="number" id="breakInput" value="5" min="1"></label>
-      </div>
-      <div id="timer">25:00</div>
-      <div class="pomo-controls">
-        <button onclick="startTimer()">Start</button>
-        <button onclick="resetTimer()">Reset</button>
-      </div>
-      <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
-    </div>
-  </main>
+        <div class="pomodoro">
+            <h3>Pomodoro Timer</h3>
 
-  <footer>
-    <p>Built with purpose for future doctors. Stay strong!</p>
-  </footer>
+            <div class="custom-time">
+                <label>Focus (min): <input type="number" id="focusInput" value="25" min="1"></label>
+                <label>Break (min): <input type="number" id="breakInput" value="5" min="1"></label>
+            </div>
 
-  <script src="app.js"></script>
+            <div id="timer">25:00</div>
+
+            <div class="pomo-controls">
+                <button onclick="startTimer()">Start</button>
+                <button onclick="resetTimer()">Reset</button>
+            </div>
+
+            <p class="pomo-joke">“This timer bends to your will. Mostly.”</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Docere. All rights reserved. Build your future, one lesson at a time.</p>
+    </footer>
+
+    <!-- Firebase script for auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
+            authDomain: "docere-16a25.firebaseapp.com",
+            projectId: "docere-16a25",
+            storageBucket: "docere-16a25.appspot.com",
+            messagingSenderId: "25249080743",
+            appId: "1:25249080743:web:238adc1be73839fa740282"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Quote Magic
+        const quotes = [
+            "Even your mitochondria believe in you.",
+            "Cram like your grades depend on it. Oh wait, they do.",
+            "Future Dr. Loading… Stay hydrated!",
+            "Anatomy books fear your memory.",
+            "Coffee: because adulting is hard.",
+            "Today’s pain, tomorrow’s prescription pad.",
+            "Rest when you must, but don't you dare quit.",
+            "This Pomodoro is 100% med-student approved."
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Motivational Quote
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteElement = document.getElementById("motivation");
+            if (quoteElement) quoteElement.innerText = `"${quote}"`;
+
+            // Initialize Pomodoro
+            resetTimer();
+
+            // Attendance check
+            firebase.auth().onAuthStateChanged(user => {
+                const attendanceElement = document.getElementById('attendance');
+                if (attendanceElement) {
+                    attendanceElement.innerText = user
+                        ? "Attendance: 90% (Good Job!)"
+                        : "Please log in.";
+                }
+            });
+        });
+
+        // Study Session Starter
+        function startStudySession() {
+            if (!auth.currentUser) {
+                alert("Login first, hero!");
+            } else {
+                alert("Starting your study session! Channel your inner neuroanatomy beast.");
+            }
+        }
+
+        // Pomodoro Timer Logic
+        let pomoInterval;
+        let timeLeft = 0;
+        let isRunning = false;
+
+        function startTimer() {
+            if (isRunning) return;
+
+            const focusMinutes = parseInt(document.getElementById("focusInput").value) || 25;
+            timeLeft = focusMinutes * 60;
+            isRunning = true;
+
+            pomoInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(pomoInterval);
+                    isRunning = false;
+
+                    const breakMinutes = parseInt(document.getElementById("breakInput").value) || 5;
+                    timeLeft = breakMinutes * 60;
+
+                    alert("Break time! Stretch, breathe, and avoid Instagram… maybe.");
+                    updateTimerDisplay();
+                    return;
+                }
+                timeLeft--;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(pomoInterval);
+            isRunning = false;
+            const focusMinutes = parseInt(document.getElementById("focusInput").value) || 25;
+            timeLeft = focusMinutes * 60;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const seconds = (timeLeft % 60).toString().padStart(2, '0');
+            const timerDisplay = document.getElementById("timer");
+            if (timerDisplay) timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+    </script>
 </body>
 </html>
