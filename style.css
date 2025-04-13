@@ -1,14 +1,14 @@
 /* style.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
+    background-color: #e0f7fa; /* Light Sky Color */
     color: #333;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #004d99;
+    background-color: #0288d1; /* Sky blue */
     color: white;
     padding: 20px;
     text-align: center;
@@ -20,6 +20,7 @@ h1 {
 
 .tagline {
     font-size: 1.2em;
+    font-weight: 300;
 }
 
 .dashboard {
@@ -34,7 +35,7 @@ h1 {
 button {
     padding: 10px 20px;
     font-size: 1.2em;
-    background-color: #004d99;
+    background-color: #0288d1; /* Sky blue */
     color: white;
     border: none;
     border-radius: 5px;
@@ -42,13 +43,13 @@ button {
 }
 
 button:hover {
-    background-color: #003366;
+    background-color: #0277bd; /* Darker sky blue */
 }
 
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #004d99;
+    background-color: #0288d1; /* Sky blue */
     color: white;
     position: absolute;
     bottom: 0;
