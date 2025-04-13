@@ -302,3 +302,72 @@
     font-size: 0.9rem;
   }
 </style>
+<!-- Mood Tracker Section -->
+<section id="mood" class="mood-tracker">
+  <h2>Daily Mood & Wellness</h2>
+  <div class="mood-options">
+    <button onclick="logMood('😊')">😊 Happy</button>
+    <button onclick="logMood('😌')">😌 Okay</button>
+    <button onclick="logMood('😖')">😖 Stressed</button>
+    <button onclick="logMood('😴')">😴 Tired</button>
+  </div>
+  <div id="moodLog"></div>
+</section>
+
+<script>
+  function logMood(emoji) {
+    const today = new Date().toLocaleDateString();
+    const moodEntry = `${today}: ${emoji}`;
+    const log = document.getElementById("moodLog");
+
+    const entry = document.createElement("div");
+    entry.className = "mood-entry";
+    entry.innerText = moodEntry;
+    log.prepend(entry);
+
+    alert(`Mood logged as: ${emoji}`);
+  }
+
+  // Hydration & Stretch Reminder every hour
+  setInterval(() => {
+    alert("Hydration Check! Drink some water and stretch your spine like a yoga pro.");
+  }, 60 * 60 * 1000); // Every 1 hour
+</script>
+
+<style>
+  .mood-tracker {
+    background: #eaf7ff;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+  }
+
+  .mood-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .mood-options button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #cdeeff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s ease-in-out;
+  }
+
+  .mood-options button:hover {
+    background: #aee3ff;
+  }
+
+  .mood-entry {
+    background: #ffffff;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+</style>
