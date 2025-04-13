@@ -71,3 +71,19 @@ footer {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     font-weight: bold;
 }
+.custom-time {
+    margin-bottom: 10px;
+}
+
+.custom-time label {
+    margin: 0 10px;
+    font-size: 0.9em;
+}
+
+.custom-time input {
+    width: 50px;
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
