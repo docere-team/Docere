@@ -134,14 +134,6 @@
   onAuthStateChanged(auth, user => {
     if (user) {
       const uid = user.uid;
-
-      // onAuthStateChanged(auth, user => {
-//   if (user) {
-      trackerSection.style.display = 'block';
-//   } else {
-//     loginMessage.style.display = 'block';
-//   }
-// });
       
       // Attendance Form Logic
       document.getElementById("attendanceForm").addEventListener("submit", async (e) => {
@@ -203,10 +195,7 @@
         }
       });
 
-    } else {
-      alert("Please log in to access the tracker.");
-    }
-  });
+
 </script>
 
 <!-- HTML Tracker Section -->
