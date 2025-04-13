@@ -110,6 +110,150 @@
     <div id="motivation" class="quote-popup"></div>
   </section>
 
+  <!-- Firebase SDKs -->
+<script type="module">
+  // Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
+    authDomain: "docere-16a25.firebaseapp.com",
+    projectId: "docere-16a25",
+    storageBucket: "docere-16a25.appspot.com",
+    messagingSenderId: "25249080743",
+    appId: "1:25249080743:web:238adc1be73839fa740282"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Wait for user to be logged in
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      const uid = user.uid;
+
+      // Attendance Form Logic
+      document.getElementById("attendanceForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const subject = document.getElementById("subject").value;
+        const theoryTotal = +document.getElementById("theoryTotal").value;
+        const theoryAttended = +document.getElementById("theoryAttended").value;
+        const practicalTotal = +document.getElementById("practicalTotal").value;
+        const practicalAttended = +document.getElementById("practicalAttended").value;
+
+        const theoryPercent = ((theoryAttended / theoryTotal) * 100).toFixed(1);
+        const practicalPercent = ((practicalAttended / practicalTotal) * 100).toFixed(1);
+        const status = (theoryPercent < 75 || practicalPercent < 80) ? "Alert!" : "Good";
+
+        // Save to Firestore
+        await addDoc(collection(db, "users", uid, "attendance"), {
+          subject,
+          theoryPercent,
+          practicalPercent,
+          status
+        });
+
+        // Append to Table
+        const row = document.getElementById("attendanceTable").insertRow();
+        row.innerHTML = `<td>${subject}</td><td>${theoryPercent}%</td><td>${practicalPercent}%</td><td style="color:${status === "Alert!" ? "red" : "green"};">${status}</td>`;
+        e.target.reset();
+      });
+
+      // Ward Duty Form Logic
+      document.getElementById("wardDutyForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const dutyDate = document.getElementById("dutyDate").value;
+        const startTime = document.getElementById("startTime").value;
+        const endTime = document.getElementById("endTime").value;
+        const department = document.getElementById("department").value;
+        const dutyType = document.getElementById("dutyType").value;
+        const consultant = document.getElementById("consultant").value;
+        const notes = document.getElementById("notes").value;
+
+        await addDoc(collection(db, "users", uid, "wardDuties"), {
+          dutyDate,
+          startTime,
+          endTime,
+          department,
+          dutyType,
+          consultant,
+          notes
+        });
+
+        const row = document.getElementById("dutyTable").insertRow();
+        row.innerHTML = `<td>${dutyDate}</td><td>${startTime} - ${endTime}</td><td>${department}</td><td>${dutyType}</td><td>${consultant}</td><td>${notes}</td>`;
+        e.target.reset();
+      });
+
+      // Reset Ward Duty Table (clears frontend only)
+      document.getElementById("resetWard").addEventListener("click", () => {
+        if (confirm("Clear all displayed ward duties?")) {
+          document.getElementById("dutyTable").innerHTML = "";
+        }
+      });
+
+    } else {
+      alert("Please log in to access the tracker.");
+    }
+  });
+</script>
+
+<!-- HTML Tracker Section -->
+<section id="attendance-ward-tracker" style="max-width:800px;margin:30px auto;font-family:sans-serif;">
+  <h2 style="text-align:center;color:#0077cc;">Attendance & Ward Duty Tracker</h2>
+
+  <!-- Attendance Form -->
+  <div style="border:1px solid #ccc;padding:20px;margin-bottom:30px;border-radius:10px;">
+    <h3>Theory & Practical Attendance</h3>
+    <form id="attendanceForm" style="display:flex;flex-direction:column;gap:10px;">
+      <input type="text" id="subject" placeholder="Subject Name" required>
+      <input type="number" id="theoryTotal" placeholder="Total Theory Classes" required>
+      <input type="number" id="theoryAttended" placeholder="Theory Classes Attended" required>
+      <input type="number" id="practicalTotal" placeholder="Total Practical Classes" required>
+      <input type="number" id="practicalAttended" placeholder="Practical Classes Attended" required>
+      <button type="submit" style="background:#0077cc;color:white;padding:10px;border:none;border-radius:5px;">Add Attendance</button>
+    </form>
+    <div style="margin-top:20px;">
+      <h4>Attendance Records</h4>
+      <table border="1" cellpadding="10" style="width:100%;border-collapse:collapse;">
+        <thead><tr><th>Subject</th><th>Theory %</th><th>Practical %</th><th>Status</th></tr></thead>
+        <tbody id="attendanceTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Ward Duty Form -->
+  <div style="border:1px solid #ccc;padding:20px;border-radius:10px;">
+    <h3>Ward Duty Logbook</h3>
+    <form id="wardDutyForm" style="display:flex;flex-direction:column;gap:10px;">
+      <input type="date" id="dutyDate" required>
+      <input type="time" id="startTime" required>
+      <input type="time" id="endTime" required>
+      <input type="text" id="department" placeholder="Department/Unit" required>
+      <select id="dutyType" required>
+        <option value="">Select Duty Type</option>
+        <option value="OPD">OPD</option>
+        <option value="Emergency">Emergency</option>
+        <option value="OT">OT</option>
+        <option value="General">General Ward</option>
+      </select>
+      <input type="text" id="consultant" placeholder="Consultant In-charge">
+      <textarea id="notes" placeholder="Personal notes or clinical experiences..." rows="3"></textarea>
+      <button type="submit" style="background:#28a745;color:white;padding:10px;border:none;border-radius:5px;">Add Duty</button>
+      <button type="button" id="resetWard" style="background:#dc3545;color:white;padding:10px;border:none;border-radius:5px;">Reset Display</button>
+    </form>
+    <div style="margin-top:20px;">
+      <h4>Logged Duties</h4>
+      <table border="1" cellpadding="10" style="width:100%;border-collapse:collapse;">
+        <thead><tr><th>Date</th><th>Time</th><th>Dept</th><th>Type</th><th>Consultant</th><th>Notes</th></tr></thead>
+        <tbody id="dutyTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
   <section id="timer" class="timer-container">
     <h2>Pomodoro Timer</h2>
     <div>
