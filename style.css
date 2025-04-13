@@ -1,169 +1,56 @@
+/* style.css */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f0f8ff;
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-.navbar {
-  background: #0099cc;
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+header {
+    background-color: #004d99;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 15px;
+h1 {
+    font-size: 2.5em;
 }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
+.tagline {
+    font-size: 1.2em;
 }
 
-.main-content {
-  text-align: center;
-  margin-top: 50px;
-}
-
-button {
-  padding: 12px 24px;
-  background-color: #0099cc;
-  color: white;
-  border: none;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0077b3;
-}
-
-.popup {
-  display: none;
-  position: fixed;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff5c2;
-  padding: 16px 24px;
-  border: 2px solid #0099cc;
-  border-radius: 12px;
-  font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-.section {
-  margin: 20px;
-  padding: 20px;
-  background: #f0f8ff;
-  border-radius: 10px;
-  box-shadow: 0 0 8px #ccc;
-}
-
-.calendar-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-  align-items: center;
-}
-
-.calendar-controls label,
-.calendar-controls input,
-.calendar-controls select,
-.calendar-controls button {
-  font-size: 1rem;
-}
-
-#ward-calendar {
-  padding: 10px;
-  border-top: 2px solid #2196f3;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.duty-entry {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #0099cc;
-  border-radius: 8px;
-  background: #e6f7ff;
-}
-
-.duty-entry strong {
-  font-size: 1.2rem;
-}
-
-#attendance-list div {
-  margin: 5px 0;
-}
-
-#ward-attendance-tracker .manual-mark {
-  margin-top: 20px;
-}
-
-#ward-progress-bar {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-#progress-bar-inner {
-  height: 30px;
-  width: 0;
-  background-color: #4caf50;
-  border-radius: 5px;
+.dashboard {
+    padding: 20px;
+    background-color: white;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 button {
-  font-size: 1rem;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #004d99;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: #45a049;
+    background-color: #003366;
 }
 
-button:active {
-  background-color: #388e3c;
-}
-/* Pop-up styles */
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  display: none; /* Initially hidden */
-  z-index: 1000;
-}
-
-/* Progress bar styles */
-#ward-progress-bar {
-  width: 100%;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-#progress-bar-inner {
-  height: 20px;
-  width: 0; /* Start with 0% */
-  background-color: #4caf50;
-  border-radius: 5px;
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #004d99;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
