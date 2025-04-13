@@ -924,3 +924,172 @@
     background-color: #013f5c;
   }
 </style>
+<!-- Mnemonics Vault Section -->
+<section id="mnemonics-vault" class="mnemonics-vault">
+  <h2>Mnemonics Vault</h2>
+
+  <!-- Input Section -->
+  <div class="mnemonic-input">
+    <label for="mnemonicTopic">Topic:</label>
+    <input type="text" id="mnemonicTopic" placeholder="Enter topic" required>
+
+    <label for="mnemonicText">Mnemonic:</label>
+    <textarea id="mnemonicText" placeholder="Enter mnemonic" rows="4" required></textarea>
+
+    <button onclick="addMnemonic()">Add Mnemonic</button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="mnemonic-search">
+    <label for="mnemonicSearch">Search Mnemonics:</label>
+    <input type="text" id="mnemonicSearch" placeholder="Search by topic or keyword" oninput="searchMnemonics()">
+  </div>
+
+  <!-- Display Mnemonics -->
+  <div class="mnemonic-list">
+    <h3>My Mnemonics</h3>
+    <ul id="mnemonicList"></ul>
+  </div>
+</section>
+
+<script>
+  let mnemonics = [];
+
+  // Function to add a mnemonic
+  function addMnemonic() {
+    const topic = document.getElementById('mnemonicTopic').value;
+    const mnemonicText = document.getElementById('mnemonicText').value;
+
+    if (topic && mnemonicText) {
+      mnemonics.push({ topic, mnemonicText });
+      updateMnemonicList();
+      document.getElementById('mnemonicTopic').value = '';
+      document.getElementById('mnemonicText').value = '';
+    }
+  }
+
+  // Function to update the mnemonic list
+  function updateMnemonicList() {
+    const mnemonicList = document.getElementById('mnemonicList');
+    mnemonicList.innerHTML = '';
+    mnemonics.forEach((mnemonic, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${mnemonic.topic}</strong>: ${mnemonic.mnemonicText}<br>
+        <button onclick="editMnemonic(${index})">Edit</button>
+        <button onclick="deleteMnemonic(${index})">Delete</button>
+      `;
+      mnemonicList.appendChild(li);
+    });
+  }
+
+  // Function to edit a mnemonic
+  function editMnemonic(index) {
+    const mnemonic = mnemonics[index];
+    document.getElementById('mnemonicTopic').value = mnemonic.topic;
+    document.getElementById('mnemonicText').value = mnemonic.mnemonicText;
+    mnemonics.splice(index, 1);
+    updateMnemonicList();
+  }
+
+  // Function to delete a mnemonic
+  function deleteMnemonic(index) {
+    mnemonics.splice(index, 1);
+    updateMnemonicList();
+  }
+
+  // Function to search mnemonics
+  function searchMnemonics() {
+    const searchQuery = document.getElementById('mnemonicSearch').value.toLowerCase();
+    const filteredMnemonics = mnemonics.filter(mnemonic =>
+      mnemonic.topic.toLowerCase().includes(searchQuery) || mnemonic.mnemonicText.toLowerCase().includes(searchQuery)
+    );
+    updateFilteredMnemonicList(filteredMnemonics);
+  }
+
+  // Function to update the mnemonic list based on search results
+  function updateFilteredMnemonicList(filteredMnemonics) {
+    const mnemonicList = document.getElementById('mnemonicList');
+    mnemonicList.innerHTML = '';
+    filteredMnemonics.forEach((mnemonic, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${mnemonic.topic}</strong>: ${mnemonic.mnemonicText}<br>
+        <button onclick="editMnemonic(${index})">Edit</button>
+        <button onclick="deleteMnemonic(${index})">Delete</button>
+      `;
+      mnemonicList.appendChild(li);
+    });
+  }
+</script>
+
+<style>
+  .mnemonics-vault {
+    background: #f0f8ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .mnemonics-vault h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .mnemonic-input {
+    margin-bottom: 1rem;
+  }
+
+  .mnemonic-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .mnemonic-input input, .mnemonic-input textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .mnemonic-search {
+    margin-bottom: 1.5rem;
+  }
+
+  .mnemonic-search input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .mnemonic-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .mnemonic-list li {
+    background: #fff;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .mnemonic-list button {
+    background-color: #015e8c;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .mnemonic-list button:hover {
+    background-color: #013f5c;
+  }
+</style>
