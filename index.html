@@ -194,3 +194,111 @@
   </script>
 </body>
 </html>
+<!-- Continue from the previous code: Add below the Pomodoro section -->
+<section id="study" class="study-container">
+  <h2>Subject Progress Tracker</h2>
+  <div id="subjectList"></div>
+</section>
+
+<script>
+  const subjects = [
+    "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology",
+    "Microbiology", "Forensic Medicine", "Community Medicine", "ENT",
+    "Ophthalmology", "Medicine", "Surgery", "Obstetrics", "Gynaecology",
+    "Pediatrics", "Orthopedics", "Psychiatry", "Dermatology", "Radiology"
+  ];
+
+  const topicsPerSubject = {
+    "Anatomy": ["Head & Neck", "Upper Limb", "Lower Limb", "Thorax"],
+    "Physiology": ["Blood", "Cardiovascular", "Respiratory", "Nervous System"],
+    "Biochemistry": ["Proteins", "Enzymes", "Carbohydrates", "Genetics"],
+    // Add 3-4 topics for each or keep sample if expanding later
+  };
+
+  function renderSubjects() {
+    const container = document.getElementById("subjectList");
+    subjects.forEach(sub => {
+      const subjectBox = document.createElement("div");
+      subjectBox.className = "subject-box";
+
+      const heading = document.createElement("div");
+      heading.className = "subject-header";
+      heading.innerText = sub;
+      heading.onclick = () => box.classList.toggle("open");
+
+      const box = document.createElement("div");
+      box.className = "subject-content";
+
+      const topics = topicsPerSubject[sub] || ["Topic 1", "Topic 2", "Topic 3"];
+      topics.forEach(topic => {
+        const item = document.createElement("div");
+        item.className = "topic-item";
+        item.innerHTML = `
+          <label><input type="checkbox" onchange="updateProgress()"> ${topic}</label>
+          <input type="text" placeholder="Note" class="note-field" />
+        `;
+        box.appendChild(item);
+      });
+
+      subjectBox.appendChild(heading);
+      subjectBox.appendChild(box);
+      container.appendChild(subjectBox);
+    });
+  }
+
+  function updateProgress() {
+    // Future: Add progress bar update
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSubjects();
+  });
+</script>
+
+<style>
+  .study-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .subject-box {
+    margin-bottom: 1rem;
+    border: 1px solid #b2dfff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .subject-header {
+    background: #d9f3ff;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .subject-content {
+    display: none;
+    padding: 1rem;
+    background: #f9fdff;
+  }
+
+  .subject-box.open .subject-content {
+    display: block;
+  }
+
+  .topic-item {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .note-field {
+    width: 50%;
+    padding: 0.3rem;
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+  }
+</style>
