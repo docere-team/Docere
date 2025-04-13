@@ -635,3 +635,149 @@
     font-size: 1.1rem;
   }
 </style>
+<!-- Clinical Case Logbook Section -->
+<section id="clinical-cases" class="clinical-case-logbook">
+  <h2>Clinical Case Logbook</h2>
+
+  <!-- Input Section -->
+  <div class="case-input">
+    <label>Case Title:</label>
+    <input type="text" id="caseTitleInput" placeholder="Enter case title" required>
+
+    <label>Diagnosis:</label>
+    <input type="text" id="diagnosisInput" placeholder="Enter diagnosis" required>
+
+    <label>Treatment Plan:</label>
+    <textarea id="treatmentPlanInput" placeholder="Enter treatment plan" rows="4" required></textarea>
+
+    <label>Outcome:</label>
+    <input type="text" id="outcomeInput" placeholder="Enter outcome" required>
+
+    <label>Reflection Notes:</label>
+    <textarea id="reflectionNotesInput" placeholder="Enter reflection notes" rows="4"></textarea>
+
+    <button onclick="addCase()">Add Case</button>
+  </div>
+
+  <div class="case-list">
+    <h3>My Clinical Cases</h3>
+    <ul id="caseList"></ul>
+  </div>
+</section>
+
+<script>
+  let clinicalCases = [];
+
+  // Function to add a clinical case
+  function addCase() {
+    const title = document.getElementById('caseTitleInput').value;
+    const diagnosis = document.getElementById('diagnosisInput').value;
+    const treatmentPlan = document.getElementById('treatmentPlanInput').value;
+    const outcome = document.getElementById('outcomeInput').value;
+    const reflectionNotes = document.getElementById('reflectionNotesInput').value;
+
+    if (title && diagnosis && treatmentPlan && outcome) {
+      clinicalCases.push({ title, diagnosis, treatmentPlan, outcome, reflectionNotes });
+      updateCaseList();
+      document.getElementById('caseTitleInput').value = '';
+      document.getElementById('diagnosisInput').value = '';
+      document.getElementById('treatmentPlanInput').value = '';
+      document.getElementById('outcomeInput').value = '';
+      document.getElementById('reflectionNotesInput').value = '';
+    }
+  }
+
+  // Function to update the case list
+  function updateCaseList() {
+    const caseList = document.getElementById('caseList');
+    caseList.innerHTML = '';
+    clinicalCases.forEach((clinicalCase, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${clinicalCase.title}</strong><br>
+        Diagnosis: ${clinicalCase.diagnosis}<br>
+        Treatment Plan: ${clinicalCase.treatmentPlan}<br>
+        Outcome: ${clinicalCase.outcome}<br>
+        Reflection Notes: ${clinicalCase.reflectionNotes || 'No reflection notes'}
+        <button onclick="editCase(${index})">Edit</button>
+      `;
+      caseList.appendChild(li);
+    });
+  }
+
+  // Function to edit a clinical case
+  function editCase(index) {
+    const clinicalCase = clinicalCases[index];
+    document.getElementById('caseTitleInput').value = clinicalCase.title;
+    document.getElementById('diagnosisInput').value = clinicalCase.diagnosis;
+    document.getElementById('treatmentPlanInput').value = clinicalCase.treatmentPlan;
+    document.getElementById('outcomeInput').value = clinicalCase.outcome;
+    document.getElementById('reflectionNotesInput').value = clinicalCase.reflectionNotes;
+    clinicalCases.splice(index, 1);
+    updateCaseList();
+  }
+</script>
+
+<style>
+  .clinical-case-logbook {
+    background: #e0f5ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .clinical-case-logbook h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .case-input {
+    margin-bottom: 1rem;
+  }
+
+  .case-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .case-input input, .case-input textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .case-list {
+    margin-top: 1.5rem;
+  }
+
+  .case-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .case-list li {
+    background: #fff;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .case-list button {
+    background-color: #015e8c;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .case-list button:hover {
+    background-color: #013f5c;
+  }
+</style>
