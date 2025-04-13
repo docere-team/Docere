@@ -41,3 +41,47 @@ document.addEventListener('DOMContentLoaded', () => {
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
   document.getElementById("motivation").innerText = quote;
 });
+let pomoInterval;
+let timeLeft = 0;
+let isRunning = false;
+
+function startTimer() {
+    if (isRunning) return;
+
+    const focusMinutes = parseInt(document.getElementById("focusInput").value) || 25;
+    timeLeft = focusMinutes * 60;
+    isRunning = true;
+
+    pomoInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(pomoInterval);
+            isRunning = false;
+
+            const breakMinutes = parseInt(document.getElementById("breakInput").value) || 5;
+            timeLeft = breakMinutes * 60;
+            alert("Break time! Reset or go again?");
+            updateTimerDisplay();
+            return;
+        }
+        timeLeft--;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(pomoInterval);
+    isRunning = false;
+    const focusMinutes = parseInt(document.getElementById("focusInput").value) || 25;
+    timeLeft = focusMinutes * 60;
+    updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const seconds = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    resetTimer();
+});
