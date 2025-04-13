@@ -781,3 +781,146 @@
     background-color: #013f5c;
   }
 </style>
+<!-- Practical/Viva Tracker Section -->
+<section id="practical-viva-tracker" class="practical-viva-tracker">
+  <h2>Practical/Viva Tracker</h2>
+
+  <!-- Input Section -->
+  <div class="practical-input">
+    <label>Session Title:</label>
+    <input type="text" id="sessionTitleInput" placeholder="Enter session title" required>
+
+    <label>Topics Covered:</label>
+    <textarea id="topicsCoveredInput" placeholder="Enter topics covered" rows="4" required></textarea>
+
+    <label>Preparation Status:</label>
+    <select id="preparationStatusInput">
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+
+    <label>Feedback/Reflection:</label>
+    <textarea id="feedbackInput" placeholder="Enter feedback or reflection" rows="4"></textarea>
+
+    <button onclick="addSession()">Add Session</button>
+  </div>
+
+  <div class="session-list">
+    <h3>My Practical/Viva Sessions</h3>
+    <ul id="sessionList"></ul>
+  </div>
+</section>
+
+<script>
+  let practicalSessions = [];
+
+  // Function to add a practical/viva session
+  function addSession() {
+    const title = document.getElementById('sessionTitleInput').value;
+    const topicsCovered = document.getElementById('topicsCoveredInput').value;
+    const preparationStatus = document.getElementById('preparationStatusInput').value;
+    const feedback = document.getElementById('feedbackInput').value;
+
+    if (title && topicsCovered) {
+      practicalSessions.push({ title, topicsCovered, preparationStatus, feedback });
+      updateSessionList();
+      document.getElementById('sessionTitleInput').value = '';
+      document.getElementById('topicsCoveredInput').value = '';
+      document.getElementById('preparationStatusInput').value = 'Not Started';
+      document.getElementById('feedbackInput').value = '';
+    }
+  }
+
+  // Function to update the session list
+  function updateSessionList() {
+    const sessionList = document.getElementById('sessionList');
+    sessionList.innerHTML = '';
+    practicalSessions.forEach((session, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${session.title}</strong><br>
+        Topics Covered: ${session.topicsCovered}<br>
+        Preparation Status: ${session.preparationStatus}<br>
+        Feedback: ${session.feedback || 'No feedback'}
+        <button onclick="editSession(${index})">Edit</button>
+      `;
+      sessionList.appendChild(li);
+    });
+  }
+
+  // Function to edit a practical/viva session
+  function editSession(index) {
+    const session = practicalSessions[index];
+    document.getElementById('sessionTitleInput').value = session.title;
+    document.getElementById('topicsCoveredInput').value = session.topicsCovered;
+    document.getElementById('preparationStatusInput').value = session.preparationStatus;
+    document.getElementById('feedbackInput').value = session.feedback;
+    practicalSessions.splice(index, 1);
+    updateSessionList();
+  }
+</script>
+
+<style>
+  .practical-viva-tracker {
+    background: #e0f5ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .practical-viva-tracker h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .practical-input {
+    margin-bottom: 1rem;
+  }
+
+  .practical-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .practical-input input, .practical-input textarea, .practical-input select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .session-list {
+    margin-top: 1.5rem;
+  }
+
+  .session-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .session-list li {
+    background: #fff;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .session-list button {
+    background-color: #015e8c;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .session-list button:hover {
+    background-color: #013f5c;
+  }
+</style>
