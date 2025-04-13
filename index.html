@@ -1093,3 +1093,481 @@
     background-color: #013f5c;
   }
 </style>
+<!-- Quick Drug Reference Section -->
+<section id="drug-reference" class="drug-reference">
+  <h2>Quick Drug Reference</h2>
+
+  <!-- Search Section -->
+  <div class="drug-search">
+    <label for="drugSearch">Search Drug:</label>
+    <input type="text" id="drugSearch" placeholder="Enter drug name" oninput="searchDrugs()">
+  </div>
+
+  <!-- Drug Details -->
+  <div id="drugDetails" class="drug-details">
+    <h3>Drug Information</h3>
+    <p id="drugInfo">Search for a drug to get details.</p>
+    <button id="saveDrugButton" onclick="saveDrug()" style="display:none;">Save Drug</button>
+  </div>
+
+  <!-- Saved Drugs -->
+  <div class="saved-drugs">
+    <h3>Saved Drugs</h3>
+    <ul id="savedDrugList"></ul>
+  </div>
+</section>
+
+<script>
+// Drug data (for demo purposes, in a real-world application this would be dynamic)
+const drugData = [
+  { name: 'Paracetamol', category: 'Analgesic', usage: 'Pain relief', dosage: '500mg every 4-6 hours', sideEffects: 'Nausea, dizziness' },
+  { name: 'Amoxicillin', category: 'Antibiotic', usage: 'Bacterial infections', dosage: '500mg every 8 hours', sideEffects: 'Rash, diarrhea' },
+  { name: 'Metformin', category: 'Antidiabetic', usage: 'Type 2 diabetes', dosage: '500mg once a day', sideEffects: 'Nausea, abdominal discomfort' }
+];
+
+let savedDrugs = [];
+
+// Function to search drugs
+function searchDrugs() {
+  const searchQuery = document.getElementById('drugSearch').value.toLowerCase();
+  const drugInfo = document.getElementById('drugInfo');
+  const saveButton = document.getElementById('saveDrugButton');
+  
+  const matchedDrug = drugData.find(drug => drug.name.toLowerCase().includes(searchQuery));
+  
+  if (matchedDrug) {
+    drugInfo.innerHTML = `
+      <strong>Name:</strong> ${matchedDrug.name}<br>
+      <strong>Category:</strong> ${matchedDrug.category}<br>
+      <strong>Usage:</strong> ${matchedDrug.usage}<br>
+      <strong>Dosage:</strong> ${matchedDrug.dosage}<br>
+      <strong>Side Effects:</strong> ${matchedDrug.sideEffects}
+    `;
+    saveButton.style.display = 'inline-block';
+    saveButton.dataset.drug = matchedDrug.name;  // Store the drug's name to save it later
+  } else {
+    drugInfo.innerText = 'No drug found. Try another search.';
+    saveButton.style.display = 'none';
+  }
+}
+
+// Function to save a drug
+function saveDrug() {
+  const drugName = document.getElementById('saveDrugButton').dataset.drug;
+  if (!savedDrugs.includes(drugName)) {
+    savedDrugs.push(drugName);
+    updateSavedDrugs();
+  }
+}
+
+// Function to update the saved drugs list
+function updateSavedDrugs() {
+  const savedDrugList = document.getElementById('savedDrugList');
+  savedDrugList.innerHTML = '';
+  savedDrugs.forEach(drug => {
+    const li = document.createElement('li');
+    li.innerText = drug;
+    savedDrugList.appendChild(li);
+  });
+}
+</script>
+
+<style>
+  .drug-reference {
+    background: #f0f8ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .drug-reference h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .drug-search {
+    margin-bottom: 1.5rem;
+  }
+
+  .drug-search input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .drug-details {
+    margin-bottom: 1.5rem;
+  }
+
+  .drug-details p {
+    font-size: 1.1rem;
+  }
+
+  .saved-drugs ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .saved-drugs li {
+    background: #fff;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .saved-drugs button {
+    background-color: #015e8c;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .saved-drugs button:hover {
+    background-color: #013f5c;
+  }
+</style>
+<!-- Lecture Recordings Organizer -->
+<section id="lecture-recorder" class="lecture-recorder">
+  <h2>Lecture Recordings Organizer</h2>
+  
+  <!-- Upload Section -->
+  <div class="upload-section">
+    <label for="lectureInput">Upload Audio:</label>
+    <input type="file" id="lectureInput" accept="audio/*" onchange="handleLectureUpload()">
+  </div>
+
+  <!-- Lecture List -->
+  <div id="lectureList" class="lecture-list">
+    <p>No lectures uploaded yet.</p>
+  </div>
+</section>
+
+<script>
+  const lectureList = document.getElementById('lectureList');
+  let lectures = [];
+
+  function handleLectureUpload() {
+    const input = document.getElementById('lectureInput');
+    const file = input.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const lecture = {
+          name: file.name,
+          url: e.target.result,
+          tag: prompt("Enter a subject or topic for this lecture:")
+        };
+        lectures.push(lecture);
+        renderLectureList();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function renderLectureList() {
+    lectureList.innerHTML = '';
+    if (lectures.length === 0) {
+      lectureList.innerHTML = '<p>No lectures uploaded yet.</p>';
+      return;
+    }
+
+    lectures.forEach((lecture, index) => {
+      const container = document.createElement('div');
+      container.className = 'lecture-entry';
+      container.innerHTML = `
+        <strong>${lecture.name}</strong> <br>
+        <small>Tag: ${lecture.tag}</small><br>
+        <audio controls src="${lecture.url}"></audio><br>
+        <button onclick="deleteLecture(${index})">Delete</button>
+        <button onclick="retagLecture(${index})">Retag</button>
+      `;
+      lectureList.appendChild(container);
+    });
+  }
+
+  function deleteLecture(index) {
+    lectures.splice(index, 1);
+    renderLectureList();
+  }
+
+  function retagLecture(index) {
+    const newTag = prompt("Enter new tag for this lecture:");
+    if (newTag) {
+      lectures[index].tag = newTag;
+      renderLectureList();
+    }
+  }
+</script>
+
+<style>
+  .lecture-recorder {
+    background: #e6f4ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .lecture-recorder h2 {
+    color: #015e8c;
+    margin-bottom: 1rem;
+  }
+
+  .upload-section input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .lecture-entry {
+    background: #fff;
+    border: 1px solid #cce0f7;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .lecture-entry button {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #015e8c;
+    color: white;
+    cursor: pointer;
+  }
+
+  .lecture-entry button:hover {
+    background-color: #013f5c;
+  }
+</style>
+<!-- Clinical Reflection Diary -->
+<section id="clinical-diary" class="clinical-diary">
+  <h2>Clinical Reflection Diary</h2>
+
+  <div class="diary-input">
+    <textarea id="diaryText" placeholder="Write your reflection..."></textarea>
+    <button onclick="addReflection()">Add Entry</button>
+  </div>
+
+  <div id="reflectionList" class="reflection-list">
+    <p>No reflections yet.</p>
+  </div>
+</section>
+
+<script>
+  let reflections = [];
+
+  function addReflection() {
+    const text = document.getElementById('diaryText').value.trim();
+    if (!text) return alert("Please write something first!");
+
+    const entry = {
+      date: new Date().toLocaleString(),
+      content: text
+    };
+
+    reflections.unshift(entry);
+    document.getElementById('diaryText').value = '';
+    renderReflections();
+  }
+
+  function renderReflections() {
+    const list = document.getElementById('reflectionList');
+    list.innerHTML = '';
+
+    if (reflections.length === 0) {
+      list.innerHTML = '<p>No reflections yet.</p>';
+      return;
+    }
+
+    reflections.forEach((entry, index) => {
+      const div = document.createElement('div');
+      div.className = 'entry';
+      div.innerHTML = `
+        <small>${entry.date}</small><br>
+        <p>${entry.content}</p>
+        <button onclick="deleteReflection(${index})">Delete</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function deleteReflection(index) {
+    reflections.splice(index, 1);
+    renderReflections();
+  }
+</script>
+
+<style>
+  .clinical-diary {
+    background: #e6f4ff;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .clinical-diary h2 {
+    color: #015e8c;
+    margin-bottom: 1rem;
+  }
+
+  .diary-input textarea {
+    width: 100%;
+    height: 100px;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    margin-bottom: 1rem;
+  }
+
+  .diary-input button {
+    background-color: #015e8c;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .reflection-list .entry {
+    background: #ffffff;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .reflection-list .entry button {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+
+  .reflection-list .entry button:hover {
+    background: #b71c1c;
+  }
+</style>
+<!-- Exam Countdown Section -->
+<section id="exam-countdown" class="exam-countdown">
+  <h2>Exam Countdown</h2>
+
+  <div class="exam-form">
+    <input type="text" id="examName" placeholder="Exam Name (e.g., Pathology Internal)">
+    <input type="date" id="examDate">
+    <button onclick="addExam()">Add Exam</button>
+  </div>
+
+  <div id="examList" class="exam-list">
+    <p>No exams added yet.</p>
+  </div>
+</section>
+
+<script>
+  let exams = [];
+
+  function addExam() {
+    const name = document.getElementById('examName').value.trim();
+    const date = document.getElementById('examDate').value;
+
+    if (!name || !date) {
+      alert("Both fields are required!");
+      return;
+    }
+
+    const exam = { name, date };
+    exams.push(exam);
+    document.getElementById('examName').value = '';
+    document.getElementById('examDate').value = '';
+    renderExams();
+  }
+
+  function renderExams() {
+    const container = document.getElementById('examList');
+    container.innerHTML = '';
+
+    if (exams.length === 0) {
+      container.innerHTML = '<p>No exams added yet.</p>';
+      return;
+    }
+
+    exams.forEach((exam, index) => {
+      const daysLeft = Math.ceil((new Date(exam.date) - new Date()) / (1000 * 60 * 60 * 24));
+      const div = document.createElement('div');
+      div.className = 'exam-entry';
+      div.innerHTML = `
+        <strong>${exam.name}</strong><br>
+        <span>${exam.date}</span><br>
+        <span>${daysLeft} days remaining</span><br>
+        <button onclick="deleteExam(${index})">Delete</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function deleteExam(index) {
+    exams.splice(index, 1);
+    renderExams();
+  }
+</script>
+
+<style>
+  .exam-countdown {
+    background-color: #e3f2fd;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .exam-countdown h2 {
+    color: #0277bd;
+    margin-bottom: 1rem;
+  }
+
+  .exam-form input {
+    padding: 0.5rem;
+    margin: 0.2rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .exam-form button {
+    background-color: #0277bd;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .exam-list .exam-entry {
+    background: #ffffff;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .exam-list .exam-entry button {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+</style>
