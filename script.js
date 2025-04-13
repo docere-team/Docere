@@ -29,3 +29,15 @@ firebase.auth().onAuthStateChanged(user => {
         document.getElementById('attendance').innerText = "Please log in.";
     }
 });
+const quotes = [
+  "Even your mitochondria believe in you.",
+  "Cram like your grades depend on it. Oh wait, they do.",
+  "Future Dr. Loading… Stay hydrated!",
+  "Anatomy books fear your memory.",
+  "Coffee: because adulting is hard."
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById("motivation").innerText = quote;
+});
