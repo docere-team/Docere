@@ -1,4 +1,3 @@
-// app.js
 const firebaseConfig = {
     apiKey: "AIzaSyDP-oScHd8G5bMJqjZ15atgQjrwwjdffrg",
     authDomain: "docere-16a25.firebaseapp.com",
@@ -8,11 +7,9 @@ const firebaseConfig = {
     appId: "1:25249080743:web:238adc1be73839fa740282"
 };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Quote Magic
 const quotes = [
     "Even your mitochondria believe in you.",
     "Cram like your grades depend on it. Oh wait, they do.",
@@ -25,15 +22,10 @@ const quotes = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Motivational Quote
     const quote = quotes[Math.floor(Math.random() * quotes.length)];
     const quoteElement = document.getElementById("motivation");
     if (quoteElement) quoteElement.innerText = `"${quote}"`;
 
-    // Initialize Pomodoro
-    resetTimer();
-
-    // Attendance check
     firebase.auth().onAuthStateChanged(user => {
         const attendanceElement = document.getElementById('attendance');
         if (attendanceElement) {
@@ -42,9 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 : "Please log in.";
         }
     });
+
+    resetTimer();
 });
 
-// Study Session Starter
 function startStudySession() {
     if (!auth.currentUser) {
         alert("Login first, hero!");
@@ -53,7 +46,6 @@ function startStudySession() {
     }
 }
 
-// Pomodoro Timer Logic
 let pomoInterval;
 let timeLeft = 0;
 let isRunning = false;
