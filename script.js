@@ -12,35 +12,48 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Simple authentication function
-function startStudySession() {
-    if (!auth.currentUser) {
-        alert("Please log in first.");
-    } else {
-        alert("Starting your study session! Let's go, Doctor!");
-    }
-}
-
-// Check if user is logged in (this will be enhanced later)
-firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-        document.getElementById('attendance').innerText = "Attendance: 90% (Good Job!)";
-    } else {
-        document.getElementById('attendance').innerText = "Please log in.";
-    }
-});
+// Quote Magic
 const quotes = [
-  "Even your mitochondria believe in you.",
-  "Cram like your grades depend on it. Oh wait, they do.",
-  "Future Dr. Loading… Stay hydrated!",
-  "Anatomy books fear your memory.",
-  "Coffee: because adulting is hard."
+    "Even your mitochondria believe in you.",
+    "Cram like your grades depend on it. Oh wait, they do.",
+    "Future Dr. Loading… Stay hydrated!",
+    "Anatomy books fear your memory.",
+    "Coffee: because adulting is hard.",
+    "Today’s pain, tomorrow’s prescription pad.",
+    "Rest when you must, but don't you dare quit.",
+    "This Pomodoro is 100% med-student approved."
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  document.getElementById("motivation").innerText = quote;
+    // Motivational Quote
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    const quoteElement = document.getElementById("motivation");
+    if (quoteElement) quoteElement.innerText = `"${quote}"`;
+
+    // Initialize Pomodoro
+    resetTimer();
+
+    // Attendance check
+    firebase.auth().onAuthStateChanged(user => {
+        const attendanceElement = document.getElementById('attendance');
+        if (attendanceElement) {
+            attendanceElement.innerText = user
+                ? "Attendance: 90% (Good Job!)"
+                : "Please log in.";
+        }
+    });
 });
+
+// Study Session Starter
+function startStudySession() {
+    if (!auth.currentUser) {
+        alert("Login first, hero!");
+    } else {
+        alert("Starting your study session! Channel your inner neuroanatomy beast.");
+    }
+}
+
+// Pomodoro Timer Logic
 let pomoInterval;
 let timeLeft = 0;
 let isRunning = false;
@@ -59,7 +72,8 @@ function startTimer() {
 
             const breakMinutes = parseInt(document.getElementById("breakInput").value) || 5;
             timeLeft = breakMinutes * 60;
-            alert("Break time! Reset or go again?");
+
+            alert("Break time! Stretch, breathe, and avoid Instagram… maybe.");
             updateTimerDisplay();
             return;
         }
@@ -79,9 +93,6 @@ function resetTimer() {
 function updateTimerDisplay() {
     const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
     const seconds = (timeLeft % 60).toString().padStart(2, '0');
-    document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+    const timerDisplay = document.getElementById("timer");
+    if (timerDisplay) timerDisplay.textContent = `${minutes}:${seconds}`;
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    resetTimer();
-});
