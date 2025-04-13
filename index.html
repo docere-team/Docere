@@ -463,3 +463,175 @@
     margin: 0 8px;
   }
 </style>
+<!-- Flashcard Generator Section -->
+<section id="flashcards" class="flashcard-generator">
+  <h2>Flashcard Generator</h2>
+
+  <!-- Input Section -->
+  <div class="flashcard-input">
+    <label>Question:</label>
+    <input type="text" id="questionInput" placeholder="Enter the question" required>
+    <label>Answer:</label>
+    <input type="text" id="answerInput" placeholder="Enter the answer" required>
+    <button onclick="addFlashcard()">Add Flashcard</button>
+  </div>
+
+  <div class="flashcard-list">
+    <h3>My Flashcards</h3>
+    <ul id="flashcardList"></ul>
+  </div>
+
+  <button onclick="startQuiz()">Start Quiz</button>
+  <div id="quizContainer" style="display:none;">
+    <h3>Quiz Mode</h3>
+    <p id="quizQuestion"></p>
+    <input type="text" id="userAnswer" placeholder="Your answer">
+    <button onclick="checkAnswer()">Submit Answer</button>
+    <p id="quizResult"></p>
+  </div>
+</section>
+
+<script>
+  let flashcards = [];
+
+  // Function to add a flashcard
+  function addFlashcard() {
+    const question = document.getElementById('questionInput').value;
+    const answer = document.getElementById('answerInput').value;
+
+    if (question && answer) {
+      flashcards.push({ question, answer });
+      updateFlashcardList();
+      document.getElementById('questionInput').value = '';
+      document.getElementById('answerInput').value = '';
+    }
+  }
+
+  // Function to update flashcard list
+  function updateFlashcardList() {
+    const flashcardList = document.getElementById('flashcardList');
+    flashcardList.innerHTML = '';
+    flashcards.forEach((flashcard, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${flashcard.question} - [Answer hidden]`;
+      flashcardList.appendChild(li);
+    });
+  }
+
+  // Function to start the quiz
+  function startQuiz() {
+    if (flashcards.length === 0) {
+      alert('Please add some flashcards first.');
+      return;
+    }
+    document.getElementById('quizContainer').style.display = 'block';
+    showNextQuestion();
+  }
+
+  let currentQuestionIndex = 0;
+
+  // Function to display the next question
+  function showNextQuestion() {
+    const quizQuestion = document.getElementById('quizQuestion');
+    quizQuestion.textContent = flashcards[currentQuestionIndex].question;
+  }
+
+  // Function to check the user's answer
+  function checkAnswer() {
+    const userAnswer = document.getElementById('userAnswer').value;
+    const correctAnswer = flashcards[currentQuestionIndex].answer;
+    const quizResult = document.getElementById('quizResult');
+    
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      quizResult.textContent = 'Correct!';
+    } else {
+      quizResult.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+    }
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < flashcards.length) {
+      setTimeout(() => {
+        showNextQuestion();
+        document.getElementById('userAnswer').value = '';
+        quizResult.textContent = '';
+      }, 1500);
+    } else {
+      quizResult.textContent += ' Quiz Completed!';
+      document.getElementById('quizContainer').style.display = 'none';
+      currentQuestionIndex = 0;
+    }
+  }
+</script>
+
+<style>
+  .flashcard-generator {
+    background: #e0f5ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .flashcard-generator h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .flashcard-input {
+    margin-bottom: 1rem;
+  }
+
+  .flashcard-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .flashcard-input input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .flashcard-list {
+    margin-bottom: 1rem;
+  }
+
+  .flashcard-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .flashcard-list li {
+    background: #fff;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  #quizContainer {
+    margin-top: 1.5rem;
+  }
+
+  #quizQuestion {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  #userAnswer {
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+
+  #quizResult {
+    font-weight: bold;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+</style>
