@@ -1715,3 +1715,365 @@ function updateSavedDrugs() {
     cursor: pointer;
   }
 </style>
+
+<!-- === DOCSHOT + DOCCIRCLE + HEARTBEAT MODULES WITH FIREBASE === -->
+<section id="docModules" style="display: none; padding: 2rem; background: #f9fcff; font-family: Arial;">
+  <h2 style="text-align: center;">Docere Tools</h2>
+
+  <!-- DOCSHOT -->
+  <div style="margin-bottom: 2rem; border: 1px solid #ccc; border-radius: 10px; padding: 1rem;">
+    <h3>DocShot - Upload & Tag Notes</h3>
+    <input type="file" id="docshotImage" accept="image/*"><br><br>
+    <input type="text" id="docshotSubject" placeholder="Subject (e.g., Anatomy)" style="padding: 0.5rem;">
+    <textarea id="docshotNotes" rows="3" placeholder="Add personal notes..." style="width:100%; margin-top:10px;"></textarea>
+    <button onclick="uploadDocShot()" style="margin-top:10px;">Save Note</button>
+  </div>
+
+  <!-- DOCCIRCLE -->
+  <div style="margin-bottom: 2rem; border: 1px solid #ccc; border-radius: 10px; padding: 1rem;">
+    <h3>DocCircle - Peer Chat Wall</h3>
+    <div id="docCircleChat" style="height: 150px; overflow-y: auto; background: #fff; padding: 10px; border: 1px solid #eee;"></div>
+    <input type="text" id="docCircleMessage" placeholder="Type your message..." style="width: 80%;">
+    <button onclick="sendDocCircleMessage()">Send</button>
+  </div>
+
+  <!-- HEARTBEAT -->
+  <div style="border: 1px solid #ccc; border-radius: 10px; padding: 1rem;">
+    <h3>HeartBeat - Daily Check-In</h3>
+    <label>Mood:</label>
+    <select id="mood"><option>Happy</option><option>Neutral</option><option>Stressed</option></select>
+    <br><label>Energy Level (1-10):</label>
+    <input type="number" id="energy" min="1" max="10"><br>
+    <label>Hydration (cups):</label>
+    <input type="number" id="hydration"><br>
+    <label>Notes:</label><br>
+    <textarea id="heartbeatNotes" rows="2" placeholder="Reflections, symptoms, thoughts..."></textarea><br>
+    <button onclick="saveHeartBeat()">Save Check-In</button>
+  </div>
+</section>
+
+<!-- LOGIN MESSAGE -->
+<section id="loginRequiredMessage" style="text-align: center; padding: 2rem; display: none;">
+  <p>Please log in to access Docere tools.</p>
+</section>
+
+<script>
+  const docModules = document.getElementById('docModules');
+  const loginRequiredMessage = document.getElementById('loginRequiredMessage');
+
+  let currentUser = null;
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      currentUser = user;
+      docModules.style.display = 'block';
+      loginRequiredMessage.style.display = 'none';
+      loadDocCircleMessages(); // Load initial messages
+    } else {
+      docModules.style.display = 'none';
+      loginRequiredMessage.style.display = 'block';
+    }
+  });
+
+  // === DOCSHOT Upload ===
+  function uploadDocShot() {
+    const subject = document.getElementById('docshotSubject').value;
+    const notes = document.getElementById('docshotNotes').value;
+    const file = document.getElementById('docshotImage').files[0];
+
+    if (!file || !subject || !currentUser) {
+      alert("Fill all fields and login first.");
+      return;
+    }
+
+    const fileRef = storage.ref(`docshot/${currentUser.uid}/${Date.now()}_${file.name}`);
+    fileRef.put(file).then(snapshot => {
+      return snapshot.ref.getDownloadURL();
+    }).then(url => {
+      return db.collection('docshot').add({
+        uid: currentUser.uid,
+        subject,
+        notes,
+        imageUrl: url,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }).then(() => {
+      alert("DocShot saved!");
+      document.getElementById('docshotSubject').value = '';
+      document.getElementById('docshotNotes').value = '';
+      document.getElementById('docshotImage').value = '';
+    }).catch(err => {
+      alert("Error saving: " + err.message);
+    });
+  }
+
+  // === DOCCIRCLE Chat ===
+  function sendDocCircleMessage() {
+    const msg = document.getElementById('docCircleMessage').value.trim();
+    if (!msg || !currentUser) return;
+
+    db.collection('doccircle').add({
+      uid: currentUser.uid,
+      message: msg,
+      name: currentUser.displayName || "Anon",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById('docCircleMessage').value = '';
+  }
+
+  function loadDocCircleMessages() {
+    const chatBox = document.getElementById('docCircleChat');
+    db.collection('doccircle').orderBy('timestamp', 'asc')
+      .limit(50).onSnapshot(snapshot => {
+        chatBox.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const p = document.createElement('p');
+          p.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+          chatBox.appendChild(p);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+  }
+
+  // === HEARTBEAT Check-In ===
+  function saveHeartBeat() {
+    const mood = document.getElementById('mood').value;
+    const energy = document.getElementById('energy').value;
+    const hydration = document.getElementById('hydration').value;
+    const notes = document.getElementById('heartbeatNotes').value;
+
+    if (!energy || !hydration || !currentUser) {
+      alert("Fill all fields and login first.");
+      return;
+    }
+
+    db.collection('heartbeat').add({
+      uid: currentUser.uid,
+      mood,
+      energy,
+      hydration,
+      notes,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("Check-in saved!");
+      document.getElementById('energy').value = '';
+      document.getElementById('hydration').value = '';
+      document.getElementById('heartbeatNotes').value = '';
+    }).catch(err => alert("Error: " + err.message));
+  }
+</script>
+
+<!-- === VIEWER PANELS === -->
+<section id="docereViewers" style="display: none; padding: 2rem; font-family: Arial;">
+  <h2 style="text-align: center;">My Logs & Uploads</h2>
+
+  <!-- DOCSHOT VIEW -->
+  <div style="margin-bottom: 2rem;">
+    <h3>DocShot Uploads</h3>
+    <div id="docshotList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;"></div>
+  </div>
+
+  <!-- HEARTBEAT VIEW -->
+  <div>
+    <h3>HeartBeat Logs</h3>
+    <div id="heartbeatList" style="border: 1px solid #eee; padding: 1rem; background: #f4f4f4; max-height: 300px; overflow-y: auto;"></div>
+  </div>
+</section>
+
+<script>
+  const viewerSection = document.getElementById('docereViewers');
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      viewerSection.style.display = 'block';
+      loadDocShotViewer(user.uid);
+      loadHeartBeatViewer(user.uid);
+    } else {
+      viewerSection.style.display = 'none';
+    }
+  });
+
+  function loadDocShotViewer(uid) {
+    db.collection('docshot')
+      .where('uid', '==', uid)
+      .orderBy('timestamp', 'desc')
+      .limit(20)
+      .get().then(snapshot => {
+        const list = document.getElementById('docshotList');
+        list.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const card = document.createElement('div');
+          card.style.border = '1px solid #ccc';
+          card.style.borderRadius = '8px';
+          card.style.padding = '10px';
+          card.innerHTML = `
+            <img src="${data.imageUrl}" style="width:100%; border-radius:6px;">
+            <strong>${data.subject}</strong><br>
+            <small>${new Date(data.timestamp?.toDate()).toLocaleString()}</small><br>
+            <p>${data.notes || ''}</p>
+          `;
+          list.appendChild(card);
+        });
+      });
+  }
+
+  function loadHeartBeatViewer(uid) {
+    db.collection('heartbeat')
+      .where('uid', '==', uid)
+      .orderBy('timestamp', 'desc')
+      .limit(30)
+      .get().then(snapshot => {
+        const list = document.getElementById('heartbeatList');
+        list.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement('div');
+          div.style.borderBottom = '1px solid #ccc';
+          div.style.marginBottom = '10px';
+          div.innerHTML = `
+            <strong>${new Date(data.timestamp?.toDate()).toLocaleDateString()}</strong><br>
+            Mood: ${data.mood}, Energy: ${data.energy}, Hydration: ${data.hydration}<br>
+            <em>${data.notes}</em>
+          `;
+          list.appendChild(div);
+        });
+      });
+  }
+</script>
+
+<!-- === ENHANCED VIEWER SECTION === -->
+<section id="docereViewers" style="display: none; padding: 2rem; font-family: Arial;">
+  <h2 style="text-align: center;">My Logs & Uploads</h2>
+
+  <!-- DOCSHOT -->
+  <div style="margin-bottom: 2rem;">
+    <h3>DocShot Uploads 
+      <button onclick="exportDocShots()" style="float:right;">Export</button>
+    </h3>
+    <div id="docshotList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;"></div>
+  </div>
+
+  <!-- HEARTBEAT -->
+  <div>
+    <h3>HeartBeat Logs 
+      <button onclick="exportHeartBeats()" style="float:right;">Export</button>
+    </h3>
+    <div id="heartbeatList" style="border: 1px solid #eee; padding: 1rem; background: #f4f4f4; max-height: 300px; overflow-y: auto;"></div>
+  </div>
+</section>
+
+<script>
+  const viewerSection = document.getElementById('docereViewers');
+  let currentUID = null;
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      viewerSection.style.display = 'block';
+      currentUID = user.uid;
+      loadDocShotViewer();
+      loadHeartBeatViewer();
+    }
+  });
+
+  function loadDocShotViewer() {
+    db.collection('docshot')
+      .where('uid', '==', currentUID)
+      .orderBy('timestamp', 'desc')
+      .get().then(snapshot => {
+        const list = document.getElementById('docshotList');
+        list.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const id = doc.id;
+          const card = document.createElement('div');
+          card.style.border = '1px solid #ccc';
+          card.style.borderRadius = '8px';
+          card.style.padding = '10px';
+          card.innerHTML = `
+            <img src="${data.imageUrl}" style="width:100%; border-radius:6px;">
+            <strong>${data.subject}</strong><br>
+            <small>${new Date(data.timestamp?.toDate()).toLocaleString()}</small><br>
+            <p>${data.notes || ''}</p>
+            <button onclick="deleteDocShot('${id}')">Delete</button>
+          `;
+          list.appendChild(card);
+        });
+      });
+  }
+
+  function loadHeartBeatViewer() {
+    db.collection('heartbeat')
+      .where('uid', '==', currentUID)
+      .orderBy('timestamp', 'desc')
+      .get().then(snapshot => {
+        const list = document.getElementById('heartbeatList');
+        list.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const id = doc.id;
+          const div = document.createElement('div');
+          div.style.borderBottom = '1px solid #ccc';
+          div.style.marginBottom = '10px';
+          div.innerHTML = `
+            <strong>${new Date(data.timestamp?.toDate()).toLocaleDateString()}</strong><br>
+            Mood: ${data.mood}, Energy: ${data.energy}, Hydration: ${data.hydration}<br>
+            <em>${data.notes}</em><br>
+            <button onclick="deleteHeartBeat('${id}')">Delete</button>
+          `;
+          list.appendChild(div);
+        });
+      });
+  }
+
+  function deleteDocShot(id) {
+    if (confirm("Delete this DocShot?")) {
+      db.collection('docshot').doc(id).delete().then(loadDocShotViewer);
+    }
+  }
+
+  function deleteHeartBeat(id) {
+    if (confirm("Delete this entry?")) {
+      db.collection('heartbeat').doc(id).delete().then(loadHeartBeatViewer);
+    }
+  }
+
+  function exportDocShots() {
+    db.collection('docshot')
+      .where('uid', '==', currentUID)
+      .get().then(snapshot => {
+        let csv = "Subject,Notes,Timestamp\n";
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          csv += `"${d.subject}","${d.notes || ''}","${new Date(d.timestamp?.toDate()).toLocaleString()}"\n`;
+        });
+        downloadCSV(csv, 'DocShots.csv');
+      });
+  }
+
+  function exportHeartBeats() {
+    db.collection('heartbeat')
+      .where('uid', '==', currentUID)
+      .get().then(snapshot => {
+        let csv = "Mood,Energy,Hydration,Notes,Timestamp\n";
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          csv += `"${d.mood}","${d.energy}","${d.hydration}","${d.notes || ''}","${new Date(d.timestamp?.toDate()).toLocaleString()}"\n`;
+        });
+        downloadCSV(csv, 'HeartBeat.csv');
+      });
+  }
+
+  function downloadCSV(csv, filename) {
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  }
+</script>
