@@ -371,3 +371,95 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
 </style>
+<!-- Routine Tracker Section -->
+<section id="routine" class="routine-tracker">
+  <h2>Your Daily Routine</h2>
+  
+  <div class="time-blocks">
+    <div class="block">
+      <label><input type="checkbox"> 6:00 AM - Wake Up & Hydrate</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 7:00 AM - Morning Study Session</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 9:00 AM - Breakfast + Break</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 10:00 AM - Core Subject Study</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 1:00 PM - Lunch + Walk</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 3:00 PM - Concept Revision / Notes</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 5:00 PM - Short Nap / Coffee</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 6:00 PM - Practice Questions / MCQs</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 8:00 PM - Dinner + Relax</label>
+    </div>
+    <div class="block">
+      <label><input type="checkbox"> 10:00 PM - Recap + Sleep</label>
+    </div>
+  </div>
+
+  <div class="trackers">
+    <p>Water Intake: <input type="number" id="water" placeholder="Glasses" min="0"> glasses</p>
+    <p>Meals Taken: <input type="checkbox" id="breakfast"> Breakfast
+                   <input type="checkbox" id="lunch"> Lunch
+                   <input type="checkbox" id="dinner"> Dinner</p>
+    <p>Sleep Last Night: <input type="number" id="sleep" placeholder="Hours" min="0"> hrs</p>
+  </div>
+</section>
+
+<script>
+  // Stretch Reminder every 2 hours
+  setInterval(() => {
+    alert("Time for a quick stretch or eye break!");
+  }, 2 * 60 * 60 * 1000); // 2 hours
+</script>
+
+<style>
+  .routine-tracker {
+    background: #e0f5ff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .routine-tracker h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #015e8c;
+  }
+
+  .time-blocks .block {
+    background: #ffffff;
+    border-radius: 10px;
+    margin: 0.5rem 0;
+    padding: 0.6rem 1rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .trackers {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+
+  .trackers input[type="number"] {
+    width: 60px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-left: 0.5rem;
+  }
+
+  .trackers input[type="checkbox"] {
+    margin: 0 8px;
+  }
+</style>
